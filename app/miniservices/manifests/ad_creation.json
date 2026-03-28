@@ -1,0 +1,122 @@
+{
+  "id": "ad_creation",
+  "name": "Продающие объявления",
+  "emoji": "📢",
+  "description": "Создам 3 варианта продающего объявления, структуру карточки и чек-лист визуала",
+  "credit_cost": 2,
+  "available_on_free": true,
+  "llm_config": {
+    "slot_filling_provider": "anthropic",
+    "slot_filling_model": "claude-haiku-4-5",
+    "generation_provider": "openai",
+    "generation_model": "gpt-4o-mini"
+  },
+  "tools": ["image_gen", "pdf_gen"],
+  "tools_require_paid": ["image_gen"],
+  "input_schema": {
+    "fields": [
+      {
+        "id": "platform",
+        "label": "Площадка",
+        "type": "choice",
+        "required": true,
+        "choices": ["Avito", "OLX", "Wildberries", "ВКонтакте", "Instagram", "Telegram-канал", "Другое"],
+        "question": "На какой площадке будет объявление?",
+        "hint": null,
+        "extract_from_free_text": false
+      },
+      {
+        "id": "product_name",
+        "label": "Название товара",
+        "type": "text",
+        "required": true,
+        "max_length": 200,
+        "question": "Что продаём? Название и категория",
+        "hint": null,
+        "extract_from_free_text": true
+      },
+      {
+        "id": "key_benefits",
+        "label": "Преимущества",
+        "type": "text",
+        "required": true,
+        "max_length": 500,
+        "question": "3–5 главных преимуществ товара/услуги",
+        "hint": null,
+        "extract_from_free_text": true
+      },
+      {
+        "id": "target_audience",
+        "label": "Целевая аудитория",
+        "type": "text",
+        "required": true,
+        "max_length": 300,
+        "question": "Кому продаём? Опиши покупателя",
+        "hint": null,
+        "extract_from_free_text": true
+      },
+      {
+        "id": "price_positioning",
+        "label": "Позиционирование",
+        "type": "choice",
+        "required": false,
+        "choices": ["Эконом", "Средний", "Премиум"],
+        "question": "Ценовое позиционирование?",
+        "hint": null,
+        "extract_from_free_text": false
+      },
+      {
+        "id": "unique_selling_point",
+        "label": "УТП",
+        "type": "text",
+        "required": false,
+        "max_length": 300,
+        "question": "Чем отличаешься от конкурентов?",
+        "hint": null,
+        "extract_from_free_text": true
+      },
+      {
+        "id": "call_to_action",
+        "label": "CTA",
+        "type": "text",
+        "required": false,
+        "max_length": 100,
+        "question": "Желаемое действие: позвонить / написать / купить?",
+        "hint": null,
+        "extract_from_free_text": true
+      },
+      {
+        "id": "tone",
+        "label": "Тон",
+        "type": "choice",
+        "required": false,
+        "choices": ["Дружелюбный", "Деловой", "Срочный", "Экспертный"],
+        "question": "Тон объявления?",
+        "hint": null,
+        "extract_from_free_text": false
+      }
+    ]
+  },
+  "question_plan": [
+    {"field_id": "platform", "step": 1, "condition": null},
+    {"field_id": "product_name", "step": 2, "condition": null},
+    {"field_id": "key_benefits", "step": 3, "condition": null},
+    {"field_id": "target_audience", "step": 4, "condition": null},
+    {"field_id": "price_positioning", "step": 5, "condition": null},
+    {"field_id": "unique_selling_point", "step": 6, "condition": null},
+    {"field_id": "call_to_action", "step": 7, "condition": null},
+    {"field_id": "tone", "step": 8, "condition": null}
+  ],
+  "output_schema": {
+    "artifact_type": "ad_set",
+    "fields": ["platform", "ad_variants", "card_structure", "visual_checklist", "images"]
+  },
+  "project_fields_written": [],
+  "test_cases": [
+    {
+      "input": {"platform": "Avito", "product_name": "iPhone 15", "key_benefits": "новый, гарантия", "target_audience": "молодёжь 20-35"},
+      "expected_artifact_type": "ad_set",
+      "expected_fields": ["ad_variants", "card_structure", "visual_checklist"]
+    }
+  ]
+}

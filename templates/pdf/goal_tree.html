@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>🎯 SMART-цели</h1>
+<h2>Формулировка цели</h2>
+<p>{{ smart_goal }}</p>
+<h2>🌳 Почему это важно</h2>
+<ul>{% for item in why_tree %}<li>{{ item }}</li>{% endfor %}</ul>
+<h2>🚧 Ограничения</h2>
+<ul>{% for item in constraint_tree %}<li>{{ item }}</li>{% endfor %}</ul>
+<h2>📅 30-дневный план</h2>
+{% for week in action_plan %}
+<h3>{{ week.week }}</h3>
+<ul>{% for action in week.actions %}<li>{{ action }}</li>{% endfor %}</ul>
+{% endfor %}
+<h2>📊 Метрики успеха</h2>
+<ul>{% for m in success_metrics %}<li class="metric">{{ m }}</li>{% endfor %}</ul>
+<h2>⚠️ Риски</h2>
+<ul>{% for r in risks %}<li class="warning">{{ r }}</li>{% endfor %}</ul>
+{% endblock %}

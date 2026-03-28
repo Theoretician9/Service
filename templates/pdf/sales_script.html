@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>💬 Скрипт продаж ({{ format }})</h1>
+<h2>Открытие</h2>
+<p>{{ script.opening }}</p>
+<h2>Выявление потребностей</h2>
+<ul>{% for q in script.discovery_questions %}<li>{{ q }}</li>{% endfor %}</ul>
+<h2>Презентация</h2>
+<p>{{ script.presentation }}</p>
+<h2>Закрытие</h2>
+<p><strong>Мягкое:</strong> {{ script.closing.soft }}</p>
+<p><strong>Прямое:</strong> {{ script.closing.direct }}</p>
+<h2>Карта возражений</h2>
+<table>
+<tr><th>Возражение</th><th>Ответы</th></tr>
+{% for obj in objection_map %}
+<tr><td>{{ obj.objection }}</td><td><ul>{% for r in obj.responses %}<li>{{ r }}</li>{% endfor %}</ul></td></tr>
+{% endfor %}
+</table>
+<h2>Follow-up</h2>
+{% for fu in followup_sequence %}
+<p><strong>День {{ fu.day }}:</strong> {{ fu.message }}</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,91 @@
+{
+  "id": "lead_search",
+  "name": "Поиск клиентов",
+  "emoji": "👥",
+  "description": "Найду потенциальных клиентов, оценю температуру и подготовлю персонализированные сообщения",
+  "credit_cost": 3,
+  "available_on_free": false,
+  "llm_config": {
+    "slot_filling_provider": "anthropic",
+    "slot_filling_model": "claude-haiku-4-5",
+    "generation_provider": "anthropic",
+    "generation_model": "claude-sonnet-4-5"
+  },
+  "tools": ["web_search", "google_sheets", "pdf_gen"],
+  "tools_require_paid": ["google_sheets"],
+  "input_schema": {
+    "fields": [
+      {
+        "id": "product_offer",
+        "label": "Предложение",
+        "type": "text",
+        "required": true,
+        "max_length": 300,
+        "question": "Что предлагаешь? Кратко: продукт и кому он нужен",
+        "hint": null,
+        "extract_from_free_text": true
+      },
+      {
+        "id": "lead_source",
+        "label": "Источник лидов",
+        "type": "choice",
+        "required": true,
+        "choices": ["Вставлю текст комментариев", "Искать в публичных источниках", "Дай стратегию поиска"],
+        "question": "Откуда будем искать клиентов?",
+        "hint": null,
+        "extract_from_free_text": false
+      },
+      {
+        "id": "source_content",
+        "label": "Текст для анализа",
+        "type": "text",
+        "required": true,
+        "max_length": 5000,
+        "question": "Вставь текст для анализа (до 5000 символов)",
+        "hint": null,
+        "condition": {"field": "lead_source", "value": "Вставлю текст комментариев"},
+        "extract_from_free_text": false
+      },
+      {
+        "id": "search_query",
+        "label": "Поисковый запрос",
+        "type": "text",
+        "required": true,
+        "max_length": 300,
+        "question": "По какому запросу искать?",
+        "hint": null,
+        "condition": {"field": "lead_source", "value": "Искать в публичных источниках"},
+        "extract_from_free_text": true
+      },
+      {
+        "id": "target_persona",
+        "label": "Идеальный клиент",
+        "type": "text",
+        "required": false,
+        "max_length": 300,
+        "question": "Опиши идеального клиента: кого именно ищем",
+        "hint": null,
+        "extract_from_free_text": true
+      }
+    ]
+  },
+  "question_plan": [
+    {"field_id": "product_offer", "step": 1, "condition": null},
+    {"field_id": "lead_source", "step": 2, "condition": null},
+    {"field_id": "source_content", "step": 3, "condition": {"field": "lead_source", "value": "Вставлю текст комментариев"}},
+    {"field_id": "search_query", "step": 4, "condition": {"field": "lead_source", "value": "Искать в публичных источниках"}},
+    {"field_id": "target_persona", "step": 5, "condition": null}
+  ],
+  "output_schema": {
+    "artifact_type": "lead_list",
+    "fields": ["leads", "search_strategy", "search_queries", "total_found"]
+  },
+  "project_fields_written": [],
+  "test_cases": [
+    {
+      "input": {"product_offer": "CRM для малого бизнеса", "lead_source": "Искать в публичных источниках", "search_query": "CRM для бизнеса отзывы"},
+      "expected_artifact_type": "lead_list",
+      "expected_fields": ["leads", "search_strategy", "search_queries"]
+    }
+  ]
+}

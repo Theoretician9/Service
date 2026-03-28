@@ -1,0 +1,111 @@
+{
+  "id": "supplier_search",
+  "name": "Поиск поставщиков",
+  "emoji": "📦",
+  "description": "Найду поставщиков по вашему товару: контакты, сравнительная таблица, шаблоны писем",
+  "credit_cost": 2,
+  "available_on_free": true,
+  "llm_config": {
+    "slot_filling_provider": "anthropic",
+    "slot_filling_model": "claude-haiku-4-5",
+    "generation_provider": "anthropic",
+    "generation_model": "claude-sonnet-4-5"
+  },
+  "tools": ["web_search", "google_sheets", "pdf_gen"],
+  "tools_require_paid": ["google_sheets"],
+  "input_schema": {
+    "fields": [
+      {
+        "id": "product_description",
+        "label": "Описание товара",
+        "type": "text",
+        "required": true,
+        "max_length": 300,
+        "question": "Что ищем? Опиши товар: название, категория, ключевые характеристики",
+        "hint": "Например: мужские кроссовки Nike реплика, размеры 40-46",
+        "extract_from_free_text": true
+      },
+      {
+        "id": "target_geography",
+        "label": "География доставки",
+        "type": "choice",
+        "required": true,
+        "choices": ["Россия", "Казахстан", "Беларусь", "СНГ", "Несколько стран"],
+        "question": "Куда нужна доставка?",
+        "hint": null,
+        "extract_from_free_text": false
+      },
+      {
+        "id": "supplier_origin",
+        "label": "Откуда поставщик",
+        "type": "multi_choice",
+        "required": true,
+        "choices": ["Китай", "Россия", "Турция", "Без разницы"],
+        "question": "Откуда поставщик?",
+        "hint": null,
+        "extract_from_free_text": false
+      },
+      {
+        "id": "moq_preference",
+        "label": "Минимальная партия",
+        "type": "choice",
+        "required": false,
+        "choices": ["до 10 шт", "10–50", "50–200", "200+"],
+        "question": "Минимальная партия?",
+        "hint": null,
+        "extract_from_free_text": false
+      },
+      {
+        "id": "budget_per_unit",
+        "label": "Бюджет за единицу",
+        "type": "text",
+        "required": false,
+        "max_length": 100,
+        "question": "Целевая закупочная цена за единицу?",
+        "hint": null,
+        "extract_from_free_text": true
+      },
+      {
+        "id": "quality_requirements",
+        "label": "Требования к качеству",
+        "type": "text",
+        "required": false,
+        "max_length": 300,
+        "question": "Требования к качеству, сертификаты?",
+        "hint": null,
+        "extract_from_free_text": true
+      },
+      {
+        "id": "payment_terms",
+        "label": "Условия оплаты",
+        "type": "multi_choice",
+        "required": false,
+        "choices": ["Предоплата", "Постоплата", "Без разницы"],
+        "question": "Условия оплаты?",
+        "hint": null,
+        "extract_from_free_text": false
+      }
+    ]
+  },
+  "question_plan": [
+    {"field_id": "product_description", "step": 1, "condition": null},
+    {"field_id": "target_geography", "step": 2, "condition": null},
+    {"field_id": "supplier_origin", "step": 3, "condition": null},
+    {"field_id": "moq_preference", "step": 4, "condition": null},
+    {"field_id": "budget_per_unit", "step": 5, "condition": null},
+    {"field_id": "quality_requirements", "step": 6, "condition": null},
+    {"field_id": "payment_terms", "step": 7, "condition": null}
+  ],
+  "output_schema": {
+    "artifact_type": "supplier_list",
+    "fields": ["suppliers", "comparison_table", "email_templates", "verification_checklist"]
+  },
+  "project_fields_written": [],
+  "test_cases": [
+    {
+      "input": {"product_description": "кроссовки", "target_geography": "Россия", "supplier_origin": ["Китай"]},
+      "expected_artifact_type": "supplier_list",
+      "expected_fields": ["suppliers", "comparison_table", "email_templates"]
+    }
+  ]
+}

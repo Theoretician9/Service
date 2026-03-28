@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>👥 Список потенциальных клиентов</h1>
+<p>Найдено: {{ total_found }}</p>
+<table>
+<tr><th>Идентификатор</th><th>Источник</th><th>Запрос/цитата</th><th>Температура</th></tr>
+{% for lead in leads %}
+<tr><td>{{ lead.identifier }}</td><td>{{ lead.source }}</td><td>{{ lead.quote }}</td><td>{{ lead.temperature }}</td></tr>
+{% endfor %}
+</table>
+{% for lead in leads %}
+<h3>Шаблон сообщения для {{ lead.identifier }}</h3>
+<div style="background:#f9f9f9;padding:10px;margin:10px 0;border-left:3px solid #16a34a;">{{ lead.suggested_message }}</div>
+{% endfor %}
+<h2>Стратегия поиска</h2>
+<p>{{ search_strategy }}</p>
+<h2>Поисковые запросы</h2>
+<ul>{% for q in search_queries %}<li>{{ q }}</li>{% endfor %}</ul>
+{% endblock %}

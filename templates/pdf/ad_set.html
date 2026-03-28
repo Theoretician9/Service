@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>📢 Продающие объявления ({{ platform }})</h1>
+{% for ad in ad_variants %}
+<h2>Вариант {{ loop.index }}</h2>
+<h3>{{ ad.title }}</h3>
+<p>{{ ad.body }}</p>
+<p class="metric">CTA: {{ ad.cta }}</p>
+{% endfor %}
+<h2>Структура карточки</h2>
+<p><strong>Заголовок:</strong> {{ card_structure.title }}</p>
+<p><strong>Описание:</strong> {{ card_structure.description }}</p>
+<p><strong>Теги:</strong> {{ card_structure.keywords | join(', ') }}</p>
+<h2>Чек-лист визуала</h2>
+<ul>{% for item in visual_checklist %}<li>☐ {{ item }}</li>{% endfor %}</ul>
+{% endblock %}

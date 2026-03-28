@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>🔍 Анализ ниш</h1>
+<table>
+<tr><th>Ниша</th><th>Потенциал</th><th>Конкуренция</th><th>Порог входа</th><th>Соответствие</th><th>Итого</th></tr>
+{% for n in niches %}
+<tr><td>{{ n.name }}</td><td>{{ n.potential }}/5</td><td>{{ n.competition }}/5</td><td>{{ n.entry_threshold }}/5</td><td>{{ n.resource_fit }}/5</td><td class="metric">{{ n.total_score }}/20</td></tr>
+{% endfor %}
+</table>
+{% for n in niches[:3] %}{% if n.decomposition %}
+<h2>{{ n.name }} — декомпозиция</h2>
+<p><strong>Продукт:</strong> {{ n.decomposition.product }}</p>
+<p><strong>Сегменты ЦА:</strong> {{ n.decomposition.audience_segments | join(', ') }}</p>
+<p><strong>Каналы:</strong> {{ n.decomposition.channels | join(', ') }}</p>
+<h3>Гипотезы спроса</h3>
+<ul>{% for h in n.decomposition.demand_hypotheses %}<li>{{ h }}</li>{% endfor %}</ul>
+{% endif %}{% endfor %}
+<h2>Рекомендация</h2>
+<p class="success">{{ recommendation }}</p>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>📦 Поставщики</h1>
+<table>
+<tr><th>Поставщик</th><th>Страна</th><th>Тип</th><th>MOQ</th><th>Условия</th></tr>
+{% for s in suppliers %}
+<tr><td>{% if s.url %}<a href="{{ s.url }}">{{ s.name }}</a>{% else %}{{ s.name }}{% endif %}</td><td>{{ s.country }}</td><td>{{ s.type }}</td><td>{{ s.moq }}</td><td>{{ s.conditions }}</td></tr>
+{% endfor %}
+</table>
+<h2>Шаблоны писем поставщику</h2>
+{% for tpl in email_templates %}
+<div style="background:#f9f9f9;padding:10px;margin:10px 0;border-left:3px solid #2563eb;">{{ tpl }}</div>
+{% endfor %}
+<h2>Чек-лист проверки</h2>
+<ul>{% for item in verification_checklist %}<li>☐ {{ item }}</li>{% endfor %}</ul>
+{% endblock %}

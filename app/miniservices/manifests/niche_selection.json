@@ -1,0 +1,110 @@
+{
+  "id": "niche_selection",
+  "name": "Выбор ниши",
+  "emoji": "🔍",
+  "description": "Подберу 5-7 ниш с оценкой, декомпозицией топ-3 и рекомендацией",
+  "credit_cost": 2,
+  "available_on_free": true,
+  "llm_config": {
+    "slot_filling_provider": "anthropic",
+    "slot_filling_model": "claude-haiku-4-5",
+    "generation_provider": "anthropic",
+    "generation_model": "claude-sonnet-4-5"
+  },
+  "tools": ["web_search", "google_sheets", "pdf_gen"],
+  "tools_require_paid": ["google_sheets"],
+  "input_schema": {
+    "fields": [
+      {
+        "id": "geography",
+        "label": "География",
+        "type": "choice",
+        "required": true,
+        "choices": ["Россия", "Казахстан", "Беларусь", "Весь СНГ"],
+        "question": "Где планируешь продавать?",
+        "hint": null,
+        "extract_from_free_text": false
+      },
+      {
+        "id": "available_capital",
+        "label": "Стартовый капитал",
+        "type": "choice",
+        "required": true,
+        "choices": ["до 50 тыс.", "50–200 тыс.", "200–500 тыс.", "500 тыс.+"],
+        "question": "Стартовый капитал?",
+        "hint": null,
+        "extract_from_free_text": false
+      },
+      {
+        "id": "competencies",
+        "label": "Компетенции",
+        "type": "text",
+        "required": true,
+        "max_length": 300,
+        "question": "Что умеешь? В каких сферах есть опыт или интерес?",
+        "hint": null,
+        "extract_from_free_text": true
+      },
+      {
+        "id": "format",
+        "label": "Формат",
+        "type": "multi_choice",
+        "required": true,
+        "choices": ["Товары", "Услуги", "Инфопродукты", "Всё рассмотреть"],
+        "question": "Интересный формат?",
+        "hint": null,
+        "extract_from_free_text": false
+      },
+      {
+        "id": "channels",
+        "label": "Каналы",
+        "type": "multi_choice",
+        "required": true,
+        "choices": ["Маркетплейсы", "Соцсети", "Telegram", "Офлайн", "Всё"],
+        "question": "Предпочтительные каналы продаж?",
+        "hint": null,
+        "extract_from_free_text": false
+      },
+      {
+        "id": "target_margin",
+        "label": "Маржинальность",
+        "type": "choice",
+        "required": false,
+        "choices": ["до 20%", "20–40%", "40%+"],
+        "question": "Желаемая маржинальность?",
+        "hint": null,
+        "extract_from_free_text": false
+      },
+      {
+        "id": "operations_readiness",
+        "label": "Готовность к операционке",
+        "type": "yes_no",
+        "required": false,
+        "question": "Готов к высокой операционной нагрузке (склад, логистика)?",
+        "hint": null,
+        "extract_from_free_text": false
+      }
+    ]
+  },
+  "question_plan": [
+    {"field_id": "geography", "step": 1, "condition": null},
+    {"field_id": "available_capital", "step": 2, "condition": null},
+    {"field_id": "competencies", "step": 3, "condition": null},
+    {"field_id": "format", "step": 4, "condition": null},
+    {"field_id": "channels", "step": 5, "condition": null},
+    {"field_id": "target_margin", "step": 6, "condition": null},
+    {"field_id": "operations_readiness", "step": 7, "condition": null}
+  ],
+  "output_schema": {
+    "artifact_type": "niche_table",
+    "fields": ["niches", "recommendation"]
+  },
+  "project_fields_written": ["niche_candidates", "hypothesis_table", "geography", "budget_range", "business_model"],
+  "test_cases": [
+    {
+      "input": {"geography": "Россия", "available_capital": "50–200 тыс.", "competencies": "маркетинг", "format": ["Товары"], "channels": ["Маркетплейсы"]},
+      "expected_artifact_type": "niche_table",
+      "expected_fields": ["niches", "recommendation"]
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "id": "sales_scripts",
+  "name": "Скрипты продаж",
+  "emoji": "💬",
+  "description": "Напишу скрипт продаж, карту возражений и follow-up последовательность",
+  "credit_cost": 2,
+  "available_on_free": true,
+  "llm_config": {
+    "slot_filling_provider": "anthropic",
+    "slot_filling_model": "claude-haiku-4-5",
+    "generation_provider": "anthropic",
+    "generation_model": "claude-sonnet-4-5"
+  },
+  "tools": ["pdf_gen"],
+  "tools_require_paid": [],
+  "input_schema": {
+    "fields": [
+      {
+        "id": "product_offer",
+        "label": "Продукт/услуга",
+        "type": "text",
+        "required": true,
+        "max_length": 300,
+        "question": "Что продаём? Продукт/услуга и ключевые преимущества",
+        "hint": null,
+        "extract_from_free_text": true
+      },
+      {
+        "id": "target_persona",
+        "label": "Покупатель",
+        "type": "text",
+        "required": true,
+        "max_length": 300,
+        "question": "Кто покупатель? Роль, боль, типичный контекст",
+        "hint": null,
+        "extract_from_free_text": true
+      },
+      {
+        "id": "sales_format",
+        "label": "Формат продаж",
+        "type": "choice",
+        "required": true,
+        "choices": ["Холодный звонок", "Входящий звонок", "Переписка в мессенджере", "Email"],
+        "question": "Формат продаж?",
+        "hint": null,
+        "extract_from_free_text": false
+      },
+      {
+        "id": "business_type",
+        "label": "Тип сделки",
+        "type": "choice",
+        "required": true,
+        "choices": ["B2B", "B2C"],
+        "question": "Тип сделки?",
+        "hint": null,
+        "extract_from_free_text": false
+      },
+      {
+        "id": "average_check",
+        "label": "Средний чек",
+        "type": "text",
+        "required": false,
+        "max_length": 100,
+        "question": "Средний чек (примерно)?",
+        "hint": null,
+        "extract_from_free_text": true
+      },
+      {
+        "id": "main_objections",
+        "label": "Возражения",
+        "type": "text",
+        "required": false,
+        "max_length": 300,
+        "question": "Какие возражения чаще всего слышишь?",
+        "hint": null,
+        "extract_from_free_text": true
+      },
+      {
+        "id": "brand_tone",
+        "label": "Тон",
+        "type": "choice",
+        "required": false,
+        "choices": ["Дружелюбный", "Экспертный", "Напористый", "Нейтральный"],
+        "question": "Тон общения?",
+        "hint": null,
+        "extract_from_free_text": false
+      }
+    ]
+  },
+  "question_plan": [
+    {"field_id": "product_offer", "step": 1, "condition": null},
+    {"field_id": "target_persona", "step": 2, "condition": null},
+    {"field_id": "sales_format", "step": 3, "condition": null},
+    {"field_id": "business_type", "step": 4, "condition": null},
+    {"field_id": "average_check", "step": 5, "condition": null},
+    {"field_id": "main_objections", "step": 6, "condition": null},
+    {"field_id": "brand_tone", "step": 7, "condition": null}
+  ],
+  "output_schema": {
+    "artifact_type": "sales_script",
+    "fields": ["format", "script", "objection_map", "followup_sequence", "preparation_checklist"]
+  },
+  "project_fields_written": [],
+  "test_cases": [
+    {
+      "input": {"product_offer": "CRM система", "target_persona": "владелец малого бизнеса", "sales_format": "Холодный звонок", "business_type": "B2B"},
+      "expected_artifact_type": "sales_script",
+      "expected_fields": ["script", "objection_map", "followup_sequence"]
+    }
+  ]
+}

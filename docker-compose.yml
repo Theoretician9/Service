@@ -1,0 +1,42 @@
+version: '3.9'
+services:
+  app:
+    build: .
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    env_file: .env
+    depends_on: [postgres, redis]
+    restart: unless-stopped
+    ports: ["8000:8000"]
+
+  worker:
+    build: .
+    command: celery -A app.workers.celery_app worker --loglevel=info --concurrency=4
+    env_file: .env
+    depends_on: [postgres, redis]
+    restart: unless-stopped
+
+  beat:
+    build: .
+    command: celery -A app.workers.celery_app beat --loglevel=info
+    env_file: .env
+    depends_on: [postgres, redis]
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes: [postgres_data:/var/lib/postgresql/data]
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    volumes: [redis_data:/data]
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
