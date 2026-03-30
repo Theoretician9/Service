@@ -1,10 +1,12 @@
 {
   "id": "niche_selection",
+  "schema_version": "1.0",
   "name": "Выбор ниши",
   "emoji": "🔍",
   "description": "Подберу 5-7 ниш с оценкой, декомпозицией топ-3 и рекомендацией",
   "credit_cost": 2,
   "available_on_free": true,
+  "mode": "standard",
   "llm_config": {
     "slot_filling_provider": "anthropic",
     "slot_filling_model": "claude-haiku-4-5",
@@ -96,10 +98,18 @@
     {"field_id": "operations_readiness", "step": 7, "condition": null}
   ],
   "output_schema": {
+    "version": "1.0",
     "artifact_type": "niche_table",
     "fields": ["niches", "recommendation"]
   },
-  "project_fields_written": ["niche_candidates", "hypothesis_table", "geography", "budget_range", "business_model"],
+  "project_fields_mapping": {
+    "niche_candidates": "niches",
+    "chosen_niche": "recommended_niche",
+    "hypothesis_table": "niches[*].decomposition",
+    "geography": "geography",
+    "budget_range": "available_capital",
+    "business_model": "format"
+  },
   "test_cases": [
     {
       "input": {"geography": "Россия", "available_capital": "50–200 тыс.", "competencies": "маркетинг", "format": ["Товары"], "channels": ["Маркетплейсы"]},

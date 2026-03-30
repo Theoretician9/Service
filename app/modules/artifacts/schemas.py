@@ -13,6 +13,7 @@ class ArtifactRead(BaseModel):
     is_current: bool
     is_outdated: bool
     summary: str
+    artifact_schema_version: str
     google_sheets_url: str | None
     created_at: datetime
 

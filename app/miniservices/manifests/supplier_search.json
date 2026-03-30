@@ -1,10 +1,12 @@
 {
   "id": "supplier_search",
+  "schema_version": "1.0",
   "name": "Поиск поставщиков",
   "emoji": "📦",
   "description": "Найду поставщиков по вашему товару: контакты, сравнительная таблица, шаблоны писем",
   "credit_cost": 2,
   "available_on_free": true,
+  "mode": "standard",
   "llm_config": {
     "slot_filling_provider": "anthropic",
     "slot_filling_model": "claude-haiku-4-5",
@@ -97,10 +99,11 @@
     {"field_id": "payment_terms", "step": 7, "condition": null}
   ],
   "output_schema": {
+    "version": "1.0",
     "artifact_type": "supplier_list",
     "fields": ["suppliers", "comparison_table", "email_templates", "verification_checklist"]
   },
-  "project_fields_written": [],
+  "project_fields_mapping": {},
   "test_cases": [
     {
       "input": {"product_description": "кроссовки", "target_geography": "Россия", "supplier_origin": ["Китай"]},

@@ -1,10 +1,12 @@
 {
   "id": "lead_search",
+  "schema_version": "1.0",
   "name": "Поиск клиентов",
   "emoji": "👥",
   "description": "Найду потенциальных клиентов, оценю температуру и подготовлю персонализированные сообщения",
   "credit_cost": 3,
   "available_on_free": false,
+  "mode": "standard",
   "llm_config": {
     "slot_filling_provider": "anthropic",
     "slot_filling_model": "claude-haiku-4-5",
@@ -77,10 +79,11 @@
     {"field_id": "target_persona", "step": 5, "condition": null}
   ],
   "output_schema": {
+    "version": "1.0",
     "artifact_type": "lead_list",
     "fields": ["leads", "search_strategy", "search_queries", "total_found"]
   },
-  "project_fields_written": [],
+  "project_fields_mapping": {},
   "test_cases": [
     {
       "input": {"product_offer": "CRM для малого бизнеса", "lead_source": "Искать в публичных источниках", "search_query": "CRM для бизнеса отзывы"},

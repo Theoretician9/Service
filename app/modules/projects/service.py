@@ -34,7 +34,25 @@ class ProjectService:
         return result.scalar_one()
 
     async def update_profile_field(self, project_id: uuid.UUID, field: str, value) -> None:
-        pass
+        """Update a single field on the Project profile."""
+        # Validate the field exists on the model to prevent arbitrary setattr
+        valid_fields = {
+            "goal_statement", "point_a", "point_b", "goal_deadline",
+            "success_metrics", "constraints", "niche_candidates",
+            "chosen_niche", "hypothesis_table", "geography",
+            "budget_range", "business_model",
+        }
+        if field not in valid_fields:
+            raise ValueError(f"Invalid project profile field: {field}")
+
+        stmt = select(Project).where(Project.id == project_id)
+        result = await self.session.execute(stmt)
+        project = result.scalar_one_or_none()
+        if not project:
+            raise ValueError(f"Project not found: {project_id}")
+
+        setattr(project, field, value)
+        await self.session.commit()
 
     async def archive(self, project_id: uuid.UUID) -> None:
         pass

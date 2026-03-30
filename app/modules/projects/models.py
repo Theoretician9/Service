@@ -21,18 +21,17 @@ class Project(Base):
 
     # ProjectProfile fields
     goal_statement: Mapped[str | None] = mapped_column(Text)
+    point_a: Mapped[str | None] = mapped_column(Text)
+    point_b: Mapped[str | None] = mapped_column(Text)
+    goal_deadline: Mapped[str | None] = mapped_column(String(128))
     success_metrics: Mapped[dict | None] = mapped_column(JSONB)
     constraints: Mapped[dict | None] = mapped_column(JSONB)
-    timeline: Mapped[str | None] = mapped_column(String(128))
-    chosen_niche: Mapped[str | None] = mapped_column(String(256))
     niche_candidates: Mapped[dict | None] = mapped_column(JSONB)
+    chosen_niche: Mapped[str | None] = mapped_column(String(256))
     hypothesis_table: Mapped[dict | None] = mapped_column(JSONB)
-    target_audience: Mapped[dict | None] = mapped_column(JSONB)
-    product_description: Mapped[str | None] = mapped_column(Text)
     geography: Mapped[str | None] = mapped_column(String(128))
     budget_range: Mapped[str | None] = mapped_column(String(128))
     business_model: Mapped[str | None] = mapped_column(String(64))
-    sales_channels: Mapped[dict | None] = mapped_column(JSONB)
 
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(

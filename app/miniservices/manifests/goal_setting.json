@@ -1,10 +1,18 @@
 {
   "id": "goal_setting",
+  "schema_version": "1.0",
   "name": "Постановка целей",
   "emoji": "🎯",
   "description": "Сформулирую SMART-цель, построю дерево мотивов и 30-дневный план действий",
   "credit_cost": 1,
   "available_on_free": true,
+  "mode": "mentor",
+  "mentor_config": {
+    "persona": "опытный бизнес-ментор",
+    "tone": "дружелюбный, но требовательный",
+    "goal": "помочь сформулировать SMART-цель через диалог",
+    "non_autofill_fields": ["why_important"]
+  },
   "llm_config": {
     "slot_filling_provider": "anthropic",
     "slot_filling_model": "claude-haiku-4-5",
@@ -16,42 +24,42 @@
   "input_schema": {
     "fields": [
       {
-        "id": "user_role",
-        "label": "Роль",
-        "type": "choice",
-        "required": true,
-        "choices": ["Предприниматель", "Фрилансер", "Менеджер", "Другое"],
-        "question": "Кто ты?",
-        "hint": null,
-        "extract_from_free_text": false
-      },
-      {
-        "id": "experience_context",
-        "label": "Контекст опыта",
+        "id": "point_a",
+        "label": "Точка А",
         "type": "text",
         "required": true,
         "max_length": 300,
-        "question": "В 2-3 предложениях: чем занимаешься и какой опыт есть?",
+        "question": "Давай определим точку старта: как бы ты описал свой нынешний финансовый и социальный статус? Это поможет ИИ точнее проложить маршрут к твоим целям",
         "hint": null,
         "extract_from_free_text": true
       },
       {
-        "id": "desired_result",
-        "label": "Желаемый результат",
+        "id": "point_b",
+        "label": "Точка Б",
         "type": "text",
         "required": true,
         "max_length": 300,
-        "question": "Что хочешь достичь? Опиши желаемый результат",
+        "question": "Куда хочешь прийти? Опиши желаемый результат",
         "hint": null,
         "extract_from_free_text": true
       },
       {
-        "id": "timeline",
-        "label": "Горизонт",
-        "type": "choice",
+        "id": "goal_deadline",
+        "label": "Срок достижения",
+        "type": "text",
         "required": true,
-        "choices": ["1 месяц", "3 месяца", "6 месяцев", "1 год"],
-        "question": "Горизонт планирования?",
+        "max_length": 300,
+        "question": "К какому сроку хочешь достичь цели?",
+        "hint": null,
+        "extract_from_free_text": true
+      },
+      {
+        "id": "why_important",
+        "label": "Почему важно",
+        "type": "text",
+        "required": true,
+        "max_length": 300,
+        "question": "Почему это важно для тебя?",
         "hint": null,
         "extract_from_free_text": false
       },
@@ -62,16 +70,6 @@
         "required": false,
         "max_length": 300,
         "question": "Есть важные ограничения? (бюджет, время, ресурсы)",
-        "hint": null,
-        "extract_from_free_text": true
-      },
-      {
-        "id": "why_important",
-        "label": "Почему важно",
-        "type": "text",
-        "required": false,
-        "max_length": 300,
-        "question": "Почему это важно для тебя?",
         "hint": null,
         "extract_from_free_text": true
       },
@@ -88,22 +86,29 @@
     ]
   },
   "question_plan": [
-    {"field_id": "user_role", "step": 1, "condition": null},
-    {"field_id": "experience_context", "step": 2, "condition": null},
-    {"field_id": "desired_result", "step": 3, "condition": null},
-    {"field_id": "timeline", "step": 4, "condition": null},
+    {"field_id": "point_a", "step": 1, "condition": null},
+    {"field_id": "point_b", "step": 2, "condition": null},
+    {"field_id": "goal_deadline", "step": 3, "condition": null},
+    {"field_id": "why_important", "step": 4, "condition": null},
     {"field_id": "constraints", "step": 5, "condition": null},
-    {"field_id": "why_important", "step": 6, "condition": null},
-    {"field_id": "success_metric", "step": 7, "condition": null}
+    {"field_id": "success_metric", "step": 6, "condition": null}
   ],
   "output_schema": {
+    "version": "1.0",
     "artifact_type": "goal_tree",
     "fields": ["smart_goal", "why_tree", "constraint_tree", "action_plan", "success_metrics", "risks"]
   },
-  "project_fields_written": ["goal_statement", "success_metrics", "constraints", "timeline"],
+  "project_fields_mapping": {
+    "goal_statement": "smart_goal",
+    "point_a": "point_a",
+    "point_b": "point_b",
+    "goal_deadline": "goal_deadline",
+    "success_metrics": "success_metrics",
+    "constraints": "constraint_tree"
+  },
   "test_cases": [
     {
-      "input": {"user_role": "Предприниматель", "experience_context": "5 лет в IT", "desired_result": "Увеличить доход в 2 раза", "timeline": "3 месяца"},
+      "input": {"point_a": "5 лет в IT, доход 100к", "point_b": "Увеличить доход в 2 раза", "goal_deadline": "3 месяца", "why_important": "Хочу финансовую свободу"},
       "expected_artifact_type": "goal_tree",
       "expected_fields": ["smart_goal", "why_tree", "action_plan"]
     }

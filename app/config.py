@@ -2,13 +2,24 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(
+        env_file=".env", env_file_encoding="utf-8", extra="ignore"
+    )
 
     # Telegram
     telegram_bot_token: str
     telegram_webhook_secret: str
     telegram_webhook_url: str
-    bot_admin_chat_id: int
+    bot_admin_chat_ids: str = ""  # comma-separated telegram IDs
+
+    @property
+    def admin_ids(self) -> list[int]:
+        if not self.bot_admin_chat_ids:
+            return []
+        return [int(x.strip()) for x in self.bot_admin_chat_ids.split(",") if x.strip()]
+
+    def is_admin(self, telegram_id: int) -> bool:
+        return telegram_id in self.admin_ids
 
     # Database
     database_url: str
@@ -21,11 +32,11 @@ class Settings(BaseSettings):
     celery_result_backend: str = "redis://redis:6379/2"
 
     # LLM
-    anthropic_api_key: str
-    openai_api_key: str
+    anthropic_api_key: str = ""
+    openai_api_key: str = ""
 
     # Search
-    tavily_api_key: str
+    tavily_api_key: str = ""
 
     # Google Sheets
     google_service_account_json: str = ""
@@ -49,6 +60,13 @@ class Settings(BaseSettings):
     # Limits
     llm_request_timeout_seconds: int = 60
     max_message_length: int = 4000
+
+    # Orchestrator
+    orchestrator_history_messages: int = 20
+    orchestrator_confidence_threshold: float = 0.85
+
+    # Mentor
+    mentor_max_fallback_attempts: int = 3
 
 
 settings = Settings()

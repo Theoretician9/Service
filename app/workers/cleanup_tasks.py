@@ -25,10 +25,3 @@ def cleanup_tmp_pdfs():
             except OSError:
                 pass
     logger.info("cleanup_tmp_pdfs_done")
-
-
-@celery_app.task
-def detect_abandoned_onboarding():
-    """Find users with onboarding_completed=False and created_at > 24h ago."""
-    logger.info("detect_abandoned_onboarding")
-    # TODO: query users, create analytics events

@@ -13,9 +13,9 @@ class MiniserviceRun(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False, index=True)
-    project_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), index=True)
+    project_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False, index=True)
     miniservice_id: Mapped[str] = mapped_column(String(64), nullable=False)
-    mode: Mapped[str] = mapped_column(Enum("quick", "project", name="run_mode"), nullable=False)
+    mode: Mapped[str] = mapped_column(Enum("sequential", "standalone", name="run_mode"), nullable=False)
     status: Mapped[str] = mapped_column(
         Enum(
             "collecting", "processing", "completed", "failed", "partially_completed",
@@ -47,10 +47,11 @@ class Artifact(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False, index=True)
-    project_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), index=True)
+    project_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False, index=True)
     run_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False)
     miniservice_id: Mapped[str] = mapped_column(String(64), nullable=False)
     artifact_type: Mapped[str] = mapped_column(String(64), nullable=False)
+    artifact_schema_version: Mapped[str] = mapped_column(String(16), nullable=False, default="1.0")
     title: Mapped[str] = mapped_column(String(256), nullable=False)
     version: Mapped[int] = mapped_column(Integer, default=1)
     is_current: Mapped[bool] = mapped_column(Boolean, default=True)

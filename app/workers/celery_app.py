@@ -7,6 +7,12 @@ celery_app = Celery(
     "ai_marketplace",
     broker=settings.celery_broker_url,
     backend=settings.celery_result_backend,
+    include=[
+        "app.workers.miniservice_tasks",
+        "app.workers.notification_tasks",
+        "app.workers.billing_tasks",
+        "app.workers.cleanup_tasks",
+    ],
 )
 
 celery_app.conf.update(
@@ -29,9 +35,5 @@ celery_app.conf.beat_schedule = {
     "cleanup_tmp_pdfs": {
         "task": "app.workers.cleanup_tasks.cleanup_tmp_pdfs",
         "schedule": crontab(hour=4, minute=0),
-    },
-    "detect_abandoned_onboarding": {
-        "task": "app.workers.cleanup_tasks.detect_abandoned_onboarding",
-        "schedule": crontab(hour=5, minute=0),
     },
 }

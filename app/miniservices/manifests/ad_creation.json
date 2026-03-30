@@ -1,10 +1,12 @@
 {
   "id": "ad_creation",
+  "schema_version": "1.0",
   "name": "Продающие объявления",
   "emoji": "📢",
   "description": "Создам 3 варианта продающего объявления, структуру карточки и чек-лист визуала",
   "credit_cost": 2,
   "available_on_free": true,
+  "mode": "standard",
   "llm_config": {
     "slot_filling_provider": "anthropic",
     "slot_filling_model": "claude-haiku-4-5",
@@ -108,10 +110,11 @@
     {"field_id": "tone", "step": 8, "condition": null}
   ],
   "output_schema": {
+    "version": "1.0",
     "artifact_type": "ad_set",
     "fields": ["platform", "ad_variants", "card_structure", "visual_checklist", "images"]
   },
-  "project_fields_written": [],
+  "project_fields_mapping": {},
   "test_cases": [
     {
       "input": {"platform": "Avito", "product_name": "iPhone 15", "key_benefits": "новый, гарантия", "target_audience": "молодёжь 20-35"},
