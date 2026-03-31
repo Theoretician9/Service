@@ -260,6 +260,16 @@ async def _dispatch_action(
         dialog = await get_dialog(telegram_id)
         if dialog and params.get("ready_to_process"):
             run_id = dialog["run_id"]
+            # Sync collected_fields from Redis to DB before launching task
+            collected = dialog.get("collected_fields", {})
+            if collected:
+                from sqlalchemy import update as sa_update
+                await db_session.execute(
+                    sa_update(MiniserviceRun)
+                    .where(MiniserviceRun.id == uuid.UUID(run_id))
+                    .values(collected_fields=collected)
+                )
+                await db_session.commit()
             run_miniservice_task.delay(run_id)
             await message.answer(PROCESSING)
         else:
@@ -310,23 +320,33 @@ async def _action_onboarding(
     db_session: AsyncSession,
     params: dict,
 ) -> None:
-    """Handle onboarding steps — stateful, checks what's already filled."""
-    user_message = params.get("user_message", message.text or "")
+    """Handle onboarding steps — stateful, checks what's already filled.
 
-    # Step 1: role not set yet → save role/goal, ask for project name
+    First message after welcome is critical — it may contain rich context
+    about the user's business. We save it fully and extract fields for
+    future miniservices via smart extractor.
+    """
+    user_message = params.get("user_message", message.text or "")
+    telegram_id = user.telegram_id
+
+    # Step 1: role not set yet → save role/goal + extract context, ask for project name
     if not user.onboarding_role:
         user.onboarding_role = "Предприниматель"
-        user.onboarding_primary_goal = user_message[:64]
+        user.onboarding_primary_goal = user_message[:256]
         await db_session.commit()
+
+        # Save full first message to conversation history — orchestrator will see it later
+        await append_conversation(telegram_id, "user", user_message)
+
         await message.answer(ONBOARDING_PROJECT_ASK)
-        logger.info("onboarding_role_set", telegram_id=user.telegram_id)
+        logger.info("onboarding_role_set", telegram_id=telegram_id)
         return
 
     # Step 2: role set but onboarding not complete → create project
     project_name = user_message.strip()[:128] or "Мой проект"
     project_service = ProjectService(db_session)
     project = await project_service.create(user_id=user.id, name=project_name)
-    await set_active_project(user.telegram_id, str(project.id), project.name)
+    await set_active_project(telegram_id, str(project.id), project.name)
 
     user.onboarding_completed = True
     await db_session.commit()
@@ -339,10 +359,10 @@ async def _action_onboarding(
 
     # Auto-launch goal_setting miniservice
     await _action_launch_miniservice(
-        message, user, db_session, user.telegram_id,
+        message, user, db_session, telegram_id,
         {"miniservice_id": "goal_setting", "project_id": str(project.id)},
     )
-    logger.info("onboarding_completed", telegram_id=user.telegram_id)
+    logger.info("onboarding_completed", telegram_id=telegram_id)
 
 
 async def _action_ensure_project(
@@ -537,10 +557,28 @@ async def _action_continue_collecting(
     collected = dialog["collected_fields"]
 
     if all_required_collected(miniservice_id, collected):
-        # All fields collected → trigger processing via Celery
+        # All fields collected → sync to DB
         run_id = dialog["run_id"]
-        run_miniservice_task.delay(run_id)
-        await message.answer(PROCESSING)
+        from app.database import async_session as _async_session
+        async with _async_session() as _session:
+            from sqlalchemy import update as sa_update
+            await _session.execute(
+                sa_update(MiniserviceRun)
+                .where(MiniserviceRun.id == uuid.UUID(run_id))
+                .values(collected_fields=collected)
+            )
+            await _session.commit()
+
+        # If orchestrator already said "ready?" in response_text, show it
+        # Otherwise ask for confirmation before processing
+        if response_text:
+            await message.answer(response_text)
+        else:
+            await message.answer(
+                "✅ Все данные собраны. Запускаю анализ?\n\n"
+                "(Напиши «да» или «готов»)"
+            )
+        return  # Wait for user confirmation — LAUNCH_MINISERVICE with ready_to_process will trigger
         logger.info(
             "miniservice_all_collected",
             telegram_id=telegram_id,

@@ -47,7 +47,7 @@ def upgrade() -> None:
             language_code VARCHAR(8) DEFAULT 'ru',
             onboarding_completed BOOLEAN DEFAULT false,
             onboarding_role VARCHAR(64),
-            onboarding_primary_goal VARCHAR(64),
+            onboarding_primary_goal VARCHAR(512),
             is_blocked BOOLEAN DEFAULT false,
             deleted_at TIMESTAMPTZ,
             created_at TIMESTAMPTZ DEFAULT now(),

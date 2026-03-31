@@ -18,7 +18,7 @@ class User(Base):
     language_code: Mapped[str] = mapped_column(String(8), default="ru")
     onboarding_completed: Mapped[bool] = mapped_column(Boolean, default=False)
     onboarding_role: Mapped[str | None] = mapped_column(String(64))
-    onboarding_primary_goal: Mapped[str | None] = mapped_column(String(64))
+    onboarding_primary_goal: Mapped[str | None] = mapped_column(String(512))
     is_blocked: Mapped[bool] = mapped_column(Boolean, default=False)
     deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

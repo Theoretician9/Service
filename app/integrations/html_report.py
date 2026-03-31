@@ -9,7 +9,8 @@ from jinja2 import Environment, FileSystemLoader
 logger = structlog.get_logger()
 
 TEMPLATES_DIR = Path(__file__).parent.parent.parent / "templates" / "reports"
-REPORTS_DIR = Path(__file__).parent.parent.parent / "reports"
+# Write to /app/reports inside container — mounted as volume to host
+REPORTS_DIR = Path("/app/reports")
 
 env = Environment(loader=FileSystemLoader(str(TEMPLATES_DIR)), autoescape=True)
 

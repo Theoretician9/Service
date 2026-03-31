@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дерево целей</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-warn {
+    border-left: 4px solid #f59e0b;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-red {
+    border-left: 4px solid #ef4444;
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.smart-goal {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+}
+.points-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+@media (max-width: 480px) {
+    .points-grid { grid-template-columns: 1fr; }
+}
+.point-card {
+    background: #1f1f23;
+    border-radius: 12px;
+    padding: 16px;
+}
+.point-card .label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+.point-a .label { color: #f59e0b; }
+.point-b .label { color: #22c55e; }
+.deadline-badge {
+    display: inline-block;
+    background: #27272a;
+    color: #e4e4e7;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 12px;
+}
+.motivation-text {
+    font-size: 16px;
+    font-style: italic;
+    color: #fbbf24;
+    line-height: 1.5;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    border-bottom: 1px solid #27272a;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.week-block {
+    margin-bottom: 16px;
+}
+.week-block h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.week-block li::before { background: #22c55e; }
+.metric-list li::before { background: #3b82f6; }
+.risk-list li::before { background: #ef4444; }
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Дерево целей</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+<div class="card card-accent">
+    <h2>📌 SMART-цель</h2>
+    <div class="smart-goal">Запустить сервис доставки и сбора заказов &#39;Чистокросс&#39;, выйти на доход 100 000₽/месяц за 6 месяцев, нанять первых 3 курьеров и получить минимум 50 регулярных клиентов</div>
+</div>
+
+<div class="points-grid">
+    <div class="point-card point-a">
+        <div class="label">📍 Точка А — где сейчас</div>
+        <div>Работаю менеджером с зарплатой 45 000₽/месяц, испытываю неудовлетворённость текущей позицией и отсутствием перспектив роста</div>
+    </div>
+    <div class="point-card point-b">
+        <div class="label">🏁 Точка Б — куда идём</div>
+        <div>Руковожу собственной курьерской службой &#39;Чистокросс&#39; с командой 5-10 сотрудников, получаю стабильный доход 200 000₽/месяц, имею финансовую свободу для покупки автомобиля и регулярных путешествий</div>
+    </div>
+</div>
+
+
+
+
+<div class="card card-warn">
+    <h2>💡 Настоящая мотивация</h2>
+    <div class="motivation-text">Смогу взять машину в кредит и больше путешествовать</div>
+</div>
+
+
+
+<div class="card">
+    <h2>🌳 Три уровня «Почему»</h2>
+    <ul>
+    
+        <li>Машина в кредит — нужна финансовая стабильность и подтверждённый доход минимум 100-150к/месяц для одобрения банком</li>
+    
+        <li>Больше путешествовать — требуется свободный график и дополнительные 50-100к/месяц на поездки</li>
+    
+        <li>Собой недоволен — текущая работа не даёт ни денег, ни свободы, ни самореализации</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>🚧 Ограничения и что с ними делать</h2>
+    <ul class="risk-list">
+    
+        <li>Нет стартового капитала на аренду офиса и зарплаты — начать с модели без офиса: удалённое управление через Telegram/WhatsApp, курьеры работают на своём транспорте за процент (60/40)</li>
+    
+        <li>Нет опыта управления командой — нанять первого курьера на испытательный срок 2 недели, отработать процессы на нём, затем масштабировать</li>
+    
+        <li>Неизвестен спрос на услугу — за первые 2 недели протестировать спрос через бесплатные каналы: Авито, местные чаты ВК/Telegram, сарафан среди знакомых</li>
+    
+        <li>Работаю 5/2, нет времени — первый месяц работать по вечерам и выходным, при достижении 60-70к дохода уволиться и перейти полностью на проект</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-green">
+    <h2>📋 План действий</h2>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 1-2</h3>
+        <ul>
+        
+            <li>Изучить конкурентов в городе: кто предлагает доставку/курьерские услуги, их цены, отзывы. Найти нишу (например, доставка документов для бизнеса, продуктов для пенсионеров)</li>
+        
+            <li>Создать минимальную инфраструктуру: Telegram-канал для заказов, простая Google-форма, номер телефона на Авито</li>
+        
+            <li>Разместить 10 объявлений на Авито, в 5 местных чатах ВК/Telegram с описанием услуги и ценой. Цель: получить первые 3-5 заказов</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 3-4</h3>
+        <ul>
+        
+            <li>Обработать первые заказы самостоятельно (если есть транспорт) или найти 1 курьера на разовые заказы за 50% от стоимости доставки</li>
+        
+            <li>Собрать обратную связь от первых клиентов: что понравилось, что улучшить, готовы ли заказывать регулярно</li>
+        
+            <li>Посчитать юнит-экономику: сколько стоит привлечение 1 клиента, средний чек, маржа с заказа. Цель: понять, сколько заказов нужно для 100к дохода</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 5-8</h3>
+        <ul>
+        
+            <li>Нанять 1-2 курьеров на постоянной основе (оплата за заказ или процент). Прописать регламент работы: время ответа, как принимать заказы, отчётность</li>
+        
+            <li>Запустить таргет ВКонтакте или Авито Продвижение с бюджетом 5-10к₽ на тестирование аудитории. Цель: 20-30 заказов в месяц</li>
+        
+            <li>Настроить учёт: таблица в Google Sheets с заказами, доходами, расходами, зарплатами курьеров</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 9-12</h3>
+        <ul>
+        
+            <li>Масштабировать рекламу: увеличить бюджет до 15-20к₽, добавить новые каналы (листовки в почтовые ящики, договоры с местными магазинами)</li>
+        
+            <li>Нанять ещё 2-3 курьеров при росте заказов до 50-70 в месяц. Внедрить систему мотивации: бонусы за скорость, качество, количество заказов</li>
+        
+            <li>Достичь 100 000₽ дохода: при среднем чеке 500₽ и марже 40% нужно 500 заказов/месяц (17 заказов в день). Оптимизировать процессы для выполнения объёма</li>
+        
+        </ul>
+        
+    </div>
+    
+</div>
+
+
+
+<div class="card">
+    <h2>📊 Метрики успеха</h2>
+    <ul class="metric-list">
+    
+        <li>Первые 5 платных заказов за первые 2 недели</li>
+    
+        <li>50 заказов в месяц к концу 2-го месяца</li>
+    
+        <li>3 нанятых курьера к концу 3-го месяца</li>
+    
+        <li>100 000₽ чистого дохода в месяц к концу 6-го месяца</li>
+    
+        <li>50 регулярных клиентов (заказывают минимум 2 раза в месяц)</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>⚠️ Риски</h2>
+    <ul class="risk-list">
+    
+        <li>Нет спроса в городе — протестировать 3-4 разные ниши за первый месяц (доставка еды, документов, покупок из магазинов), выбрать самую отзывчивую</li>
+    
+        <li>Курьеры работают плохо или уходят — нанимать сразу 2-3 человека на испытательный срок, выбирать лучших, создать базу резервных курьеров</li>
+    
+        <li>Не хватает денег на рекламу — первые 2 месяца работать только на бесплатных каналах, реинвестировать первую прибыль в платную рекламу</li>
+    
+        <li>Не успеваю совмещать с работой — делегировать приём заказов курьерам или нанять удалённого оператора за 10-15к/месяц после 30-го заказа в месяц</li>
+    
+        <li>Конкуренты демпингуют — найти уникальное преимущество: скорость (доставка за 1 час), надёжность (страховка груза), сервис (курьер в форме, SMS-уведомления)</li>
+    
+    </ul>
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+</body>
+</html>

@@ -16,27 +16,27 @@ logger = structlog.get_logger()
 MAX_MESSAGE_LENGTH = 4000
 
 
+def _safe_str(val) -> str:
+    """Extract string from value that might be dict or other type."""
+    if isinstance(val, dict):
+        return val.get("text", str(val))
+    return str(val) if val else ""
+
+
 def _format_goal_tree_text(content: dict, summary: str) -> str:
-    """Format goal_tree artifact — only SMART goal as text, full report via link."""
+    """Format goal_tree artifact — SMART summary + pointer to full report."""
     parts = []
     parts.append("🎯 <b>Дерево целей — готово!</b>\n")
 
-    # Extract smart_goal — handle both string and dict
-    smart_goal = content.get("smart_goal", "")
-    if isinstance(smart_goal, dict):
-        smart_goal = smart_goal.get("text", str(smart_goal))
+    smart_goal = _safe_str(content.get("smart_goal"))
     if smart_goal:
         parts.append(f"📌 <b>SMART-цель:</b>\n{smart_goal}\n")
 
-    point_a = content.get("point_a", "")
-    if isinstance(point_a, dict):
-        point_a = point_a.get("text", str(point_a))
-    point_b = content.get("point_b", "")
-    if isinstance(point_b, dict):
-        point_b = point_b.get("text", str(point_b))
-    deadline = content.get("goal_deadline", "")
-    if isinstance(deadline, dict):
-        deadline = deadline.get("text", str(deadline))
+    point_a = _safe_str(content.get("point_a"))
+    point_b = _safe_str(content.get("point_b"))
+    deadline = _safe_str(content.get("goal_deadline"))
+    motivation = _safe_str(content.get("real_motivation"))
+    metrics = content.get("success_metrics", [])
 
     if point_a:
         parts.append(f"📍 <b>Где сейчас:</b> {point_a}")
@@ -44,6 +44,13 @@ def _format_goal_tree_text(content: dict, summary: str) -> str:
         parts.append(f"🏁 <b>Куда идём:</b> {point_b}")
     if deadline:
         parts.append(f"📅 <b>Срок:</b> {deadline}")
+    if motivation:
+        parts.append(f"💡 <b>Мотивация:</b> {motivation}")
+    if metrics and isinstance(metrics, list):
+        metrics_str = "; ".join(str(m) for m in metrics[:3])
+        parts.append(f"📊 <b>Критерии успеха:</b> {metrics_str}")
+
+    parts.append("\n📄 Полный отчёт с планом действий, рисками и ограничениями — в файле ниже.")
 
     return "\n".join(parts)
 
@@ -147,23 +154,14 @@ async def _send_result(run_id: str) -> None:
         manifest = load_manifest(run.miniservice_id)
         credit_cost = manifest.get("credit_cost", 1)
 
-    # Format the result text
+    # Format the result text (no credits — sent separately)
     text = _format_artifact_text(
         artifact.artifact_type, artifact.content, artifact.summary
     )
 
-    # Append credits info
-    if plan:
-        credits_line = (
-            f"\n💳 Использовано {credit_cost} кр. "
-            f"(остаток: {plan.credits_remaining}/{plan.credits_monthly_limit})"
-        )
-        text += credits_line
-
     # Send via bot
     from app.bot.dispatcher import bot
     from app.integrations.html_report import html_report
-    from app.config import settings as _settings
 
     # Send text result (compact — only SMART goal)
     chunks = _chunk_text(text)
@@ -174,34 +172,38 @@ async def _send_result(run_id: str) -> None:
             parse_mode="HTML",
         )
 
-    # Auto-generate HTML report and send link
+    # Auto-generate HTML report and send as file
     try:
         filename = await html_report.generate(
             artifact.artifact_type, artifact.content, str(run.id)
         )
         if filename:
-            report_url = f"https://service1.vps.webdock.cloud/reports/{filename}"
-            await bot.send_message(
-                chat_id=user.telegram_id,
-                text=f"📄 <a href=\"{report_url}\">Открыть полный отчёт</a>",
-                parse_mode="HTML",
-                disable_web_page_preview=False,
-            )
-            logger.info("html_report_sent", run_id=run_id, url=report_url)
+            from pathlib import Path
+            from aiogram.types import FSInputFile
+            file_path = Path("/app/reports") / filename
+            if file_path.exists():
+                doc = FSInputFile(str(file_path), filename=f"{artifact.title}.html")
+                await bot.send_document(
+                    chat_id=user.telegram_id,
+                    document=doc,
+                    caption="📄 Полный отчёт",
+                )
+                logger.info("html_report_sent", run_id=run_id)
+            else:
+                logger.warning("html_report_file_not_found", path=str(file_path))
         else:
             logger.warning("html_report_generation_failed", run_id=run_id)
     except Exception as report_err:
         logger.error("html_report_error", run_id=run_id, error=str(report_err))
 
-    # Credits info
+    # Credits — separate message at the end
     if plan:
-        credits_line = (
-            f"💳 Использовано {credit_cost} кр. "
-            f"(остаток: {plan.credits_remaining}/{plan.credits_monthly_limit})"
-        )
         await bot.send_message(
             chat_id=user.telegram_id,
-            text=credits_line,
+            text=(
+                f"💳 Использовано {credit_cost} кр. "
+                f"(остаток: {plan.credits_remaining}/{plan.credits_monthly_limit})"
+            ),
         )
 
     logger.info("result_notification_sent", run_id=run_id, telegram_id=user.telegram_id)
