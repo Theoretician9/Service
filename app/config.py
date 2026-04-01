@@ -68,5 +68,12 @@ class Settings(BaseSettings):
     # Mentor
     mentor_max_fallback_attempts: int = 3
 
+    # Goal reality filter thresholds
+    goal_max_ratio_1_month: int = 10
+    goal_max_ratio_3_months: int = 20
+    goal_max_ratio_6_months: int = 50
+    goal_max_ratio_12_months: int = 100
+    goal_max_corrections: int = 3
+
 
 settings = Settings()

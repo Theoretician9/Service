@@ -461,8 +461,19 @@ async def _action_launch_miniservice(
 
     project_id = uuid.UUID(active_project["project_id"])
 
-    # Pre-collected fields from smart extractor / params
-    collected_fields = params.get("collected_fields", {})
+    # Pre-fill fields from multiple sources:
+    # 1. Params from orchestrator (prefilled_fields)
+    # 2. Extracted fields from Redis (smart extractor)
+    # 3. Project profile data mapped to miniservice fields
+    collected_fields = params.get("collected_fields", {}) or params.get("prefilled_fields", {})
+
+    # Merge extracted fields for this miniservice
+    from app.miniservices.session import get_extracted_fields
+    extracted = await get_extracted_fields(telegram_id)
+    ms_extracted = extracted.get(miniservice_id, {})
+    for k, v in ms_extracted.items():
+        if k not in collected_fields:
+            collected_fields[k] = v
 
     # Create MiniserviceRun in DB
     run = MiniserviceRun(

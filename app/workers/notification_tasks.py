@@ -55,6 +55,109 @@ def _format_goal_tree_text(content: dict, summary: str) -> str:
     return "\n".join(parts)
 
 
+def _format_niche_table_text(content: dict, summary: str) -> str:
+    """Format niche_table artifact — compact niche selection summary."""
+    parts = []
+    parts.append("🔍 <b>Выбор ниши — готово!</b>\n")
+
+    recommended_niche = _safe_str(content.get("recommended_niche"))
+    if recommended_niche:
+        parts.append(f"📌 <b>Рекомендованная ниша:</b> {recommended_niche}")
+
+    recommendation = _safe_str(content.get("recommendation"))
+    if recommendation:
+        trimmed = recommendation[:200]
+        if len(recommendation) > 200:
+            trimmed += "…"
+        parts.append(trimmed)
+
+    total_score = _safe_str(content.get("total_score"))
+    if total_score:
+        parts.append(f"\n📊 <b>Оценка:</b> {total_score}/25")
+
+    numbers = content.get("numbers", {})
+    if isinstance(numbers, dict):
+        profit = _safe_str(numbers.get("estimated_profit_per_deal"))
+        deals = _safe_str(numbers.get("deals_per_month"))
+        if profit:
+            parts.append(f"💰 <b>Прибыль с сделки:</b> {profit}")
+        if deals:
+            parts.append(f"📈 <b>Сделок в месяц:</b> {deals}")
+
+    parts.append(
+        "\n📄 Подробная декомпозиция, числовая модель и план на 14 дней — в отчёте ниже."
+    )
+
+    return "\n".join(parts)
+
+
+NEXT_STEP_MAP = {
+    "goal_setting": {
+        "recommended": "niche_selection",
+        "recommended_name": "Выбор ниши",
+        "recommended_cost": 2,
+        "text": (
+            "📍 Следующий логичный шаг — выбор ниши и декомпозиция.\n"
+            "Я проанализирую рынок, подберу подходящие ниши и разложу лучшую по полочкам.\n\n"
+            "Напиши «давай» чтобы перейти к выбору ниши.\n"
+            "Или выбери другой инструмент:\n"
+            "• Поиск поставщиков (2 кр.)\n"
+            "• Скрипты продаж (2 кр.)\n"
+            "• Продающие объявления (2 кр.)\n"
+            "• Поиск клиентов (3 кр., Paid)"
+        ),
+    },
+    "niche_selection": {
+        "recommended": "supplier_search",
+        "recommended_name": "Поиск поставщиков",
+        "recommended_cost": 2,
+        "text": (
+            "📍 Следующий шаг — найти поставщиков для выбранной ниши.\n"
+            "Я поищу реальных поставщиков, сравню условия и подготовлю шаблоны писем.\n\n"
+            "Напиши «давай» чтобы начать поиск поставщиков.\n"
+            "Или выбери другой инструмент:\n"
+            "• Скрипты продаж (2 кр.)\n"
+            "• Продающие объявления (2 кр.)\n"
+            "• Поиск клиентов (3 кр., Paid)"
+        ),
+    },
+    "supplier_search": {
+        "text": (
+            "📍 Что дальше?\n"
+            "• Скрипты продаж — напишу готовые скрипты для твоего продукта (2 кр.)\n"
+            "• Продающие объявления — создам тексты для площадок (2 кр.)\n"
+            "• Поиск клиентов — найду потенциальных покупателей (3 кр., Paid)\n\n"
+            "Напиши что нужно."
+        ),
+    },
+    "sales_scripts": {
+        "text": (
+            "📍 Что дальше?\n"
+            "• Продающие объявления (2 кр.)\n"
+            "• Поиск клиентов (3 кр., Paid)\n\n"
+            "Напиши что нужно."
+        ),
+    },
+    "ad_creation": {
+        "text": (
+            "📍 Что дальше?\n"
+            "• Поиск клиентов — найду потенциальных покупателей (3 кр., Paid)\n"
+            "• Скрипты продаж (2 кр.)\n\n"
+            "Напиши что нужно."
+        ),
+    },
+    "lead_search": {
+        "text": "✅ Все основные инструменты пройдены! Можешь запустить любой повторно или создать новый проект.",
+    },
+}
+
+
+def _get_next_step_suggestion(miniservice_id: str) -> str:
+    """Get suggestion text for next step after miniservice completion."""
+    step = NEXT_STEP_MAP.get(miniservice_id, {})
+    return step.get("text", "Напиши что хочешь сделать дальше.")
+
+
 def _format_artifact_text(artifact_type: str, content, summary: str) -> str:
     """Format artifact content as readable Telegram message."""
     # Handle case where content is stored as string instead of dict
@@ -66,6 +169,9 @@ def _format_artifact_text(artifact_type: str, content, summary: str) -> str:
 
     if artifact_type == "goal_tree":
         return _format_goal_tree_text(content, summary)
+
+    if artifact_type == "niche_table":
+        return _format_niche_table_text(content, summary)
 
     # Generic fallback for other artifact types
     parts = [f"✅ <b>Результат готов!</b>\n", summary]
@@ -159,9 +265,14 @@ async def _send_result(run_id: str) -> None:
         artifact.artifact_type, artifact.content, artifact.summary
     )
 
-    # Send via bot
-    from app.bot.dispatcher import bot
+    # Create a fresh bot instance for worker (don't reuse app's bot — different event loop)
+    from aiogram import Bot
+    from aiogram.client.default import DefaultBotProperties
+    from aiogram.enums import ParseMode
+    from app.config import settings as _s
     from app.integrations.html_report import html_report
+
+    bot = Bot(token=_s.telegram_bot_token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
     # Send text result (compact — only SMART goal)
     chunks = _chunk_text(text)
@@ -196,16 +307,22 @@ async def _send_result(run_id: str) -> None:
     except Exception as report_err:
         logger.error("html_report_error", run_id=run_id, error=str(report_err))
 
-    # Credits — separate message at the end
+    # Credits + next step suggestion
+    credits_text = ""
     if plan:
-        await bot.send_message(
-            chat_id=user.telegram_id,
-            text=(
-                f"💳 Использовано {credit_cost} кр. "
-                f"(остаток: {plan.credits_remaining}/{plan.credits_monthly_limit})"
-            ),
+        credits_text = (
+            f"💳 Использовано {credit_cost} кр. "
+            f"(остаток: {plan.credits_remaining}/{plan.credits_monthly_limit})\n\n"
         )
 
+    # Suggest next logical step based on completed miniservice
+    next_step = _get_next_step_suggestion(run.miniservice_id)
+    await bot.send_message(
+        chat_id=user.telegram_id,
+        text=credits_text + next_step,
+    )
+
+    await bot.session.close()
     logger.info("result_notification_sent", run_id=run_id, telegram_id=user.telegram_id)
 
 
@@ -233,8 +350,12 @@ async def _send_failure(run_id: str) -> None:
         if not user:
             return
 
-    from app.bot.dispatcher import bot
+    from aiogram import Bot
+    from aiogram.client.default import DefaultBotProperties
+    from aiogram.enums import ParseMode
     from app.bot.messages import ERROR_GENERIC
+
+    bot = Bot(token=_settings.telegram_bot_token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
     await bot.send_message(
         chat_id=user.telegram_id,
@@ -242,6 +363,7 @@ async def _send_failure(run_id: str) -> None:
         parse_mode="HTML",
     )
 
+    await bot.session.close()
     logger.info("failure_notification_sent", run_id=run_id, telegram_id=user.telegram_id)
 
 

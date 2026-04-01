@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Выбор ниши и декомпозиция</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-warn {
+    border-left: 4px solid #f59e0b;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-red {
+    border-left: 4px solid #ef4444;
+}
+.card-recommended {
+    border: 2px solid #6366f1;
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.15);
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+/* Context card */
+.smart-goal {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+    margin-bottom: 16px;
+}
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+@media (max-width: 480px) {
+    .profile-grid { grid-template-columns: 1fr; }
+}
+.profile-item {
+    background: #1f1f23;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+}
+.profile-item .label {
+    color: #71717a;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+.profile-item .value {
+    color: #e4e4e7;
+    font-weight: 500;
+}
+
+/* Niche cards grid */
+.niches-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+@media (max-width: 600px) {
+    .niches-grid { grid-template-columns: 1fr; }
+}
+.niche-card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #27272a;
+    display: flex;
+    flex-direction: column;
+}
+.niche-card h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+.niche-desc {
+    color: #a1a1aa;
+    font-size: 13px;
+    margin-bottom: 14px;
+    flex-grow: 1;
+}
+
+/* Score bars */
+.score-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 12px;
+}
+.score-label {
+    color: #71717a;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.score-bar-wrap {
+    flex: 0 0 80px;
+    height: 6px;
+    background: #27272a;
+    border-radius: 3px;
+    margin: 0 8px;
+    overflow: hidden;
+}
+.score-bar {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+.score-value {
+    flex: 0 0 20px;
+    text-align: right;
+    font-weight: 600;
+}
+.score-green { background: #22c55e; color: #22c55e; }
+.score-amber { background: #f59e0b; color: #f59e0b; }
+.score-red { background: #ef4444; color: #ef4444; }
+
+/* Total score */
+.total-score {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #27272a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.total-score .label {
+    font-size: 12px;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+.total-score .value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+}
+
+/* Recommendation card */
+.rec-badge {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.rec-text {
+    font-size: 15px;
+    color: #e4e4e7;
+    line-height: 1.6;
+}
+.why-not-item {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    border-bottom: 1px solid #27272a;
+    font-size: 14px;
+    color: #a1a1aa;
+}
+.why-not-item:last-child { border-bottom: none; }
+.why-not-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #71717a;
+}
+
+/* Lists */
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    border-bottom: 1px solid #27272a;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.risk-list li::before { background: #ef4444; }
+.channel-list li::before { background: #3b82f6; }
+.test-list li::before { background: #22c55e; }
+
+/* Decomposition sections */
+.decomp-section {
+    margin-bottom: 16px;
+}
+.decomp-section:last-child { margin-bottom: 0; }
+.decomp-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+.decomp-value {
+    font-size: 15px;
+    color: #e4e4e7;
+}
+
+/* Numbers card */
+.numbers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+@media (max-width: 480px) {
+    .numbers-grid { grid-template-columns: 1fr; }
+}
+.number-item {
+    background: #1f1f23;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+}
+.number-item .num {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+}
+.number-item .num-label {
+    font-size: 12px;
+    color: #71717a;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Action plan */
+.plan-block {
+    margin-bottom: 16px;
+}
+.plan-block:last-child { margin-bottom: 0; }
+.plan-block h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.plan-block li::before { background: #22c55e; }
+
+/* Red flags */
+.red-flags li::before { background: #ef4444; }
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🔍 Выбор ниши и декомпозиция</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+
+<div class="card card-accent">
+    <h2>📌 Опора на цель</h2>
+    
+    
+</div>
+
+
+
+<div class="niches-grid">
+    
+    <div class="niche-card card-recommended">
+        <h3>Консультирование строительных компаний по оптимизации закупок</h3>
+        
+        <div class="niche-desc">Аудит текущих закупок стройматериалов, поиск альтернативных поставщиков, внедрение системы контроля расходов. Работа с малым и средним бизнесом.</div>
+        
+
+        
+        
+        
+            
+                
+                
+                    
+                
+                <div class="score-row">
+                    <span class="score-label">Скорость к деньгам</span>
+                    <div class="score-bar-wrap">
+                        <div class="score-bar score-green" style="width: 80%"></div>
+                    </div>
+                    <span class="score-value score-green">4</span>
+                </div>
+            
+        
+            
+                
+                
+                    
+                
+                <div class="score-row">
+                    <span class="score-label">Прибыль со сделки</span>
+                    <div class="score-bar-wrap">
+                        <div class="score-bar score-green" style="width: 80%"></div>
+                    </div>
+                    <span class="score-value score-green">4</span>
+                </div>
+            
+        
+            
+                
+                
+                    
+                
+                <div class="score-row">
+                    <span class="score-label">Порог входа</span>
+                    <div class="score-bar-wrap">
+                        <div class="score-bar score-red" style="width: 40%"></div>
+                    </div>
+                    <span class="score-value score-red">2</span>
+                </div>
+            
+        
+            
+                
+                
+                    
+                
+                <div class="score-row">
+                    <span class="score-label">Ресурс-фит</span>
+                    <div class="score-bar-wrap">
+                        <div class="score-bar score-green" style="width: 100%"></div>
+                    </div>
+                    <span class="score-value score-green">5</span>
+                </div>
+            
+        
+            
+                
+                
+                    
+                
+                <div class="score-row">
+                    <span class="score-label">Реализуемость</span>
+                    <div class="score-bar-wrap">
+                        <div class="score-bar score-green" style="width: 80%"></div>
+                    </div>
+                    <span class="score-value score-green">4</span>
+                </div>
+            
+        
+
+        
+        <div class="total-score">
+            <span class="label">Итого</span>
+            <span class="value">21</span>
+        </div>
+        
+    </div>
+    
+    <div class="niche-card">
+        <h3>Перепродажа стройматериалов со скидкой поставщиков</h3>
+        
+        <div class="niche-desc">Посредническая модель: получение скидок у поставщиков за объём, перепродажа строительным компаниям с маржой 5-10%. Без склада, работа под заказ.</div>
+        
+
+        
+        
+        
+            
+                
+                
+                    
+                
+                <div class="score-row">
+                    <span class="score-label">Скорость к деньгам</span>
+                    <div class="score-bar-wrap">
+                        <div class="score-bar score-amber" style="width: 60%"></div>
+                    </div>
+                    <span class="score-value score-amber">3</span>
+                </div>
+            
+        
+            
+                
+                
+                    
+                
+                <div class="score-row">
+                    <span class="score-label">Прибыль со сделки</span>
+                    <div class="score-bar-wrap">
+                        <div class="score-bar score-amber" style="width: 60%"></div>
+                    </div>
+                    <span class="score-value score-amber">3</span>
+                </div>
+            
+        
+            
+                
+                
+                    
+                
+                <div class="score-row">
+                    <span class="score-label">Порог входа</span>
+                    <div class="score-bar-wrap">
+                        <div class="score-bar score-amber" style="width: 60%"></div>
+                    </div>
+                    <span class="score-value score-amber">3</span>
+                </div>
+            
+        
+            
+                
+                
+                    
+                
+                <div class="score-row">
+                    <span class="score-label">Ресурс-фит</span>
+                    <div class="score-bar-wrap">
+                        <div class="score-bar score-green" style="width: 80%"></div>
+                    </div>
+                    <span class="score-value score-green">4</span>
+                </div>
+            
+        
+            
+                
+                
+                    
+                
+                <div class="score-row">
+                    <span class="score-label">Реализуемость</span>
+                    <div class="score-bar-wrap">
+                        <div class="score-bar score-amber" style="width: 60%"></div>
+                    </div>
+                    <span class="score-value score-amber">3</span>
+                </div>
+            
+        
+
+        
+        <div class="total-score">
+            <span class="label">Итого</span>
+            <span class="value">16</span>
+        </div>
+        
+    </div>
+    
+    <div class="niche-card">
+        <h3>Обучение снабженцев строительных компаний</h3>
+        
+        <div class="niche-desc">Онлайн-курс или корпоративные тренинги для снабженцев: как снижать затраты, работать с поставщиками, автоматизировать закупки. Продажа компаниям и частным специалистам.</div>
+        
+
+        
+        
+        
+            
+                
+                
+                    
+                
+                <div class="score-row">
+                    <span class="score-label">Скорость к деньгам</span>
+                    <div class="score-bar-wrap">
+                        <div class="score-bar score-red" style="width: 40%"></div>
+                    </div>
+                    <span class="score-value score-red">2</span>
+                </div>
+            
+        
+            
+                
+                
+                    
+                
+                <div class="score-row">
+                    <span class="score-label">Прибыль со сделки</span>
+                    <div class="score-bar-wrap">
+                        <div class="score-bar score-green" style="width: 80%"></div>
+                    </div>
+                    <span class="score-value score-green">4</span>
+                </div>
+            
+        
+            
+                
+                
+                    
+                
+                <div class="score-row">
+                    <span class="score-label">Порог входа</span>
+                    <div class="score-bar-wrap">
+                        <div class="score-bar score-green" style="width: 80%"></div>
+                    </div>
+                    <span class="score-value score-green">4</span>
+                </div>
+            
+        
+            
+                
+                
+                    
+                
+                <div class="score-row">
+                    <span class="score-label">Ресурс-фит</span>
+                    <div class="score-bar-wrap">
+                        <div class="score-bar score-amber" style="width: 60%"></div>
+                    </div>
+                    <span class="score-value score-amber">3</span>
+                </div>
+            
+        
+            
+                
+                
+                    
+                
+                <div class="score-row">
+                    <span class="score-label">Реализуемость</span>
+                    <div class="score-bar-wrap">
+                        <div class="score-bar score-red" style="width: 40%"></div>
+                    </div>
+                    <span class="score-value score-red">2</span>
+                </div>
+            
+        
+
+        
+        <div class="total-score">
+            <span class="label">Итого</span>
+            <span class="value">14</span>
+        </div>
+        
+    </div>
+    
+</div>
+
+
+
+
+<div class="card card-recommended">
+    <div class="rec-badge">Рекомендация</div>
+    
+    <h3>Консультирование строительных компаний по оптимизации закупок</h3>
+    
+    
+    <div class="rec-text">Консультирование строительных компаний по оптимизации закупок — лучший вариант для старта. Причины: (1) Самый быстрый путь к деньгам — первая сделка возможна через 2-4 недели холодных звонков. (2) Высокая маржа — 30-50 тыс с аудита, 15 тыс/мес с абонентки. (3) Минимальные вложения — нужен только телефон и простой лендинг. (4) Твой опыт в строительстве даёт экспертность и доверие. (5) Масштабируемость — после 3-5 кейсов можно растить через рефералы и партнёрства.</div>
+    
+    
+    <div style="margin-top: 16px;">
+        <div class="decomp-label">Почему не другие</div>
+        
+        <div class="why-not-item">Перепродажа стройматериалов: низкая маржа (5-10%), нужен оборотный капитал 50-100 тыс, высокая конкуренция с дилерами, риск неоплаты. Чтобы заработать 50 тыс, нужно крутить 500-700 тыс оборота — это стресс и кассовые разрывы.</div>
+        
+        <div class="why-not-item">Обучение снабженцев: долгая подготовка продукта (2-3 месяца), медленные продажи (цикл корпоративной сделки 2-4 месяца), низкий платёжеспособный спрос у снабженцев. Первые деньги — не раньше 3-4 месяца.</div>
+        
+    </div>
+    
+</div>
+
+
+
+
+
+    
+        
+            
+        
+    
+        
+    
+        
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="card card-red">
+    <h2>🚩 Красные флаги</h2>
+
+    
+        <ul class="red-flags">
+        
+            <li>Конверсия звонков в встречу &lt; 3% после 100 звонков — плохой скрипт или не та аудитория</li>
+        
+            <li>Конверсия встречи в сделку &lt; 10% после 20 встреч — слабый оффер или неправильное позиционирование</li>
+        
+            <li>Нет первой платной сделки через 2 месяца активных продаж — менять нишу или продукт</li>
+        
+            <li>Клиенты не продлевают абонентку после 1-2 месяцев — нет реальной ценности, пересобирать продукт</li>
+        
+            <li>Средний чек падает ниже 20 тыс — демпинг или работа не с теми клиентами</li>
+        
+        </ul>
+    
+</div>
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+</body>
+</html>

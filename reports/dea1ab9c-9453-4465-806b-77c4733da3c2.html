@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дерево целей</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-warn {
+    border-left: 4px solid #f59e0b;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-red {
+    border-left: 4px solid #ef4444;
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.smart-goal {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+}
+.points-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+@media (max-width: 480px) {
+    .points-grid { grid-template-columns: 1fr; }
+}
+.point-card {
+    background: #1f1f23;
+    border-radius: 12px;
+    padding: 16px;
+}
+.point-card .label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+.point-a .label { color: #f59e0b; }
+.point-b .label { color: #22c55e; }
+.deadline-badge {
+    display: inline-block;
+    background: #27272a;
+    color: #e4e4e7;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 12px;
+}
+.motivation-text {
+    font-size: 16px;
+    font-style: italic;
+    color: #fbbf24;
+    line-height: 1.5;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    border-bottom: 1px solid #27272a;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.week-block {
+    margin-bottom: 16px;
+}
+.week-block h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.week-block li::before { background: #22c55e; }
+.metric-list li::before { background: #3b82f6; }
+.risk-list li::before { background: #ef4444; }
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Дерево целей</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+<div class="card card-accent">
+    <h2>📌 SMART-цель</h2>
+    <div class="smart-goal">Заработать 150 000₽ в месяц на разработке Telegram и VK ботов, выполняя 2-3 проекта по 50-70 тысяч рублей ежемесячно к январю 2026 года</div>
+</div>
+
+<div class="points-grid">
+    <div class="point-card point-a">
+        <div class="label">📍 Точка А — где сейчас</div>
+        <div>Владелец сезонного бизнеса по оптовой торговле саженцами с чистым доходом 1-1,5 млн рублей за сезон. В межсезонье (лето и зима) полностью свободен. Имеет опыт разработки ботов, но не монетизирует этот навык</div>
+    </div>
+    <div class="point-card point-b">
+        <div class="label">🏁 Точка Б — куда идём</div>
+        <div>Разработчик ботов со стабильным ежемесячным доходом 150-200 тысяч рублей от 2-3 проектов в межсезонье, сохраняя основной бизнес по саженцам</div>
+    </div>
+</div>
+
+
+<div style="text-align: center; padding: 8px 0;">
+    <span class="deadline-badge">📅 Срок: январь-февраль 2026 года (8-9 месяцев)</span>
+</div>
+
+
+
+<div class="card card-warn">
+    <h2>💡 Настоящая мотивация</h2>
+    <div class="motivation-text">Сезонный заработок быстро тратится. Нужны деньги для базовых расходов: продукты, коммуналка, одежда. Плохо себя чувствую без работы, теряю уважение к себе</div>
+</div>
+
+
+
+<div class="card">
+    <h2>🌳 Три уровня «Почему»</h2>
+    <ul>
+    
+        <li>Сезонный доход нестабилен и быстро расходуется на текущие нужды</li>
+    
+        <li>Отсутствие работы в межсезонье негативно влияет на самооценку и психологическое состояние</li>
+    
+        <li>Базовые расходы требуют постоянного денежного потока, а не разовых поступлений</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>🚧 Ограничения и что с ними делать</h2>
+    <ul class="risk-list">
+    
+        <li>Ограниченное время (только лето и зима) — начать строить портфолио и клиентскую базу уже сейчас через фриланс-платформы, работая по 2-3 часа в день</li>
+    
+        <li>Нет готового портфолио — создать 3-4 демо-бота с открытым кодом на GitHub за первый месяц</li>
+    
+        <li>Нет клиентов — запустить таргетированную рекламу на малый бизнес в своём регионе с бюджетом 10-15 тысяч рублей</li>
+    
+        <li>Неизвестна рыночная цена — провести анализ 20-30 объявлений на FL.ru, Kwork, Freelance.ru за первую неделю</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-green">
+    <h2>📋 План действий</h2>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 1-2 (май 2025)</h3>
+        <ul>
+        
+            <li>Изучить 30 объявлений на FL.ru, Kwork, Freelance.ru: зафиксировать цены (от-до), типичные задачи, сроки выполнения</li>
+        
+            <li>Создать аккаунты на 3 фриланс-платформах, заполнить профиль с описанием опыта в ботах</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 3-6 (май-июнь 2025)</h3>
+        <ul>
+        
+            <li>Разработать 3 демо-бота: бот-калькулятор, бот для приёма заказов, бот-опросник. Выложить на GitHub с описанием</li>
+        
+            <li>Взять 1-2 заказа на Kwork по цене 5-10 тысяч рублей для получения первых отзывов</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 7-10 (июль 2025)</h3>
+        <ul>
+        
+            <li>Запустить таргет ВКонтакте на малый бизнес в радиусе 100 км: кафе, магазины, услуги. Бюджет 500₽/день</li>
+        
+            <li>Выполнить 2-3 заказа с фриланс-платформ, собрать кейсы с цифрами результата клиента</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 11-16 (август-сентябрь 2025)</h3>
+        <ul>
+        
+            <li>Поднять цену до 30-40 тысяч за проект, добавить в портфолио 5-6 выполненных кейсов</li>
+        
+            <li>Настроить автоворонку: лендинг + чат-бот для сбора заявок, тестировать 2 недели</li>
+        
+        </ul>
+        
+    </div>
+    
+</div>
+
+
+
+<div class="card">
+    <h2>📊 Метрики успеха</h2>
+    <ul class="metric-list">
+    
+        <li>2-3 проекта по 50-70 тысяч рублей каждый месяц с января 2026 года</li>
+    
+        <li>Портфолио из 8-10 выполненных проектов к декабрю 2025 года</li>
+    
+        <li>15-20 заявок в месяц через таргет и фриланс-платформы к ноябрю 2025 года</li>
+    
+        <li>Конверсия заявка → оплаченный проект не менее 20% к декабрю 2025 года</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>⚠️ Риски</h2>
+    <ul class="risk-list">
+    
+        <li>Низкая конверсия заявок в первые месяцы — тестировать 3-4 варианта оффера, отслеживать на каком этапе отваливаются клиенты</li>
+    
+        <li>Демпинг на фрилансе (конкуренты работают за 3-5 тысяч) — продавать не бота, а решение бизнес-задачи с расчётом ROI для клиента</li>
+    
+        <li>Нехватка времени в сезон саженцев — нанять помощника на рутинные задачи в бизнесе за 30-40 тысяч/месяц, освободить 10-15 часов в неделю</li>
+    
+        <li>Клиенты не понимают ценность ботов — создать калькулятор экономии для клиента (сколько сэкономит на операторе/менеджере за год)</li>
+    
+    </ul>
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+</body>
+</html>

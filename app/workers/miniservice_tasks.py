@@ -106,13 +106,32 @@ async def _execute_miniservice(run_id: str) -> None:
                         "budget_range": project.budget_range,
                     }
 
+            # Get latest collected_fields from Redis (most up-to-date)
+            from app.miniservices.session import get_dialog
+            # Find user's telegram_id to query Redis
+            user_stmt = select(User).where(User.id == run.user_id)
+            user_result = await session.execute(user_stmt)
+            user_obj = user_result.scalar_one_or_none()
+
+            collected = run.collected_fields or {}
+            if user_obj:
+                dialog = await get_dialog(user_obj.telegram_id)
+                if dialog and dialog.get("collected_fields"):
+                    # Merge: Redis fields take priority (most recent)
+                    redis_fields = dialog["collected_fields"]
+                    collected = {**collected, **redis_fields}
+                    # Also update DB for consistency
+                    if redis_fields != run.collected_fields:
+                        run.collected_fields = collected
+                        await session.commit()
+
             # Build context
             ctx = MiniserviceContext(
                 run_id=run_uuid,
                 user_id=run.user_id,
                 project_id=run.project_id,
                 miniservice_id=miniservice_id,
-                collected_fields=run.collected_fields or {},
+                collected_fields=collected,
                 project_profile=project_profile,
             )
 
@@ -168,6 +187,11 @@ async def _execute_miniservice(run_id: str) -> None:
                 tokens_used=ms_result.llm_tokens_used,
             )
 
+            # Clear dialog from Redis after completion
+            if user_obj:
+                from app.miniservices.session import clear_dialog
+                await clear_dialog(user_obj.telegram_id)
+
             # Send result notification
             from app.workers.notification_tasks import send_result_notification
             send_result_notification.delay(run_id)
@@ -198,7 +222,9 @@ async def _execute_miniservice(run_id: str) -> None:
             # Re-raise for Celery retry logic
             raise
 
-    await _engine.dispose()
+    # Don't dispose engine here — asyncio.run() closes the loop and
+    # disposing within it can cause "Event loop is closed" on next task.
+    # Engine will be garbage collected.
 
 
 def _launch_next_in_chain(dep_chain: list, completed_run: MiniserviceRun) -> None:

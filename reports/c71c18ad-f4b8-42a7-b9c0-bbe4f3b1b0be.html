@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дерево целей</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-warn {
+    border-left: 4px solid #f59e0b;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-red {
+    border-left: 4px solid #ef4444;
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.smart-goal {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+}
+.points-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+@media (max-width: 480px) {
+    .points-grid { grid-template-columns: 1fr; }
+}
+.point-card {
+    background: #1f1f23;
+    border-radius: 12px;
+    padding: 16px;
+}
+.point-card .label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+.point-a .label { color: #f59e0b; }
+.point-b .label { color: #22c55e; }
+.deadline-badge {
+    display: inline-block;
+    background: #27272a;
+    color: #e4e4e7;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 12px;
+}
+.motivation-text {
+    font-size: 16px;
+    font-style: italic;
+    color: #fbbf24;
+    line-height: 1.5;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    border-bottom: 1px solid #27272a;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.week-block {
+    margin-bottom: 16px;
+}
+.week-block h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.week-block li::before { background: #22c55e; }
+.metric-list li::before { background: #3b82f6; }
+.risk-list li::before { background: #ef4444; }
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Дерево целей</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+<div class="card card-accent">
+    <h2>📌 SMART-цель</h2>
+    <div class="smart-goal">Заработать дополнительно 50 000₽ в месяц к текущей зарплате (итого 150 000₽) за 6 месяцев через консультирование строительных компаний по оптимизации закупок или перепродажу стройматериалов со скидкой поставщиков</div>
+</div>
+
+<div class="points-grid">
+    <div class="point-card point-a">
+        <div class="label">📍 Точка А — где сейчас</div>
+        <div>Опытный менеджер по закупкам с 16-летним стажем в строительной отрасли, зарплата 100 000₽/мес, кредитная нагрузка 25 000₽/мес, семья из 4 человек, ощущение карьерного потолка в найме</div>
+    </div>
+    <div class="point-card point-b">
+        <div class="label">🏁 Точка Б — куда идём</div>
+        <div>Совокупный доход 150 000₽/мес (зарплата + собственный бизнес), финансовая стабильность семьи, доказательство себе способности зарабатывать вне найма, перспектива полного перехода на своё дело через 12-18 месяцев</div>
+    </div>
+</div>
+
+
+<div style="text-align: center; padding: 8px 0;">
+    <span class="deadline-badge">📅 Срок: 6 месяцев</span>
+</div>
+
+
+
+<div class="card card-warn">
+    <h2>💡 Настоящая мотивация</h2>
+    <div class="motivation-text">Устал чувствовать что время уходит. 38 лет, дети растут, сижу на одной зарплате. Хочу чтобы семья жила лучше, не считать каждую копейку. Хочу доказать себе что могу не только по найму</div>
+</div>
+
+
+
+<div class="card">
+    <h2>🌳 Три уровня «Почему»</h2>
+    <ul>
+    
+        <li>Обеспечить семье лучший уровень жизни без постоянного контроля расходов</li>
+    
+        <li>Реализовать накопленный 16-летний опыт в строительной отрасли для собственного заработка</li>
+    
+        <li>Доказать себе способность создавать ценность и зарабатывать вне системы найма до 40 лет</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>🚧 Ограничения и что с ними делать</h2>
+    <ul class="risk-list">
+    
+        <li>Кредит 25 000₽/мес + семья — нельзя рисковать основным доходом → Бизнес строго параллельно с работой первые 6 месяцев, без вложений свыше 20 000₽</li>
+    
+        <li>Ограниченное время после работы (2-3 часа в день) → Бизнес на базе существующих контактов и экспертизы, без необходимости обучения с нуля</li>
+    
+        <li>Нет стартового капитала для закупок → Модель посредничества или консалтинга без складских запасов (комиссия 5-10% с оборота или почасовая оплата 3-5 000₽)</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-green">
+    <h2>📋 План действий</h2>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 1-2</h3>
+        <ul>
+        
+            <li>Составить список из 15-20 поставщиков стройматериалов, с которыми есть личные контакты, узнать условия партнёрских программ (комиссия за приведённых клиентов)</li>
+        
+            <li>Создать простое коммерческое предложение: «Оптимизация закупок для малых строительных компаний — экономия 10-15% на материалах». Разослать 10 знакомым прорабам/директорам</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 3-4</h3>
+        <ul>
+        
+            <li>Провести 3-5 встреч/звонков с потенциальными клиентами, предложить бесплатный аудит текущих закупок одной компании (кейс для портфолио)</li>
+        
+            <li>Зарегистрировать ИП на УСН 6% (доходы), открыть расчётный счёт — 3 000₽ на всё</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 5-8</h3>
+        <ul>
+        
+            <li>Закрыть первую сделку: консультация по закупкам (5 000₽ разово) или комиссия с поставки материалов (7-10% от суммы сделки 100-200 000₽ = 7-20 000₽)</li>
+        
+            <li>Запустить сарафанное радио: попросить первого клиента дать контакты 2-3 знакомых строителей, предложить бонус за рекомендацию</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 9-12</h3>
+        <ul>
+        
+            <li>Масштабировать до 3-4 активных клиентов в месяц (2-3 консультации по 5 000₽ + 1-2 комиссии по 10-15 000₽ = 25-35 000₽/мес)</li>
+        
+            <li>Автоматизировать рутину: шаблоны договоров, чек-листы аудита закупок, CRM в Google Таблицах для учёта клиентов и сделок</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 13-16</h3>
+        <ul>
+        
+            <li>Выйти на целевой доход 50 000₽/мес: 5-6 клиентов на консалтинге или 3-4 крупные комиссионные сделки</li>
+        
+            <li>Оценить возможность найма помощника (студент-стажёр за 15 000₽/мес) для обработки рутинных запросов, если поток клиентов превысит 7-8 в месяц</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 17-24</h3>
+        <ul>
+        
+            <li>Стабилизировать доход 50-70 000₽/мес, создать финансовую подушку 100 000₽ из прибыли бизнеса</li>
+        
+            <li>Принять решение: продолжать параллельно с работой или готовиться к переходу на полную занятость (при стабильном доходе 100 000₽/мес от бизнеса 3 месяца подряд)</li>
+        
+        </ul>
+        
+    </div>
+    
+</div>
+
+
+
+<div class="card">
+    <h2>📊 Метрики успеха</h2>
+    <ul class="metric-list">
+    
+        <li>Первая оплаченная сделка (консультация или комиссия) — к концу 2-го месяца</li>
+    
+        <li>Выручка 25 000₽/мес — к концу 3-го месяца</li>
+    
+        <li>Выручка 50 000₽/мес — к концу 6-го месяца</li>
+    
+        <li>Минимум 3 постоянных клиента (повторные сделки каждый месяц) — к концу 6-го месяца</li>
+    
+        <li>Чистая прибыль (после налогов и расходов) 40 000₽/мес — к концу 6-го месяца</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>⚠️ Риски</h2>
+    <ul class="risk-list">
+    
+        <li>Конфликт интересов с текущим работодателем (переманивание поставщиков) → Работать только с компаниями вне сегмента текущего работодателя, не использовать корпоративные контакты</li>
+    
+        <li>Нехватка времени на развитие бизнеса (работа + семья) → Выделить жёсткие 10 часов в неделю (2 часа в будни вечером, 4 часа в выходные), договориться с женой о поддержке</li>
+    
+        <li>Первые клиенты не платят или срывают сроки → Предоплата 50% за консультации, работа только по договору, комиссия — после подтверждения оплаты поставщику</li>
+    
+        <li>Доход нестабилен первые 3-4 месяца (0-15 000₽) → Не увольняться с работы до стабильных 100 000₽/мес от бизнеса 3 месяца подряд, кредит платить из зарплаты</li>
+    
+    </ul>
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+</body>
+</html>

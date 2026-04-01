@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дерево целей</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-warn {
+    border-left: 4px solid #f59e0b;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-red {
+    border-left: 4px solid #ef4444;
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.smart-goal {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+}
+.points-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+@media (max-width: 480px) {
+    .points-grid { grid-template-columns: 1fr; }
+}
+.point-card {
+    background: #1f1f23;
+    border-radius: 12px;
+    padding: 16px;
+}
+.point-card .label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+.point-a .label { color: #f59e0b; }
+.point-b .label { color: #22c55e; }
+.deadline-badge {
+    display: inline-block;
+    background: #27272a;
+    color: #e4e4e7;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 12px;
+}
+.motivation-text {
+    font-size: 16px;
+    font-style: italic;
+    color: #fbbf24;
+    line-height: 1.5;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    border-bottom: 1px solid #27272a;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.week-block {
+    margin-bottom: 16px;
+}
+.week-block h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.week-block li::before { background: #22c55e; }
+.metric-list li::before { background: #3b82f6; }
+.risk-list li::before { background: #ef4444; }
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Дерево целей</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+<div class="card card-accent">
+    <h2>📌 SMART-цель</h2>
+    <div class="smart-goal">Увеличить доход с 100 000₽ до 300 000₽ в месяц за 12 месяцев, проводя 15 онлайн-консультаций в неделю (3 в день × 5 дней) в качестве семейного психолога</div>
+</div>
+
+<div class="points-grid">
+    <div class="point-card point-a">
+        <div class="label">📍 Точка А — где сейчас</div>
+        <div>Дипломированный психолог на самозанятости с ежемесячным доходом 100 000₽, работающая с клиентами в текущем формате</div>
+    </div>
+    <div class="point-card point-b">
+        <div class="label">🏁 Точка Б — куда идём</div>
+        <div>Семейный психолог с устоявшейся онлайн-практикой: 15 консультаций еженедельно, стабильный доход 300 000₽ в месяц, финансовая возможность путешествовать дважды в год</div>
+    </div>
+</div>
+
+
+<div style="text-align: center; padding: 8px 0;">
+    <span class="deadline-badge">📅 Срок: 12 месяцев</span>
+</div>
+
+
+
+<div class="card card-warn">
+    <h2>💡 Настоящая мотивация</h2>
+    <div class="motivation-text">Повышу уровень жизни, позволю себе полноценно путешествовать дважды в год</div>
+</div>
+
+
+
+<div class="card">
+    <h2>🌳 Три уровня «Почему»</h2>
+    <ul>
+    
+        <li>Финансовая свобода для путешествий дважды в год</li>
+    
+        <li>Повышение уровня жизни через увеличение дохода в 3 раза</li>
+    
+        <li>Возможность работать в комфортном онлайн-формате без географической привязки</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>🚧 Ограничения и что с ними делать</h2>
+    <ul class="risk-list">
+    
+        <li>Нехватка клиентов для 15 консультаций в неделю — запустить таргетированную рекламу ВКонтакте/Telegram на семейные пары, создать бесплатный вебинар-воронку</li>
+    
+        <li>Неизвестность на рынке онлайн-психологии — вести Telegram-канал с кейсами, выступать экспертом в подкастах о семейных отношениях</li>
+    
+        <li>Низкая конверсия в платные консультации — разработать пакеты из 5/10 сессий со скидкой, внедрить бесплатную 20-минутную диагностическую встречу</li>
+    
+        <li>Выгорание от 15 консультаций в неделю — автоматизировать запись через Yclients/Timely, делегировать администрирование, планировать 2 выходных подряд</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-green">
+    <h2>📋 План действий</h2>
+    
+    <div class="week-block">
+        
+        <h3>Месяц 1-3</h3>
+        <ul>
+        
+            <li>Повысить средний чек: пересчитать стоимость консультации (цель 300 000₽ ÷ 60 консультаций = 5 000₽ за сессию), создать пакеты 5 сессий (23 000₽) и 10 сессий (42 000₽)</li>
+        
+            <li>Запустить Telegram-канал: 3 поста в неделю с разборами семейных кейсов (анонимно), собрать первые 200 подписчиков через перекрёстные публикации в тематических сообществах</li>
+        
+            <li>Настроить таргет ВКонтакте на аудиторию 28-45 лет, в браке, интересы: психология, семья, дети. Бюджет 15 000₽/месяц, цель — 10 заявок на бесплатную диагностику</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Месяц 4-6</h3>
+        <ul>
+        
+            <li>Провести бесплатный вебинар «5 признаков кризиса в семье и как его преодолеть» для базы из Telegram (цель: 50 участников, конверсия 20% в платные консультации = 10 клиентов)</li>
+        
+            <li>Выйти гостем в 2 подкаста о семейных отношениях (аудитория 5 000+), дать ссылку на бесплатную диагностическую сессию</li>
+        
+            <li>Внедрить CRM (Битрикс24 бесплатный тариф) для учёта лидов и автоматических напоминаний клиентам</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Месяц 7-9</h3>
+        <ul>
+        
+            <li>Масштабировать рекламу: увеличить бюджет до 30 000₽/месяц, добавить Яндекс.Директ по запросам «семейный психолог онлайн», «консультация для пар»</li>
+        
+            <li>Запустить реферальную программу: клиент приводит пару — получает 1 бесплатную сессию (цель: 5 рефералов за квартал)</li>
+        
+            <li>Создать базу из 10 видео-отзывов клиентов (с согласия) для сайта и соцсетей</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Месяц 10-12</h3>
+        <ul>
+        
+            <li>Достичь загрузки 12-15 консультаций в неделю через накопленные каналы (реклама + канал + подкасты + рефералы)</li>
+        
+            <li>Нанять ассистента на 20 часов/месяц (15 000₽) для ведения соцсетей и записи клиентов через Yclients</li>
+        
+            <li>Провести вторую волну вебинаров для прогрева холодной аудитории, зафиксировать доход 280 000-300 000₽/месяц</li>
+        
+        </ul>
+        
+    </div>
+    
+</div>
+
+
+
+<div class="card">
+    <h2>📊 Метрики успеха</h2>
+    <ul class="metric-list">
+    
+        <li>Количество консультаций: рост с текущего уровня до 60 в месяц (15/неделю × 4 недели)</li>
+    
+        <li>Средний чек консультации: 5 000₽ (или пакеты по 4 600₽ за сессию при покупке 5 штук)</li>
+    
+        <li>Ежемесячная выручка: 300 000₽ (60 консультаций × 5 000₽)</li>
+    
+        <li>Конверсия из бесплатной диагностики в платную консультацию: минимум 40%</li>
+    
+        <li>Стоимость привлечения клиента (CAC): не более 3 000₽ (окупается первой консультацией)</li>
+    
+        <li>Количество подписчиков Telegram-канала: 1 000 к концу 12 месяцев</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>⚠️ Риски</h2>
+    <ul class="risk-list">
+    
+        <li>Низкая конверсия рекламы — тестировать 3-5 креативов одновременно, отключать неэффективные через 7 дней, фокус на оффере бесплатной диагностики</li>
+    
+        <li>Сезонность спроса (летом меньше запросов) — создать «летний пакет» со скидкой 15%, продвигать тему «отпуск как проверка отношений»</li>
+    
+        <li>Выгорание от потока клиентов — зарезервировать 1 день в неделю без консультаций для супервизии и личной терапии, ввести правило максимум 3 сессии в день</li>
+    
+        <li>Неплатежи клиентов — 100% предоплата за консультацию минимум за 24 часа, автоматическое списание через Stripe/ЮKassa для пакетов</li>
+    
+        <li>Конкуренция с психологами на маркетплейсах (Ясно, YouTalk) — позиционирование как узкий специалист по семейной терапии, акцент на кейсах и результатах, а не на низкой цене</li>
+    
+    </ul>
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+</body>
+</html>

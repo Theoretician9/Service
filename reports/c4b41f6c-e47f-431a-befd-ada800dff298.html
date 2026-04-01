@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дерево целей</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-warn {
+    border-left: 4px solid #f59e0b;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-red {
+    border-left: 4px solid #ef4444;
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.smart-goal {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+}
+.points-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+@media (max-width: 480px) {
+    .points-grid { grid-template-columns: 1fr; }
+}
+.point-card {
+    background: #1f1f23;
+    border-radius: 12px;
+    padding: 16px;
+}
+.point-card .label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+.point-a .label { color: #f59e0b; }
+.point-b .label { color: #22c55e; }
+.deadline-badge {
+    display: inline-block;
+    background: #27272a;
+    color: #e4e4e7;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 12px;
+}
+.motivation-text {
+    font-size: 16px;
+    font-style: italic;
+    color: #fbbf24;
+    line-height: 1.5;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    border-bottom: 1px solid #27272a;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.week-block {
+    margin-bottom: 16px;
+}
+.week-block h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.week-block li::before { background: #22c55e; }
+.metric-list li::before { background: #3b82f6; }
+.risk-list li::before { background: #ef4444; }
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Дерево целей</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+<div class="card card-accent">
+    <h2>📌 SMART-цель</h2>
+    <div class="smart-goal">Увеличить ежемесячный доход с 100 000₽ до 300 000₽ за 12 месяцев через развитие частной юридической практики или переход на более высокооплачиваемую позицию</div>
+</div>
+
+<div class="points-grid">
+    <div class="point-card point-a">
+        <div class="label">📍 Точка А — где сейчас</div>
+        <div>Работа штатным юристом с фиксированным окладом 100 000₽ в месяц, зависимость от работодателя и ограниченные возможности роста дохода</div>
+    </div>
+    <div class="point-card point-b">
+        <div class="label">🏁 Точка Б — куда идём</div>
+        <div>Стабильный ежемесячный доход 300 000₽ с диверсифицированными источниками, финансовая независимость и контроль над собственным временем</div>
+    </div>
+</div>
+
+
+<div style="text-align: center; padding: 8px 0;">
+    <span class="deadline-badge">📅 Срок: 12 месяцев</span>
+</div>
+
+
+
+<div class="card card-warn">
+    <h2>💡 Настоящая мотивация</h2>
+    <div class="motivation-text">Финансовая безопасность, отсутствие переживаний за завтрашний день, ощущение статуса и превосходства над наёмными работниками</div>
+</div>
+
+
+
+<div class="card">
+    <h2>🌳 Три уровня «Почему»</h2>
+    <ul>
+    
+        <li>Финансовая безопасность — защита от непредвиденных обстоятельств, возможность создать финансовую подушку</li>
+    
+        <li>Отсутствие переживаний за завтрашний день — уверенность в стабильности дохода, независимость от решений работодателя</li>
+    
+        <li>Ощущение статуса и превосходства над наёмными работниками — признание профессиональной ценности, самореализация через финансовый успех</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>🚧 Ограничения и что с ними делать</h2>
+    <ul class="risk-list">
+    
+        <li>Ограничение: фиксированный оклад 100 000₽ на текущей работе → Решение: запустить частную практику в нерабочее время (консультации, составление договоров, представительство)</li>
+    
+        <li>Ограничение: отсутствие клиентской базы → Решение: использовать профессиональные связи, зарегистрироваться на Профи.ру, Юду, создать профиль на legal-платформах</li>
+    
+        <li>Ограничение: нехватка времени при работе 5/2 → Решение: начать с 5-10 часов в неделю на частные заказы (вечера, выходные), постепенно масштабировать</li>
+    
+        <li>Ограничение: неопределённость в поиске высокооплачиваемой позиции → Решение: обновить резюме на hh.ru, откликаться на вакансии от 200 000₽, пройти 10-15 собеседований за 3 месяца</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-green">
+    <h2>📋 План действий</h2>
+    
+    <div class="week-block">
+        
+        <h3>Месяц 1</h3>
+        <ul>
+        
+            <li>Зарегистрироваться как самозанятый или ИП, оформить все документы для легальной частной практики</li>
+        
+            <li>Создать профили на Профи.ру, Юду, Авито Услуги — разместить 3-5 услуг (консультации, договоры, претензии)</li>
+        
+            <li>Обновить резюме на hh.ru, Superjob — откликнуться на 20 вакансий юриста с зарплатой от 150 000₽</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Месяц 2-3</h3>
+        <ul>
+        
+            <li>Провести минимум 5 платных консультаций (по 3 000-5 000₽), получить первые отзывы</li>
+        
+            <li>Пройти 5-7 собеседований, проанализировать требования рынка для позиций 200 000₽+</li>
+        
+            <li>Запустить таргетированную рекламу ВКонтакте/Telegram на юридические услуги (бюджет 10 000₽/мес)</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Месяц 4-6</h3>
+        <ul>
+        
+            <li>Выйти на 10-15 клиентов в месяц через онлайн-платформы и рекламу (доход +50 000₽)</li>
+        
+            <li>Получить оффер на новую позицию с зарплатой от 180 000₽ или остаться на текущей работе, увеличив частную практику</li>
+        
+            <li>Создать базу постоянных клиентов — 5-7 компаний на абонентском обслуживании (по 15 000-20 000₽/мес)</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Месяц 7-12</h3>
+        <ul>
+        
+            <li>Масштабировать частную практику до 20-25 клиентов в месяц (доход +100 000-150 000₽)</li>
+        
+            <li>Если остались на текущей работе — договориться о повышении до 120 000-130 000₽ или сменить работодателя</li>
+        
+            <li>Автоматизировать рутину: шаблоны договоров, CRM для клиентов, помощник на аутсорсе для простых задач</li>
+        
+            <li>Достичь суммарного дохода 300 000₽/мес: 150 000₽ основная работа + 150 000₽ частная практика (или 200 000₽ новая работа + 100 000₽ практика)</li>
+        
+        </ul>
+        
+    </div>
+    
+</div>
+
+
+
+<div class="card">
+    <h2>📊 Метрики успеха</h2>
+    <ul class="metric-list">
+    
+        <li>Ежемесячный доход 300 000₽ к концу 12-го месяца (проверка по выпискам с карты/счетов)</li>
+    
+        <li>Минимум 15-20 платных клиентов в месяц через частную практику к 9-му месяцу</li>
+    
+        <li>5-7 постоянных клиентов на абонентском обслуживании к 6-му месяцу (стабильный доход 75 000-140 000₽/мес)</li>
+    
+        <li>Прохождение 10-15 собеседований за первые 3 месяца, получение минимум 2 офферов с зарплатой 180 000₽+</li>
+    
+        <li>Накопление финансовой подушки 300 000₽ (1 месяц нового дохода) к концу срока</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>⚠️ Риски</h2>
+    <ul class="risk-list">
+    
+        <li>Риск: выгорание от совмещения работы и частной практики → Решение: начать с 5-7 часов в неделю, постепенно увеличивать нагрузку, делегировать рутину</li>
+    
+        <li>Риск: нестабильный поток клиентов в первые месяцы → Решение: не увольняться с основной работы до достижения стабильных 150 000₽/мес от практики в течение 3 месяцев подряд</li>
+    
+        <li>Риск: конкуренция на рынке юридических услуг → Решение: специализироваться на узкой нише (корпоративное право, недвижимость, трудовые споры), где меньше конкурентов</li>
+    
+        <li>Риск: отказы на собеседованиях из-за завышенных ожиданий по зарплате → Решение: прокачать навыки (курсы, сертификаты), собрать кейсы успешных дел, подготовить презентацию достижений</li>
+    
+        <li>Риск: юридические проблемы с частной практикой (налоги, лицензии) → Решение: оформить самозанятость/ИП в первый месяц, вести учёт доходов, консультироваться с бухгалтером</li>
+    
+    </ul>
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+</body>
+</html>
