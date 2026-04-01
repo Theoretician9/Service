@@ -56,13 +56,13 @@ def _format_goal_tree_text(content: dict, summary: str) -> str:
 
 
 def _format_niche_table_text(content: dict, summary: str) -> str:
-    """Format niche_table artifact — compact niche selection summary."""
+    """Format niche_table artifact — compact 10-niche selection summary."""
     parts = []
     parts.append("🔍 <b>Выбор ниши — готово!</b>\n")
 
     recommended_niche = _safe_str(content.get("recommended_niche"))
     if recommended_niche:
-        parts.append(f"📌 <b>Рекомендованная ниша:</b> {recommended_niche}")
+        parts.append(f"📌 <b>Рекомендованная:</b> {recommended_niche}")
 
     recommendation = _safe_str(content.get("recommendation"))
     if recommendation:
@@ -71,21 +71,19 @@ def _format_niche_table_text(content: dict, summary: str) -> str:
             trimmed += "…"
         parts.append(trimmed)
 
-    total_score = _safe_str(content.get("total_score"))
-    if total_score:
-        parts.append(f"\n📊 <b>Оценка:</b> {total_score}/25")
-
-    numbers = content.get("numbers", {})
-    if isinstance(numbers, dict):
-        profit = _safe_str(numbers.get("estimated_profit_per_deal"))
-        deals = _safe_str(numbers.get("deals_per_month"))
-        if profit:
-            parts.append(f"💰 <b>Прибыль с сделки:</b> {profit}")
-        if deals:
-            parts.append(f"📈 <b>Сделок в месяц:</b> {deals}")
+    # Top-5 niches with scores
+    top_niches = content.get("top_niches", [])
+    if top_niches:
+        parts.append("\n🏆 <b>Топ-5:</b>")
+        for i, niche in enumerate(top_niches[:5], start=1):
+            name = _safe_str(niche.get("name"))
+            scores = niche.get("scores", {})
+            total = scores.get("total", "?") if isinstance(scores, dict) else "?"
+            parts.append(f"{i}. {name} — {total}/25")
 
     parts.append(
-        "\n📄 Подробная декомпозиция, числовая модель и план на 14 дней — в отчёте ниже."
+        "\n📋 Ещё 5 направлений + подробная декомпозиция, "
+        "числовая модель и план тестирования — в отчёте ниже."
     )
 
     return "\n".join(parts)

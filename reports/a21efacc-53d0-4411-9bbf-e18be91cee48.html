@@ -1,0 +1,2347 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Выбор ниши — 10 направлений</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+
+/* Cards */
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-recommended {
+    border: 2px solid #6366f1;
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.15);
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+/* Recommendation badge */
+.rec-badge {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.rec-text {
+    font-size: 15px;
+    color: #e4e4e7;
+    line-height: 1.6;
+}
+
+/* Section titles */
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin: 28px 0 16px;
+    padding-left: 4px;
+}
+
+/* Rank badge */
+.rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #6366f1;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* Source tags */
+.source-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border: 1px solid;
+}
+.source-blue {
+    color: #60a5fa;
+    border-color: rgba(96, 165, 250, 0.3);
+    background: rgba(96, 165, 250, 0.1);
+}
+.source-green {
+    color: #4ade80;
+    border-color: rgba(74, 222, 128, 0.3);
+    background: rgba(74, 222, 128, 0.1);
+}
+.source-amber {
+    color: #fbbf24;
+    border-color: rgba(251, 191, 36, 0.3);
+    background: rgba(251, 191, 36, 0.1);
+}
+.source-purple {
+    color: #c084fc;
+    border-color: rgba(192, 132, 252, 0.3);
+    background: rgba(192, 132, 252, 0.1);
+}
+.source-white {
+    color: #e4e4e7;
+    border-color: rgba(228, 228, 231, 0.3);
+    background: rgba(228, 228, 231, 0.1);
+}
+
+/* Niche card header */
+.niche-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+.niche-header h3 {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0;
+}
+.niche-desc {
+    color: #a1a1aa;
+    font-size: 14px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+/* Score bars */
+.scores-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 20px;
+    margin-bottom: 8px;
+}
+@media (max-width: 480px) {
+    .scores-grid { grid-template-columns: 1fr; }
+}
+.score-row {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+}
+.score-label {
+    color: #71717a;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.score-bar-wrap {
+    flex: 0 0 60px;
+    height: 6px;
+    background: #27272a;
+    border-radius: 3px;
+    margin: 0 8px;
+    overflow: hidden;
+}
+.score-bar {
+    height: 100%;
+    border-radius: 3px;
+}
+.score-value {
+    flex: 0 0 18px;
+    text-align: right;
+    font-weight: 600;
+}
+.score-green { background: #22c55e; color: #22c55e; }
+.score-amber { background: #f59e0b; color: #f59e0b; }
+.score-red { background: #ef4444; color: #ef4444; }
+
+/* Total score */
+.total-score {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #27272a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.total-score .label {
+    font-size: 12px;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+.total-score .value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+}
+
+/* Expandable details */
+.expand-toggle {
+    display: block;
+    width: 100%;
+    background: #1f1f23;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    color: #a1a1aa;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 16px;
+    cursor: pointer;
+    text-align: left;
+    margin-top: 12px;
+    transition: background 0.2s, color 0.2s;
+}
+.expand-toggle:hover {
+    background: #27272a;
+    color: #e4e4e7;
+}
+.expand-toggle::after {
+    content: ' ▾';
+}
+.expand-content {
+    display: none;
+    margin-top: 12px;
+}
+.expand-content.open {
+    display: block;
+}
+
+/* Decomposition subsections */
+.decomp-section {
+    margin-bottom: 16px;
+}
+.decomp-section:last-child { margin-bottom: 0; }
+.decomp-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+.decomp-value {
+    font-size: 15px;
+    color: #e4e4e7;
+}
+
+/* Lists */
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 6px 0 6px 20px;
+    position: relative;
+    border-bottom: 1px solid #1f1f23;
+    font-size: 14px;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.risk-list li::before { background: #ef4444; }
+.channel-list li::before { background: #3b82f6; }
+.test-list li::before { background: #22c55e; }
+.hypothesis-list li::before { background: #f59e0b; }
+
+/* Numbers grid */
+.numbers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+@media (max-width: 480px) {
+    .numbers-grid { grid-template-columns: 1fr; }
+}
+.number-item {
+    background: #1f1f23;
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+}
+.number-item .num {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+}
+.number-item .num-label {
+    font-size: 11px;
+    color: #71717a;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Plan blocks */
+.plan-block {
+    margin-bottom: 14px;
+}
+.plan-block:last-child { margin-bottom: 0; }
+.plan-block h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 6px;
+    padding: 6px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.plan-block li::before { background: #22c55e; }
+
+/* Why fits section */
+.why-fits {
+    background: #1f1f23;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #e4e4e7;
+    border-left: 3px solid #22c55e;
+}
+
+/* Extra niches list */
+.extra-niche {
+    background: #18181b;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    border: 1px solid #27272a;
+}
+.extra-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+.extra-header h3 {
+    flex: 1;
+    min-width: 0;
+    font-size: 16px;
+    margin-bottom: 0;
+}
+.extra-score {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
+.extra-desc {
+    color: #a1a1aa;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+.extra-why {
+    color: #71717a;
+    font-size: 13px;
+    font-style: italic;
+}
+
+/* Inline score mini-bars for extra niches */
+.mini-scores {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+.mini-score {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #71717a;
+}
+.mini-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>&#128269; Выбор ниши — 10 направлений</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+
+
+<div class="card card-recommended">
+    <div class="rec-badge">&#9733; Рекомендация</div>
+    
+    <h3>Перепродажа трендовой одежды на Авито с быстрой реакцией</h3>
+    
+    
+    <div class="rec-text">Начни с ниши №1 — перепродажа трендовой одежды на Авито. Это твоя зона силы: ты уже знаешь рынок, понимаешь тренды, умеешь быстро реагировать. Порог входа минимальный — можешь начать с 20 000₽ и получить первые деньги за 3-7 дней. Главное преимущество — скорость: ты находишь недооценённые вещи и перепродаёшь их быстрее конкурентов. Это даёт тебе фору на рынке. После первых продаж масштабируйся через Instagram и Telegram — так выйдешь на 300 000₽/мес за 6-9 месяцев. Если первая ниша не зайдёт — тестируй ниши №2 (логистический брокер) и №3 (консультации по ассортименту) — они тоже играют на твоих сильных сторонах.</div>
+    
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-title">&#127942; ТОП-5 ниш с декомпозицией</div>
+
+
+<div class="card card-recommended" id="niche-1">
+    
+    <div class="niche-header">
+        <span class="rank-badge">1</span>
+        <h3>Перепродажа трендовой одежды на Авито с быстрой реакцией</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">combination</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Покупка недооценённых брендовых вещей на Авито/барахолках и перепродажа с наценкой 30-50%. Фокус на скорость — находить и выкупать первым.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-amber" style="width: 60%"></div>
+            </div>
+            <span class="score-value score-amber">3</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">23</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        У тебя уже есть опыт продажи брендовой одежды, понимание трендов, каналы закупки и навык быстрой реакции на рынок. Это твоя зона силы.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Брендовая одежда (Zara, H&amp;M, Mango, Nike, Adidas) с недооценённой ценой — покупаем дешевле рынка, продаём по рыночной цене</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Молодёжь 18-30 лет, ищущая бренды по доступной цене</li>
+                
+                    <li>Женщины 25-40 лет, следящие за трендами</li>
+                
+                    <li>Мужчины 20-35 лет, покупающие спортивную одежду</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Авито (основной канал продаж)</li>
+                
+                    <li>Instagram/VK (для масштабирования после первых продаж)</li>
+                
+                    <li>Telegram-канал с анонсами новых поступлений</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Люди ищут брендовую одежду дешевле магазинов — разница 20-40%</li>
+                
+                    <li>Быстрая реакция на тренды даёт преимущество перед конкурентами</li>
+                
+                    <li>Весна-лето (май-июнь) — пик спроса на детскую одежду и обувь (+43-48%)</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Высокая конкуренция на Авито — нужно выделяться скоростью и качеством фото</li>
+                
+                    <li>Сезонность спроса — зимой одежда продаётся хуже</li>
+                
+                    <li>Риск купить подделку или вещь с дефектом</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Купить 5-7 трендовых вещей на барахолке/Авито за 20 000₽ и выставить с наценкой 30-50%</li>
+                
+                    <li>Протестировать разные категории: женская одежда, мужская, детская</li>
+                
+                    <li>Отследить, какие вещи продаются быстрее всего (за 1-3 дня)</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">300 000 ₽/мес</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">2 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">150</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">38</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Средняя наценка 40% (покупка за 5 000₽, продажа за 7 000₽)</li>
+                
+                    <li>Оборачиваемость товара 7-10 дней</li>
+                
+                    <li>Стартовый капитал 100 000₽ позволяет держать 15-20 позиций одновременно</li>
+                
+                    <li>Конверсия просмотров в продажи на Авито 5-10%</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Изучить топ-100 объявлений на Авито в категории &#39;Одежда&#39; — какие вещи продаются быстрее всего</li>
+                    
+                        <li>Купить 5 трендовых вещей на барахолке/Авито за 15 000₽ (джинсы, кроссовки, куртки)</li>
+                    
+                        <li>Сделать качественные фото (белый фон, хорошее освещение) и выставить на Авито с наценкой 40%</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Отследить просмотры и сообщения — какие вещи вызывают больше интереса</li>
+                    
+                        <li>Провести 3-5 сделок, зафиксировать время от публикации до продажи</li>
+                    
+                        <li>Купить ещё 5 вещей в категориях с лучшей конверсией</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Масштабировать: купить 10 вещей на 30 000₽, выставить на Авито</li>
+                    
+                        <li>Протестировать разные ценовые сегменты (бюджет 3 000-5 000₽ vs премиум 10 000-15 000₽)</li>
+                    
+                        <li>Запустить Instagram-аккаунт, выложить 5 лучших вещей с ценами и ссылкой на Авито</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+<div class="card" id="niche-2">
+    
+    <div class="niche-header">
+        <span class="rank-badge">2</span>
+        <h3>Логистический брокер для малого бизнеса в Казахстане</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">social</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Посредничество между малым бизнесом и логистическими компаниями. Находишь клиентов, договариваешься с перевозчиками, берёшь комиссию 10-15%.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">20</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        У тебя есть друзья в логистике — это прямой доступ к исполнителям. Можешь быстро запустить без вложений, работая на комиссии.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Услуга логистического брокера — находишь клиентов (малый бизнес, интернет-магазины), договариваешься с перевозчиками, берёшь комиссию</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Интернет-магазины одежды/электроники в Казахстане</li>
+                
+                    <li>Малый бизнес, продающий на маркетплейсах (Kaspi, Wildberries)</li>
+                
+                    <li>Предприниматели, импортирующие товары из России/Китая</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Прямые продажи — обзвон малого бизнеса</li>
+                
+                    <li>Telegram-каналы предпринимателей Казахстана</li>
+                
+                    <li>Реклама в Instagram/VK для малого бизнеса</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Малый бизнес не хочет разбираться в логистике — готов платить за удобство</li>
+                
+                    <li>Рынок логистики Казахстана растёт, но много хаоса — нужны посредники</li>
+                
+                    <li>Изменения в Налоговом кодексе 2026 усложнили работу — бизнес ищет надёжных партнёров</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Зависимость от качества работы перевозчиков</li>
+                
+                    <li>Конкуренция с крупными логистическими компаниями</li>
+                
+                    <li>Сложность масштабирования без автоматизации</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Обзвонить 20 малых бизнесов в Казахстане, предложить логистику</li>
+                
+                    <li>Договориться с 2-3 перевозчиками (друзья) о комиссии 10-15%</li>
+                
+                    <li>Провести 3-5 сделок, зафиксировать прибыль и проблемы</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">300 000 ₽/мес</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">10 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">30</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">8</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Средняя стоимость перевозки 70 000₽, комиссия 15% = 10 500₽</li>
+                
+                    <li>Нужно 30 сделок в месяц для выхода на 300 000₽</li>
+                
+                    <li>Первые клиенты — через знакомых и холодные звонки</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Составить список 50 малых бизнесов в Казахстане (интернет-магазины, продавцы на маркетплейсах)</li>
+                    
+                        <li>Обзвонить 20 компаний, предложить логистику со скидкой 10% на первую сделку</li>
+                    
+                        <li>Договориться с 2 друзьями-логистами о комиссии 10-15%</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Провести 2-3 сделки, зафиксировать время на оформление и прибыль</li>
+                    
+                        <li>Создать простой прайс-лист с маршрутами и ценами</li>
+                    
+                        <li>Запустить Telegram-канал для клиентов с анонсами акций</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Обзвонить ещё 30 компаний, предложить услуги</li>
+                    
+                        <li>Провести 5-7 сделок, выйти на прибыль 50 000₽</li>
+                    
+                        <li>Протестировать рекламу в Instagram для малого бизнеса (бюджет 10 000₽)</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+<div class="card" id="niche-3">
+    
+    <div class="niche-header">
+        <span class="rank-badge">3</span>
+        <h3>Консультации по выбору трендовой одежды для интернет-магазинов</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">experience</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Помогаешь владельцам интернет-магазинов одежды выбирать товар, который будет продаваться. Анализ трендов, подбор ассортимента, прогнозы спроса.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-amber" style="width: 60%"></div>
+            </div>
+            <span class="score-value score-amber">3</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">21</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        Ты понимаешь тренды, умеешь отслеживать спрос и быстро реагировать на рынок. Это можно монетизировать как консалтинг без вложений.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Консультация по выбору ассортимента для интернет-магазинов одежды — анализ трендов, подбор товаров, прогноз спроса</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Владельцы интернет-магазинов одежды в Казахстане</li>
+                
+                    <li>Предприниматели, запускающие бренд одежды</li>
+                
+                    <li>Продавцы на маркетплейсах (Kaspi, Wildberries)</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Прямые продажи — обзвон владельцев интернет-магазинов</li>
+                
+                    <li>Instagram/VK — контент про тренды одежды</li>
+                
+                    <li>Telegram-каналы предпринимателей</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Владельцы магазинов не успевают отслеживать тренды — готовы платить за экспертизу</li>
+                
+                    <li>Неправильный выбор ассортимента = затоваривание и убытки</li>
+                
+                    <li>Спрос на консалтинг растёт вместе с рынком онлайн-торговли в Казахстане</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Сложно доказать экспертизу без кейсов</li>
+                
+                    <li>Конкуренция с маркетинговыми агентствами</li>
+                
+                    <li>Клиенты могут не видеть ценности консультаций</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Предложить 5 владельцам интернет-магазинов бесплатную консультацию в обмен на отзыв</li>
+                
+                    <li>Подготовить презентацию с трендами одежды на 2026 год</li>
+                
+                    <li>Провести 3 платные консультации по 20 000₽</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">300 000 ₽/мес</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">30 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">10</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">3</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Консультация стоит 30 000₽ (анализ трендов + подбор ассортимента на месяц)</li>
+                
+                    <li>Нужно 10 клиентов в месяц для выхода на 300 000₽</li>
+                
+                    <li>Первые клиенты — через бесплатные консультации и кейсы</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Составить список 30 интернет-магазинов одежды в Казахстане</li>
+                    
+                        <li>Подготовить презентацию с трендами одежды на 2026 год (10 слайдов)</li>
+                    
+                        <li>Обзвонить 10 магазинов, предложить бесплатную консультацию</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Провести 3 бесплатные консультации, собрать отзывы</li>
+                    
+                        <li>Создать Instagram-аккаунт, выложить 5 постов про тренды одежды</li>
+                    
+                        <li>Предложить 5 магазинам платную консультацию по 20 000₽</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Провести 2 платные консультации, зафиксировать прибыль 40 000₽</li>
+                    
+                        <li>Запустить рекламу в Instagram для владельцев интернет-магазинов (бюджет 10 000₽)</li>
+                    
+                        <li>Обзвонить ещё 20 магазинов, предложить услуги</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+<div class="card" id="niche-4">
+    
+    <div class="niche-header">
+        <span class="rank-badge">4</span>
+        <h3>Оптовая закупка одежды для малого бизнеса Казахстана</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">experience</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Покупаешь одежду оптом в России/Китае и перепродаёшь малому бизнесу в Казахстане с наценкой 20-30%. Фокус на скорость и надёжность.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-amber" style="width: 60%"></div>
+            </div>
+            <span class="score-value score-amber">3</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-amber" style="width: 60%"></div>
+            </div>
+            <span class="score-value score-amber">3</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">19</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        У тебя есть каналы закупки брендовой одежды и понимание рынка. Можешь стать посредником между поставщиками и малым бизнесом.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Оптовая закупка одежды (партии от 50 единиц) для малого бизнеса Казахстана — покупаешь в России/Китае, продаёшь с наценкой 20-30%</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Владельцы магазинов одежды в Казахстане</li>
+                
+                    <li>Продавцы на рынках и барахолках</li>
+                
+                    <li>Интернет-магазины, ищущие надёжных поставщиков</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Прямые продажи — обзвон владельцев магазинов</li>
+                
+                    <li>Telegram-каналы предпринимателей Казахстана</li>
+                
+                    <li>Выставки и ярмарки одежды</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Малый бизнес ищет надёжных поставщиков с быстрой доставкой</li>
+                
+                    <li>Рынок одежды в Казахстане растёт — спрос на оптовые закупки высокий</li>
+                
+                    <li>Предприниматели готовы платить за удобство и скорость</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Высокая конкуренция с крупными оптовиками</li>
+                
+                    <li>Риск затоваривания — нужно точно угадывать спрос</li>
+                
+                    <li>Логистика и таможня могут задержать товар</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Купить партию одежды на 50 000₽ (50-100 единиц) и предложить 5 магазинам</li>
+                
+                    <li>Договориться с 2-3 поставщиками в России/Китае о регулярных закупках</li>
+                
+                    <li>Провести 2-3 сделки, зафиксировать прибыль и проблемы</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">300 000 ₽/мес</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">50 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">6</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">2</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Средняя партия 200 000₽, наценка 25% = 50 000₽ прибыли</li>
+                
+                    <li>Нужно 6 сделок в месяц для выхода на 300 000₽</li>
+                
+                    <li>Оборачиваемость товара 14-21 день</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Составить список 20 магазинов одежды в Казахстане</li>
+                    
+                        <li>Связаться с 3 поставщиками в России/Китае, узнать условия оптовых закупок</li>
+                    
+                        <li>Купить пробную партию одежды на 30 000₽ (30-50 единиц)</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Обзвонить 10 магазинов, предложить партию одежды со скидкой 10%</li>
+                    
+                        <li>Провести 1-2 сделки, зафиксировать прибыль 10 000-15 000₽</li>
+                    
+                        <li>Договориться с логистами (друзья) о доставке в Казахстан</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Купить вторую партию одежды на 50 000₽</li>
+                    
+                        <li>Провести 3-4 сделки, выйти на прибыль 40 000₽</li>
+                    
+                        <li>Запустить Telegram-канал для клиентов с анонсами новых поступлений</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+<div class="card" id="niche-5">
+    
+    <div class="niche-header">
+        <span class="rank-badge">5</span>
+        <h3>Сервис подбора одежды для занятых людей (персональный шоппинг)</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">interest</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Подбираешь одежду для клиентов, которые не хотят тратить время на шоппинг. Берёшь фиксированную плату или процент от покупки.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-amber" style="width: 60%"></div>
+            </div>
+            <span class="score-value score-amber">3</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">19</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        Ты умеешь подбирать трендовые вещи и понимаешь стиль. Можешь монетизировать это как услугу для занятых людей.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Персональный шоппинг — подбираешь одежду для клиентов (онлайн или офлайн), берёшь фиксированную плату 10 000-20 000₽ или 10% от покупки</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Занятые предприниматели 30-45 лет</li>
+                
+                    <li>Женщины 25-40 лет, не успевающие следить за трендами</li>
+                
+                    <li>Мужчины 30-50 лет, не любящие шоппинг</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Instagram/VK — контент про стиль и тренды</li>
+                
+                    <li>Прямые продажи — обзвон знакомых и их окружения</li>
+                
+                    <li>Реклама в Telegram-каналах для предпринимателей</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Занятые люди готовы платить за экономию времени</li>
+                
+                    <li>Спрос на персональный шоппинг растёт вместе с доходами в Казахстане</li>
+                
+                    <li>Клиенты ценят экспертизу и индивидуальный подход</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Сложно масштабировать — услуга требует личного времени</li>
+                
+                    <li>Конкуренция со стилистами и имидж-консультантами</li>
+                
+                    <li>Клиенты могут не видеть ценности услуги</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Предложить 5 знакомым бесплатный подбор одежды в обмен на отзыв</li>
+                
+                    <li>Создать Instagram-аккаунт, выложить 5 образов с ценами</li>
+                
+                    <li>Провести 3 платные консультации по 10 000₽</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">300 000 ₽/мес</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">15 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">20</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">5</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Средняя плата за подбор 15 000₽ (фиксированная ставка или 10% от покупки 150 000₽)</li>
+                
+                    <li>Нужно 20 клиентов в месяц для выхода на 300 000₽</li>
+                
+                    <li>Первые клиенты — через знакомых и Instagram</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Создать Instagram-аккаунт, выложить 5 образов с описанием стиля</li>
+                    
+                        <li>Предложить 5 знакомым бесплатный подбор одежды</li>
+                    
+                        <li>Подготовить прайс-лист с услугами (подбор онлайн, шоппинг-сопровождение)</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Провести 3 бесплатных подбора, собрать отзывы и фото</li>
+                    
+                        <li>Выложить кейсы в Instagram, запустить рекламу (бюджет 5 000₽)</li>
+                    
+                        <li>Предложить 5 людям платный подбор по 10 000₽</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Провести 2-3 платных подбора, зафиксировать прибыль 20 000-30 000₽</li>
+                    
+                        <li>Обзвонить 10 знакомых предпринимателей, предложить услуги</li>
+                    
+                        <li>Запустить Telegram-канал с советами по стилю</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+
+
+
+
+
+
+<div class="section-title">&#128218; Ещё 5 направлений</div>
+
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">6</span>
+        <h3>Аренда брендовой одежды для мероприятий</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">experience</span>
+        
+    
+
+        
+        <span class="extra-score">16</span>
+        
+    </div>
+    
+    <div class="extra-desc">Покупаешь дорогую брендовую одежду и сдаёшь в аренду для мероприятий (свадьбы, корпоративы, фотосессии). Окупаемость за 5-10 аренд.</div>
+    
+    
+    <div class="extra-why">Люди хотят выглядеть дорого на мероприятиях, но не готовы покупать дорогую одежду. Ты можешь стать посредником между брендами и клиентами.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Скорость 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Прибыль 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Порог 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Ресурс 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Реализуемость 3
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">7</span>
+        <h3>Автоматизация продаж на Авито для продавцов одежды</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">combination</span>
+        
+    
+
+        
+        <span class="extra-score">13</span>
+        
+    </div>
+    
+    <div class="extra-desc">Создаёшь сервис автоматизации для продавцов одежды на Авито — автопостинг, аналитика, управление объявлениями. Подписка 5 000-10 000₽/мес.</div>
+    
+    
+    <div class="extra-why">Продавцы на Авито тратят много времени на рутину. Автоматизация экономит время и увеличивает продажи — за это готовы платить.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Скорость 2
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Прибыль 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Порог 2
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Ресурс 2
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Реализуемость 3
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">8</span>
+        <h3>Курсы по продаже одежды на Авито для новичков</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">experience</span>
+        
+    
+
+        
+        <span class="extra-score">18</span>
+        
+    </div>
+    
+    <div class="extra-desc">Запускаешь онлайн-курс для новичков, которые хотят зарабатывать на перепродаже одежды. Цена курса 10 000-20 000₽.</div>
+    
+    
+    <div class="extra-why">Ты уже знаешь, как зарабатывать на одежде. Можешь упаковать знания в курс и продавать через Instagram/VK.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Скорость 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Прибыль 5
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Порог 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Ресурс 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Реализуемость 3
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">9</span>
+        <h3>Организация доставки товаров из России в Казахстан для малого бизнеса</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">social</span>
+        
+    
+
+        
+        <span class="extra-score">20</span>
+        
+    </div>
+    
+    <div class="extra-desc">Помогаешь малому бизнесу Казахстана доставлять товары из России — берёшь комиссию 10-15% или фиксированную плату за доставку.</div>
+    
+    
+    <div class="extra-why">Друзья занимаются логистикой — можешь использовать их ресурсы. Малый бизнес ищет надёжных партнёров для доставки.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Скорость 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Прибыль 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Порог 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Ресурс 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Реализуемость 4
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">10</span>
+        <h3>Переработка и перепродажа секонд-хенд одежды</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">combination</span>
+        
+    
+
+        
+        <span class="extra-score">18</span>
+        
+    </div>
+    
+    <div class="extra-desc">Покупаешь секонд-хенд одежду оптом, отбираешь лучшие вещи, стираешь/ремонтируешь и продаёшь на Авито с наценкой 100-200%.</div>
+    
+    
+    <div class="extra-why">Тренд на устойчивое потребление растёт. Секонд-хенд становится популярным среди молодёжи. Низкий порог входа — можно начать с 20 000₽.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Скорость 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Прибыль 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Порог 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Ресурс 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Реализуемость 4
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+<script>
+function toggleExpand(btn) {
+    var content = btn.nextElementSibling;
+    if (content.classList.contains('open')) {
+        content.classList.remove('open');
+        btn.textContent = 'Декомпозиция, цифры и план';
+    } else {
+        content.classList.add('open');
+        btn.textContent = 'Свернуть';
+    }
+}
+</script>
+
+</body>
+</html>

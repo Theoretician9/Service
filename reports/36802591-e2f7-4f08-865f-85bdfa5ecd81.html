@@ -1,0 +1,2359 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Выбор ниши — 10 направлений</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+
+/* Cards */
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-recommended {
+    border: 2px solid #6366f1;
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.15);
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+/* Recommendation badge */
+.rec-badge {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.rec-text {
+    font-size: 15px;
+    color: #e4e4e7;
+    line-height: 1.6;
+}
+
+/* Section titles */
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin: 28px 0 16px;
+    padding-left: 4px;
+}
+
+/* Rank badge */
+.rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #6366f1;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* Source tags */
+.source-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border: 1px solid;
+}
+.source-blue {
+    color: #60a5fa;
+    border-color: rgba(96, 165, 250, 0.3);
+    background: rgba(96, 165, 250, 0.1);
+}
+.source-green {
+    color: #4ade80;
+    border-color: rgba(74, 222, 128, 0.3);
+    background: rgba(74, 222, 128, 0.1);
+}
+.source-amber {
+    color: #fbbf24;
+    border-color: rgba(251, 191, 36, 0.3);
+    background: rgba(251, 191, 36, 0.1);
+}
+.source-purple {
+    color: #c084fc;
+    border-color: rgba(192, 132, 252, 0.3);
+    background: rgba(192, 132, 252, 0.1);
+}
+.source-white {
+    color: #e4e4e7;
+    border-color: rgba(228, 228, 231, 0.3);
+    background: rgba(228, 228, 231, 0.1);
+}
+
+/* Niche card header */
+.niche-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+.niche-header h3 {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0;
+}
+.niche-desc {
+    color: #a1a1aa;
+    font-size: 14px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+/* Score bars */
+.scores-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 20px;
+    margin-bottom: 8px;
+}
+@media (max-width: 480px) {
+    .scores-grid { grid-template-columns: 1fr; }
+}
+.score-row {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+}
+.score-label {
+    color: #71717a;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.score-bar-wrap {
+    flex: 0 0 60px;
+    height: 6px;
+    background: #27272a;
+    border-radius: 3px;
+    margin: 0 8px;
+    overflow: hidden;
+}
+.score-bar {
+    height: 100%;
+    border-radius: 3px;
+}
+.score-value {
+    flex: 0 0 18px;
+    text-align: right;
+    font-weight: 600;
+}
+.score-green { background: #22c55e; color: #22c55e; }
+.score-amber { background: #f59e0b; color: #f59e0b; }
+.score-red { background: #ef4444; color: #ef4444; }
+
+/* Total score */
+.total-score {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #27272a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.total-score .label {
+    font-size: 12px;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+.total-score .value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+}
+
+/* Expandable details */
+.expand-toggle {
+    display: block;
+    width: 100%;
+    background: #1f1f23;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    color: #a1a1aa;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 16px;
+    cursor: pointer;
+    text-align: left;
+    margin-top: 12px;
+    transition: background 0.2s, color 0.2s;
+}
+.expand-toggle:hover {
+    background: #27272a;
+    color: #e4e4e7;
+}
+.expand-toggle::after {
+    content: ' ▾';
+}
+.expand-content {
+    display: none;
+    margin-top: 12px;
+}
+.expand-content.open {
+    display: block;
+}
+
+/* Decomposition subsections */
+.decomp-section {
+    margin-bottom: 16px;
+}
+.decomp-section:last-child { margin-bottom: 0; }
+.decomp-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+.decomp-value {
+    font-size: 15px;
+    color: #e4e4e7;
+}
+
+/* Lists */
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 6px 0 6px 20px;
+    position: relative;
+    border-bottom: 1px solid #1f1f23;
+    font-size: 14px;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.risk-list li::before { background: #ef4444; }
+.channel-list li::before { background: #3b82f6; }
+.test-list li::before { background: #22c55e; }
+.hypothesis-list li::before { background: #f59e0b; }
+
+/* Numbers grid */
+.numbers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+@media (max-width: 480px) {
+    .numbers-grid { grid-template-columns: 1fr; }
+}
+.number-item {
+    background: #1f1f23;
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+}
+.number-item .num {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+}
+.number-item .num-label {
+    font-size: 11px;
+    color: #71717a;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Plan blocks */
+.plan-block {
+    margin-bottom: 14px;
+}
+.plan-block:last-child { margin-bottom: 0; }
+.plan-block h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 6px;
+    padding: 6px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.plan-block li::before { background: #22c55e; }
+
+/* Why fits section */
+.why-fits {
+    background: #1f1f23;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #e4e4e7;
+    border-left: 3px solid #22c55e;
+}
+
+/* Extra niches list */
+.extra-niche {
+    background: #18181b;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    border: 1px solid #27272a;
+}
+.extra-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+.extra-header h3 {
+    flex: 1;
+    min-width: 0;
+    font-size: 16px;
+    margin-bottom: 0;
+}
+.extra-score {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
+.extra-desc {
+    color: #a1a1aa;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+.extra-why {
+    color: #71717a;
+    font-size: 13px;
+    font-style: italic;
+}
+
+/* Inline score mini-bars for extra niches */
+.mini-scores {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+.mini-score {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #71717a;
+}
+.mini-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>&#128269; Выбор ниши — 10 направлений</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+
+
+<div class="card card-recommended">
+    <div class="rec-badge">&#9733; Рекомендация</div>
+    
+    <h3>Telegram-боты для садовых центров и питомников</h3>
+    
+    
+    <div class="rec-text">Рекомендую начать с ниши &#39;Telegram-боты для садовых центров и питомников&#39;. Причины: 1) Ты знаешь боль клиента изнутри — сам работаешь с саженцами, понимаешь процессы, сезонность, запросы. 2) Можешь протестировать на своём бизнесе за 3 дня и получить реальный кейс. 3) Прямой доступ к аудитории через брата и коллег — конверсия будет 30-40%. 4) Быстрый цикл сделки (7-14 дней) и высокий средний чек (50 000 ₽). 5) Можешь закрыть цель 300 000 ₽ за 3 месяца всего 6 сделками. Это самая быстрая ниша для первых денег с минимальным риском.</div>
+    
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-title">&#127942; ТОП-5 ниш с декомпозицией</div>
+
+
+<div class="card card-recommended" id="niche-1">
+    
+    <div class="niche-header">
+        <span class="rank-badge">1</span>
+        <h3>Telegram-боты для садовых центров и питомников</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">combination</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Автоматизация приёма заказов, консультаций и учёта для садовых центров, питомников и оптовиков саженцев. Боты для каталогов, бронирования, напоминаний о сезонах посадки.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-red" style="width: 40%"></div>
+            </div>
+            <span class="score-value score-red">2</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">21</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        Ты знаешь боль клиента изнутри — сам работаешь с саженцами оптом. Понимаешь сезонность, логистику, запросы покупателей. Можешь продать решение коллегам по цеху и протестировать на своём бизнесе.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Telegram-бот для приёма заказов, каталога саженцев, уведомлений о наличии, автоматизации общения с оптовиками и розницей</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Садовые центры и питомники (50-500 тыс. оборот/мес)</li>
+                
+                    <li>Оптовики саженцев (твои коллеги)</li>
+                
+                    <li>Ландшафтные студии с продажей растений</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Прямые продажи знакомым оптовикам</li>
+                
+                    <li>Telegram-каналы садоводов и питомников</li>
+                
+                    <li>Сарафан через брата и партнёров по саженцам</li>
+                
+                    <li>Кейс на своём бизнесе → показ результатов</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Питомники теряют заказы из-за ручной обработки заявок в сезон</li>
+                
+                    <li>Оптовики хотят автоматизировать повторные заказы постоянных клиентов</li>
+                
+                    <li>Садовые центры нуждаются в напоминаниях клиентам о сезонах посадки</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Узкая ниша — мало клиентов в одном регионе</li>
+                
+                    <li>Сезонность спроса (пик весна-лето)</li>
+                
+                    <li>Низкая цифровая грамотность части аудитории</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Сделать бот для своего бизнеса саженцев за 3 дня</li>
+                
+                    <li>Показать брату и 3 знакомым оптовикам — собрать обратную связь</li>
+                
+                    <li>Запустить пост в Telegram-канале садоводов с кейсом и ценой</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">300 000 ₽ за 3 месяца</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">50 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">2</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">0.5</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Средний чек 50 000 ₽ (бот + настройка + месяц поддержки)</li>
+                
+                    <li>Цикл сделки 7-14 дней (знакомая ниша)</li>
+                
+                    <li>Конверсия 30% среди знакомых оптовиков, 10% в холодных каналах</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Разработать MVP-бот для своего бизнеса: каталог, форма заказа, уведомления</li>
+                    
+                        <li>Протестировать на 5 реальных клиентах своего питомника</li>
+                    
+                        <li>Собрать скриншоты, метрики (сколько заказов через бот)</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Показать кейс брату и 3 знакомым оптовикам — предложить за 30 000 ₽</li>
+                    
+                        <li>Написать пост с кейсом в 2 Telegram-канала садоводов/питомников</li>
+                    
+                        <li>Запустить обсуждение в чатах оптовиков — собрать 5 контактов</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Провести 3 демо-звонка с заинтересованными</li>
+                    
+                        <li>Закрыть 1 сделку на 40-50 тыс. ₽</li>
+                    
+                        <li>Доработать бот под первого клиента, получить отзыв</li>
+                    
+                        <li>Запустить сарафан: попросить клиента рекомендовать 2 коллегам</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+<div class="card" id="niche-2">
+    
+    <div class="niche-header">
+        <span class="rank-badge">2</span>
+        <h3>Психологические чат-боты и тесты</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">social</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Telegram-боты для психологов: запись на консультации, психологические тесты, дневники эмоций, напоминания о сеансах, автоворонки для привлечения клиентов.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-amber" style="width: 60%"></div>
+            </div>
+            <span class="score-value score-amber">3</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-red" style="width: 40%"></div>
+            </div>
+            <span class="score-value score-red">2</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">18</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        Сестра — психолог, можешь протестировать продукт на ней, понять боли ниши. Психологи активно ищут инструменты для автоматизации и привлечения клиентов. Ты любишь анализировать — можешь встроить аналитику эмоций.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Бот для психологов: запись клиентов, тесты (тревожность, выгорание), дневник эмоций, автоворонка с лид-магнитом (бесплатный тест)</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Частные психологи (50-200 тыс. ₽/мес доход)</li>
+                
+                    <li>Психологические центры и онлайн-школы</li>
+                
+                    <li>Коучи и наставники</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Прямая продажа сестре и её коллегам</li>
+                
+                    <li>Telegram-каналы психологов</li>
+                
+                    <li>Сообщества психологов ВКонтакте</li>
+                
+                    <li>Партнёрство с онлайн-школами психологии</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Психологи теряют клиентов из-за неудобной записи</li>
+                
+                    <li>Тесты в боте помогают привлекать новых клиентов через соцсети</li>
+                
+                    <li>Дневник эмоций повышает вовлечённость между сеансами</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Конкуренция с готовыми сервисами (Yclients, Dikidi)</li>
+                
+                    <li>Психологи могут не понимать ценность автоматизации</li>
+                
+                    <li>Нужна интеграция с оплатой и календарями</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Сделать бот для сестры за 5 дней — запись + тест на тревожность</li>
+                
+                    <li>Собрать обратную связь от 3 её коллег</li>
+                
+                    <li>Запустить пост с бесплатным тестом в Telegram-канале психологов</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">300 000 ₽ за 3 месяца</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">35 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">3</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">0.75</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Средний чек 35 000 ₽ (бот + 2 теста + настройка)</li>
+                
+                    <li>Цикл сделки 10-14 дней</li>
+                
+                    <li>Конверсия 20% среди знакомых психологов, 5% в холодных каналах</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Разработать MVP: форма записи, тест на тревожность, результаты в PDF</li>
+                    
+                        <li>Протестировать на сестре — собрать 10 реальных записей клиентов</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Показать кейс 5 коллегам сестры — предложить за 25 000 ₽</li>
+                    
+                        <li>Написать пост в 3 Telegram-канала психологов с бесплатным тестом</li>
+                    
+                        <li>Собрать 10 контактов заинтересованных</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Провести 5 демо-звонков</li>
+                    
+                        <li>Закрыть 1 сделку на 30-35 тыс. ₽</li>
+                    
+                        <li>Доработать бот под клиента, получить кейс и отзыв</li>
+                    
+                        <li>Запустить реферальную программу: скидка за рекомендацию коллеги</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+<div class="card" id="niche-3">
+    
+    <div class="niche-header">
+        <span class="rank-badge">3</span>
+        <h3>Математические тренажёры и образовательные боты</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">social</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Telegram-боты для репетиторов математики и онлайн-школ: тренажёры задач, автопроверка домашек, геймификация обучения, отчёты для родителей.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-amber" style="width: 60%"></div>
+            </div>
+            <span class="score-value score-amber">3</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">19</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        Жена — математик, можешь протестировать на ней и её учениках. Ты любишь проверять функции — идеально для образовательной логики. Рынок репетиторства огромен, спрос стабилен круглый год.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Бот-тренажёр для репетиторов: генерация задач, автопроверка, статистика прогресса, геймификация (баллы, рейтинги), отчёты родителям</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Репетиторы математики (50-150 тыс. ₽/мес)</li>
+                
+                    <li>Онлайн-школы и курсы подготовки к ЕГЭ/ОГЭ</li>
+                
+                    <li>Образовательные центры</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Прямая продажа через жену и её коллег</li>
+                
+                    <li>Telegram-каналы репетиторов</li>
+                
+                    <li>Сообщества преподавателей ВКонтакте</li>
+                
+                    <li>Партнёрство с онлайн-школами</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Репетиторы тратят много времени на проверку домашек</li>
+                
+                    <li>Родители хотят видеть прогресс ребёнка в цифрах</li>
+                
+                    <li>Геймификация повышает мотивацию учеников</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Сложность генерации уникальных задач</li>
+                
+                    <li>Конкуренция с готовыми платформами (Учи.ру, Яндекс.Учебник)</li>
+                
+                    <li>Нужна интеграция с базами задач</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Сделать MVP: 50 задач по алгебре 7 класс, автопроверка, статистика</li>
+                
+                    <li>Протестировать на 5 учениках жены — собрать обратную связь</li>
+                
+                    <li>Показать 3 репетиторам из окружения жены</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">300 000 ₽ за 3 месяца</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">40 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">2.5</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">0.6</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Средний чек 40 000 ₽ (бот + база задач + 3 месяца поддержки)</li>
+                
+                    <li>Цикл сделки 14-21 день</li>
+                
+                    <li>Конверсия 25% среди знакомых репетиторов, 8% в холодных каналах</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Разработать MVP: 50 задач, автопроверка, статистика ученика</li>
+                    
+                        <li>Протестировать на 5 учениках жены — собрать метрики (время решения, ошибки)</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Показать кейс 5 репетиторам из окружения жены — предложить за 30 000 ₽</li>
+                    
+                        <li>Написать пост в 2 Telegram-канала репетиторов с бесплатным доступом на неделю</li>
+                    
+                        <li>Собрать 8 контактов заинтересованных</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Провести 4 демо-звонка</li>
+                    
+                        <li>Закрыть 1 сделку на 35-40 тыс. ₽</li>
+                    
+                        <li>Доработать бот под клиента, добавить его задачи</li>
+                    
+                        <li>Получить отзыв и кейс для продвижения</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+<div class="card" id="niche-4">
+    
+    <div class="niche-header">
+        <span class="rank-badge">4</span>
+        <h3>Боты для локального сервиса и мастеров</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">requests</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Telegram-боты для мастеров (сантехники, электрики, ремонт техники): запись, калькулятор стоимости, напоминания, отзывы, геолокация ближайшего мастера.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-amber" style="width: 60%"></div>
+            </div>
+            <span class="score-value score-amber">3</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-red" style="width: 20%"></div>
+            </div>
+            <span class="score-value score-red">1</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">18</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        Простая ниша с быстрым циклом сделки. Мастера не разбираются в IT, но нуждаются в автоматизации. Можешь продавать через локальные чаты и сарафан. Низкий порог входа.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Бот для мастеров: запись клиентов, калькулятор стоимости услуг, напоминания, сбор отзывов, геолокация, автоответы на частые вопросы</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Частные мастера (сантехники, электрики, ремонт техники)</li>
+                
+                    <li>Небольшие сервисные компании (2-5 мастеров)</li>
+                
+                    <li>Мастера на дому (маникюр, массаж, репетиторы)</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Локальные Telegram-чаты районов</li>
+                
+                    <li>Авито Услуги — прямые сообщения мастерам</li>
+                
+                    <li>Сарафан через первых клиентов</li>
+                
+                    <li>Объявления в подъездах и на досках объявлений</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Мастера теряют заказы из-за пропущенных звонков</li>
+                
+                    <li>Клиенты хотят быстро узнать цену без звонка</li>
+                
+                    <li>Отзывы в боте повышают доверие и конверсию</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Низкая платёжеспособность аудитории (средний чек 15-25 тыс. ₽)</li>
+                
+                    <li>Мастера могут не видеть ценность автоматизации</li>
+                
+                    <li>Высокая конкуренция с бесплатными решениями</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Сделать шаблонный бот за 2 дня: запись, калькулятор, отзывы</li>
+                
+                    <li>Предложить 5 мастерам из локального чата за 10 000 ₽</li>
+                
+                    <li>Собрать 2 кейса и отзыва</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">300 000 ₽ за 3 месяца</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">20 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">5</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">1.25</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Средний чек 20 000 ₽ (бот + настройка + месяц поддержки)</li>
+                
+                    <li>Цикл сделки 5-7 дней</li>
+                
+                    <li>Конверсия 15% в локальных чатах, 30% при личной встрече</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Разработать шаблонный бот: запись, калькулятор (3 услуги), форма отзыва</li>
+                    
+                        <li>Протестировать на знакомом мастере (если есть) или на себе (услуга консультации по ботам)</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Написать 10 мастерам из Авито Услуги — предложить бот за 15 000 ₽</li>
+                    
+                        <li>Запустить пост в 3 локальных Telegram-чатах с кейсом</li>
+                    
+                        <li>Собрать 5 контактов заинтересованных</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Провести 5 встреч/звонков</li>
+                    
+                        <li>Закрыть 2 сделки на 15-20 тыс. ₽ каждая</li>
+                    
+                        <li>Доработать боты под клиентов, получить отзывы</li>
+                    
+                        <li>Запустить реферальную программу: скидка за рекомендацию</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+<div class="card" id="niche-5">
+    
+    <div class="niche-header">
+        <span class="rank-badge">5</span>
+        <h3>Консалтинг по оптимизации бизнес-процессов для малого бизнеса</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">interest</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Анализ и оптимизация процессов в малом бизнесе: аудит, карты процессов, автоматизация через боты и таблицы, внедрение простых CRM. Фокус на быстрый результат за 2-4 недели.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-amber" style="width: 60%"></div>
+            </div>
+            <span class="score-value score-amber">3</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">21</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        Ты любишь анализировать и оптимизировать — это твоя суперсила. Опыт в оптовых продажах даёт понимание процессов малого бизнеса. Можешь комбинировать консалтинг с разработкой ботов.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Пакет услуг: аудит процессов (2-3 дня), карта процессов, план оптимизации, внедрение автоматизации (боты, таблицы, простые CRM), обучение команды</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Малый бизнес с оборотом 1-5 млн ₽/мес (кафе, магазины, услуги)</li>
+                
+                    <li>Стартапы после первых продаж (хаос в процессах)</li>
+                
+                    <li>Семейный бизнес (как твой с саженцами)</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Прямые продажи знакомым предпринимателям</li>
+                
+                    <li>Кейс на своём бизнесе саженцев → показ результатов</li>
+                
+                    <li>Telegram-каналы предпринимателей</li>
+                
+                    <li>Партнёрство с бизнес-инкубаторами</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Малый бизнес теряет прибыль из-за хаоса в процессах</li>
+                
+                    <li>Владельцы не знают, с чего начать автоматизацию</li>
+                
+                    <li>Быстрый результат (2-4 недели) важнее глубокой трансформации</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Сложно масштабировать (продаёшь своё время)</li>
+                
+                    <li>Нужны кейсы и репутация для высоких чеков</li>
+                
+                    <li>Клиенты могут не внедрять рекомендации</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Провести бесплатный аудит своего бизнеса саженцев — задокументировать результаты</li>
+                
+                    <li>Предложить 3 знакомым предпринимателям аудит за 20 000 ₽</li>
+                
+                    <li>Опубликовать кейс в Telegram-канале предпринимателей</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">300 000 ₽ за 3 месяца</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">60 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">1.7</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">0.4</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Средний чек 60 000 ₽ (аудит + план + внедрение за 2-3 недели)</li>
+                
+                    <li>Цикл сделки 14-21 день</li>
+                
+                    <li>Конверсия 40% среди знакомых, 10% в холодных каналах</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Провести аудит своего бизнеса саженцев: карта процессов, узкие места</li>
+                    
+                        <li>Внедрить 2 улучшения (например, бот для заказов, таблица учёта)</li>
+                    
+                        <li>Задокументировать результаты: время экономии, рост конверсии</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Написать кейс с цифрами и скриншотами</li>
+                    
+                        <li>Предложить 5 знакомым предпринимателям бесплатный мини-аудит (30 мин)</li>
+                    
+                        <li>Собрать 3 заявки на платный аудит</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Провести 3 платных аудита по 20 000 ₽</li>
+                    
+                        <li>Предложить 2 клиентам полный пакет (аудит + внедрение) за 50-60 тыс. ₽</li>
+                    
+                        <li>Закрыть 1 сделку на полный пакет</li>
+                    
+                        <li>Получить отзыв и разрешение на публикацию кейса</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+
+
+
+
+
+
+<div class="section-title">&#128218; Ещё 5 направлений</div>
+
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">6</span>
+        <h3>Продажа саженцев редких сортов через подписку</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">combination</span>
+        
+    
+
+        
+        <span class="extra-score">17</span>
+        
+    </div>
+    
+    <div class="extra-desc">Подписка на саженцы: клиенты платят ежемесячно, получают редкие сорта по сезонам. Автоматизация через бот, доставка раз в квартал.</div>
+    
+    
+    <div class="extra-why">Твой опыт в саженцах + тренд на подписки. Можешь протестировать на существующей базе клиентов. Стабильный доход вне сезона.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Скорость 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Прибыль 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Порог 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Ресурс 5
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Реализуемость 3
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">7</span>
+        <h3>Онлайн-курсы по выращиванию растений для пенсионеров</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">social</span>
+        
+    
+
+        
+        <span class="extra-score">15</span>
+        
+    </div>
+    
+    <div class="extra-desc">Простые видеокурсы для пенсионеров: как вырастить огород на балконе, уход за комнатными растениями. Продажа через Telegram и WhatsApp.</div>
+    
+    
+    <div class="extra-why">Мама на пенсии — можешь протестировать на ней и её подругах. Огромная аудитория, низкая конкуренция в простом формате. Можешь записывать курсы с братом.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Скорость 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Прибыль 2
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Порог 2
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Ресурс 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Реализуемость 4
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">8</span>
+        <h3>Аренда саженцев для мероприятий и фотозон</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">experience</span>
+        
+    
+
+        
+        <span class="extra-score">17</span>
+        
+    </div>
+    
+    <div class="extra-desc">Аренда крупных растений и саженцев для свадеб, корпоративов, фотосессий. Доставка, установка, забор после мероприятия.</div>
+    
+    
+    <div class="extra-why">Используешь существующий товар (саженцы) в межсезонье. Высокая маржа, повторные заказы от event-агентств. Можешь начать с локального рынка.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Скорость 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Прибыль 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Порог 2
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Ресурс 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Реализуемость 3
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">9</span>
+        <h3>Telegram-боты для фитнес-тренеров и нутрициологов</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">interest</span>
+        
+    
+
+        
+        <span class="extra-score">16</span>
+        
+    </div>
+    
+    <div class="extra-desc">Боты для тренеров: планы тренировок, трекинг прогресса, напоминания, чат с тренером, оплата подписок.</div>
+    
+    
+    <div class="extra-why">Огромный рынок, тренеры активно ищут автоматизацию. Можешь продавать через Telegram-каналы фитнеса. Повторные продажи (обновления, новые функции).</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Скорость 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Прибыль 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Порог 2
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Ресурс 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Реализуемость 4
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">10</span>
+        <h3>Переработка отходов питомников в компост и удобрения</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">combination</span>
+        
+    
+
+        
+        <span class="extra-score">15</span>
+        
+    </div>
+    
+    <div class="extra-desc">Сбор органических отходов питомников (обрезки, листья), переработка в компост и биоудобрения, продажа садоводам и фермерам.</div>
+    
+    
+    <div class="extra-why">Тренд на экологию, питомники платят за вывоз отходов. Ты знаешь рынок, можешь договориться с коллегами. Низкая конкуренция.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Скорость 2
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Прибыль 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Порог 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Ресурс 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Реализуемость 2
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+<script>
+function toggleExpand(btn) {
+    var content = btn.nextElementSibling;
+    if (content.classList.contains('open')) {
+        content.classList.remove('open');
+        btn.textContent = 'Декомпозиция, цифры и план';
+    } else {
+        content.classList.add('open');
+        btn.textContent = 'Свернуть';
+    }
+}
+</script>
+
+</body>
+</html>

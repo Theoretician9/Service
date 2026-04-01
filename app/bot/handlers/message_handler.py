@@ -81,13 +81,56 @@ async def handle_message(
         # ① Smart extractor (best-effort) --------------------------------
         await _run_smart_extraction(telegram_id, text)
 
+        # ── Direct choice-field matching (no LLM needed) ──────────────
+        # If active dialog and next field is choice/multi_choice,
+        # try to match user's text directly to one of the options
+        dialog = await get_dialog(telegram_id)
+        if dialog and dialog.get("miniservice_id"):
+            ms_id = dialog["miniservice_id"]
+            collected = dialog.get("collected_fields", {})
+            next_field = get_next_question(ms_id, collected)
+
+            if next_field and next_field.get("type") in ("choice", "multi_choice", "yes_no"):
+                matched = _match_choice_field(text, next_field)
+                if matched is not None:
+                    field_id = next_field["id"]
+                    await update_dialog_field(telegram_id, field_id, matched)
+                    # Check if all done
+                    updated_dialog = await get_dialog(telegram_id)
+                    updated_collected = updated_dialog.get("collected_fields", {})
+                    if all_required_collected(ms_id, updated_collected):
+                        # Sync to DB and launch
+                        run_id = updated_dialog["run_id"]
+                        from app.database import async_session as _async_session
+                        async with _async_session() as _s:
+                            from sqlalchemy import update as sa_update
+                            await _s.execute(
+                                sa_update(MiniserviceRun)
+                                .where(MiniserviceRun.id == uuid.UUID(run_id))
+                                .values(collected_fields=updated_collected)
+                            )
+                            await _s.commit()
+                        run_miniservice_task.delay(run_id)
+                        await message.answer(f"✅ Записал: {matched}\n\n⏳ Все данные собраны. Анализирую...")
+                        return
+                    # Ask next question
+                    next_q = get_next_question(ms_id, updated_collected)
+                    if next_q:
+                        q_text = next_q.get("question", "Продолжим:")
+                        choices = next_q.get("choices", [])
+                        if choices:
+                            opts = "\n".join(f"  {i+1}. {c}" for i, c in enumerate(choices))
+                            q_text += f"\n\n{opts}"
+                        await message.answer(f"✅ Записал: {matched}\n\n{q_text}")
+                    else:
+                        await message.answer(f"✅ Записал: {matched}")
+                    await append_conversation(telegram_id, "user", text)
+                    return
+
         # ② Build OrchestratorContext -------------------------------------
         context = await build_context(telegram_id, db_session)
 
         # ③ Orchestrator decides (LLM) ------------------------------------
-        # For active runs: orchestrator acts as mentor — evaluates answer
-        # quality, decides whether to accept or probe deeper.
-        # Field saving happens in CONTINUE_COLLECTING dispatch, NOT here.
         decision = await decide(context, text)
         print(f"[DEBUG] decision: action={decision.action}, response={decision.response_text[:80] if decision.response_text else 'none'}", flush=True)
 
@@ -121,6 +164,56 @@ async def handle_message(
 # ---------------------------------------------------------------------------
 # Step helpers
 # ---------------------------------------------------------------------------
+
+
+def _match_choice_field(user_text: str, field: dict) -> str | None:
+    """Try to match user's text to a choice field option.
+
+    Returns matched option string, or None if no match.
+    Handles: exact match, case-insensitive, number selection, partial match.
+    """
+    choices = field.get("choices", [])
+    field_type = field.get("type", "")
+    text = user_text.strip().lower()
+
+    if not choices:
+        if field_type == "yes_no":
+            yes_words = {"да", "yes", "ага", "угу", "конечно", "разумеется", "+"}
+            no_words = {"нет", "no", "не", "нее", "неа", "-"}
+            if text in yes_words:
+                return "да"
+            if text in no_words:
+                return "нет"
+            return None
+        return None
+
+    # Exact match (case-insensitive)
+    for c in choices:
+        if text == c.lower():
+            return c
+
+    # Number selection: "1", "2", etc.
+    if text.isdigit():
+        idx = int(text) - 1
+        if 0 <= idx < len(choices):
+            return choices[idx]
+
+    # Partial/fuzzy match: user's text contains the choice or vice versa
+    for c in choices:
+        c_lower = c.lower()
+        if c_lower in text or text in c_lower:
+            return c
+
+    # For multi_choice: try to match multiple
+    if field_type == "multi_choice":
+        matched = []
+        for c in choices:
+            if c.lower() in text:
+                matched.append(c)
+        if matched:
+            return ", ".join(matched)
+
+    return None
 
 
 async def _run_smart_extraction(telegram_id: int, text: str) -> None:

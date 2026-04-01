@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дерево целей</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-warn {
+    border-left: 4px solid #f59e0b;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-red {
+    border-left: 4px solid #ef4444;
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.smart-goal {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+}
+.points-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+@media (max-width: 480px) {
+    .points-grid { grid-template-columns: 1fr; }
+}
+.point-card {
+    background: #1f1f23;
+    border-radius: 12px;
+    padding: 16px;
+}
+.point-card .label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+.point-a .label { color: #f59e0b; }
+.point-b .label { color: #22c55e; }
+.deadline-badge {
+    display: inline-block;
+    background: #27272a;
+    color: #e4e4e7;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 12px;
+}
+.motivation-text {
+    font-size: 16px;
+    font-style: italic;
+    color: #fbbf24;
+    line-height: 1.5;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    border-bottom: 1px solid #27272a;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.week-block {
+    margin-bottom: 16px;
+}
+.week-block h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.week-block li::before { background: #22c55e; }
+.metric-list li::before { background: #3b82f6; }
+.risk-list li::before { background: #ef4444; }
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Дерево целей</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+<div class="card card-accent">
+    <h2>📌 SMART-цель</h2>
+    <div class="smart-goal">Заработать 300 000₽ за 3 месяца межсезонья (декабрь-февраль) на разработке Telegram-ботов для малого бизнеса, получив минимум 6 заказов по 50 000₽ каждый</div>
+</div>
+
+<div class="points-grid">
+    <div class="point-card point-a">
+        <div class="label">📍 Точка А — где сейчас</div>
+        <div>Сезонный предприниматель с доходом 1 000 000₽ за активный период продажи саженцев, с полным отсутствием заработка в зимние месяцы и быстрым расходованием накоплений</div>
+    </div>
+    <div class="point-card point-b">
+        <div class="label">🏁 Точка Б — куда идём</div>
+        <div>Разработчик Telegram-ботов со стабильным доходом 100 000₽ ежемесячно в межсезонье, работающий удалённо и финансово защищённый круглый год</div>
+    </div>
+</div>
+
+
+<div style="text-align: center; padding: 8px 0;">
+    <span class="deadline-badge">📅 Срок: К концу этого года</span>
+</div>
+
+
+
+<div class="card card-warn">
+    <h2>💡 Настоящая мотивация</h2>
+    <div class="motivation-text">Быстро трачу миллион, заработанный в сезон, потом остаюсь без работы и без денег. Нужно для закрытия обычных потребностей плюс чтобы чувствовать себя лучше, не считая себя бездельником</div>
+</div>
+
+
+
+<div class="card">
+    <h2>🌳 Три уровня «Почему»</h2>
+    <ul>
+    
+        <li>Деньги заканчиваются быстрее, чем начинается новый сезон — нужен постоянный денежный поток</li>
+    
+        <li>Психологический дискомфорт от бездействия в межсезонье — нужна продуктивная занятость</li>
+    
+        <li>Отсутствие финансовой подушки на базовые расходы — нужна стабильность</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>🚧 Ограничения и что с ними делать</h2>
+    <ul class="risk-list">
+    
+        <li>Всего 3 месяца на заработок → Фокус на быстрых заказах: боты-визитки, боты-опросники, боты для приёма заявок (срок разработки 3-7 дней)</li>
+    
+        <li>Работа только из дома → Удалённые клиенты через Telegram, Авито Услуги, FL.ru, Kwork — без встреч</li>
+    
+        <li>Нет опыта в разработке ботов → Пройти 1 практический курс за 2 недели (например, на Stepik или YouTube), сделать 2-3 демо-бота для портфолио</li>
+    
+        <li>Нет клиентской базы → Использовать существующую аудиторию продавцов саженцев: предложить ботов для приёма заказов, каталогов, уведомлений</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-green">
+    <h2>📋 План действий</h2>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 1 (1-7 декабря)</h3>
+        <ul>
+        
+            <li>Пройти бесплатный курс по созданию Telegram-ботов на Python (Aiogram/python-telegram-bot) — 10 часов</li>
+        
+            <li>Создать 3 демо-бота: бот-визитка, бот-опросник, бот для приёма заявок с формой</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 2 (8-14 декабря)</h3>
+        <ul>
+        
+            <li>Разместить 5 объявлений на Авито Услуги, Kwork, FL.ru с ценой 15 000₽ за простого бота</li>
+        
+            <li>Написать 20 продавцам саженцев/товаров для дачи в Telegram с предложением бота для приёма заказов — конверсия 10% = 2 клиента</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 3 (15-21 декабря)</h3>
+        <ul>
+        
+            <li>Выполнить первые 2 заказа, получить отзывы и кейсы</li>
+        
+            <li>Поднять цену до 25 000₽, добавить в портфолио реальные работы</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 4 (22-31 декабря)</h3>
+        <ul>
+        
+            <li>Запустить таргет ВКонтакте на малый бизнес (цветочные магазины, доставка еды, мастера услуг) — бюджет 10 000₽</li>
+        
+            <li>Получить 2-3 новых заказа, выполнить до конца месяца</li>
+        
+        </ul>
+        
+    </div>
+    
+</div>
+
+
+
+<div class="card">
+    <h2>📊 Метрики успеха</h2>
+    <ul class="metric-list">
+    
+        <li>6 выполненных заказов за 3 месяца (2 заказа в месяц)</li>
+    
+        <li>Средний чек 50 000₽ (начальный 15 000₽, к концу периода 70 000₽)</li>
+    
+        <li>Общая выручка 300 000₽ за декабрь-февраль</li>
+    
+        <li>5 положительных отзывов на биржах фриланса</li>
+    
+        <li>Портфолио из 9 реальных ботов</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>⚠️ Риски</h2>
+    <ul class="risk-list">
+    
+        <li>Нет первых клиентов в декабре → Сделать 5 бесплатных ботов знакомым предпринимателям за отзыв, использовать как кейсы</li>
+    
+        <li>Не хватает технических навыков → Нанять ментора на Avito/FL.ru за 5 000₽ для разбора сложных задач</li>
+    
+        <li>Конкуренция на биржах фриланса → Использовать нишу &#39;боты для продавцов растений/дачных товаров&#39; — там конкурентов почти нет</li>
+    
+        <li>Клиент требует сложную интеграцию (CRM, платежи) → Отказываться от таких заказов первые 2 месяца, брать только простые боты на чистом Telegram API</li>
+    
+    </ul>
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+</body>
+</html>

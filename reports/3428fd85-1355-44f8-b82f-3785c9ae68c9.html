@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Выбор ниши — 10 направлений</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+
+/* Cards */
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-recommended {
+    border: 2px solid #6366f1;
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.15);
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+/* Recommendation badge */
+.rec-badge {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.rec-text {
+    font-size: 15px;
+    color: #e4e4e7;
+    line-height: 1.6;
+}
+
+/* Section titles */
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin: 28px 0 16px;
+    padding-left: 4px;
+}
+
+/* Rank badge */
+.rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #6366f1;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* Source tags */
+.source-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border: 1px solid;
+}
+.source-blue {
+    color: #60a5fa;
+    border-color: rgba(96, 165, 250, 0.3);
+    background: rgba(96, 165, 250, 0.1);
+}
+.source-green {
+    color: #4ade80;
+    border-color: rgba(74, 222, 128, 0.3);
+    background: rgba(74, 222, 128, 0.1);
+}
+.source-amber {
+    color: #fbbf24;
+    border-color: rgba(251, 191, 36, 0.3);
+    background: rgba(251, 191, 36, 0.1);
+}
+.source-purple {
+    color: #c084fc;
+    border-color: rgba(192, 132, 252, 0.3);
+    background: rgba(192, 132, 252, 0.1);
+}
+.source-white {
+    color: #e4e4e7;
+    border-color: rgba(228, 228, 231, 0.3);
+    background: rgba(228, 228, 231, 0.1);
+}
+
+/* Niche card header */
+.niche-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+.niche-header h3 {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0;
+}
+.niche-desc {
+    color: #a1a1aa;
+    font-size: 14px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+/* Score bars */
+.scores-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 20px;
+    margin-bottom: 8px;
+}
+@media (max-width: 480px) {
+    .scores-grid { grid-template-columns: 1fr; }
+}
+.score-row {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+}
+.score-label {
+    color: #71717a;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.score-bar-wrap {
+    flex: 0 0 60px;
+    height: 6px;
+    background: #27272a;
+    border-radius: 3px;
+    margin: 0 8px;
+    overflow: hidden;
+}
+.score-bar {
+    height: 100%;
+    border-radius: 3px;
+}
+.score-value {
+    flex: 0 0 18px;
+    text-align: right;
+    font-weight: 600;
+}
+.score-green { background: #22c55e; color: #22c55e; }
+.score-amber { background: #f59e0b; color: #f59e0b; }
+.score-red { background: #ef4444; color: #ef4444; }
+
+/* Total score */
+.total-score {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #27272a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.total-score .label {
+    font-size: 12px;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+.total-score .value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+}
+
+/* Expandable details */
+.expand-toggle {
+    display: block;
+    width: 100%;
+    background: #1f1f23;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    color: #a1a1aa;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 16px;
+    cursor: pointer;
+    text-align: left;
+    margin-top: 12px;
+    transition: background 0.2s, color 0.2s;
+}
+.expand-toggle:hover {
+    background: #27272a;
+    color: #e4e4e7;
+}
+.expand-toggle::after {
+    content: ' ▾';
+}
+.expand-content {
+    display: none;
+    margin-top: 12px;
+}
+.expand-content.open {
+    display: block;
+}
+
+/* Decomposition subsections */
+.decomp-section {
+    margin-bottom: 16px;
+}
+.decomp-section:last-child { margin-bottom: 0; }
+.decomp-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+.decomp-value {
+    font-size: 15px;
+    color: #e4e4e7;
+}
+
+/* Lists */
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 6px 0 6px 20px;
+    position: relative;
+    border-bottom: 1px solid #1f1f23;
+    font-size: 14px;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.risk-list li::before { background: #ef4444; }
+.channel-list li::before { background: #3b82f6; }
+.test-list li::before { background: #22c55e; }
+.hypothesis-list li::before { background: #f59e0b; }
+
+/* Numbers grid */
+.numbers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+@media (max-width: 480px) {
+    .numbers-grid { grid-template-columns: 1fr; }
+}
+.number-item {
+    background: #1f1f23;
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+}
+.number-item .num {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+}
+.number-item .num-label {
+    font-size: 11px;
+    color: #71717a;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Plan blocks */
+.plan-block {
+    margin-bottom: 14px;
+}
+.plan-block:last-child { margin-bottom: 0; }
+.plan-block h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 6px;
+    padding: 6px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.plan-block li::before { background: #22c55e; }
+
+/* Why fits section */
+.why-fits {
+    background: #1f1f23;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #e4e4e7;
+    border-left: 3px solid #22c55e;
+}
+
+/* Extra niches list */
+.extra-niche {
+    background: #18181b;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    border: 1px solid #27272a;
+}
+.extra-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+.extra-header h3 {
+    flex: 1;
+    min-width: 0;
+    font-size: 16px;
+    margin-bottom: 0;
+}
+.extra-score {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
+.extra-desc {
+    color: #a1a1aa;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+.extra-why {
+    color: #71717a;
+    font-size: 13px;
+    font-style: italic;
+}
+
+/* Inline score mini-bars for extra niches */
+.mini-scores {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+.mini-score {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #71717a;
+}
+.mini-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>&#128269; Выбор ниши — 10 направлений</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+
+
+<div class="card card-recommended">
+    <div class="rec-badge">&#9733; Рекомендация</div>
+    
+    
+    <div class="rec-text">Не удалось сформировать рекомендацию — попробуйте ещё раз</div>
+    
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+<script>
+function toggleExpand(btn) {
+    var content = btn.nextElementSibling;
+    if (content.classList.contains('open')) {
+        content.classList.remove('open');
+        btn.textContent = 'Декомпозиция, цифры и план';
+    } else {
+        content.classList.add('open');
+        btn.textContent = 'Свернуть';
+    }
+}
+</script>
+
+</body>
+</html>

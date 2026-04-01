@@ -202,7 +202,7 @@ async def _execute_miniservice(run_id: str) -> None:
                 _launch_next_in_chain(dep_chain, run)
 
         except Exception as exc:
-            # Mark run as failed
+            # Mark run as failed (will be overwritten on successful retry)
             run.status = "failed"
             run.error_message = str(exc)[:1000]
             run.completed_at = datetime.now(timezone.utc)
@@ -215,9 +215,8 @@ async def _execute_miniservice(run_id: str) -> None:
                 error=str(exc),
             )
 
-            # Send failure notification — credits NOT deducted
-            from app.workers.notification_tasks import send_failure_notification
-            send_failure_notification.delay(run_id)
+            # DON'T send failure notification here — Celery may retry successfully.
+            # Failure notification is sent from the task wrapper only on max_retries.
 
             # Re-raise for Celery retry logic
             raise
@@ -251,14 +250,20 @@ def _launch_next_in_chain(dep_chain: list, completed_run: MiniserviceRun) -> Non
     bind=True,
     max_retries=2,
     default_retry_delay=5,
-    soft_time_limit=110,
-    time_limit=120,
+    soft_time_limit=300,
+    time_limit=360,
 )
 def run_miniservice_task(self, run_id: str):
     """Execute miniservice processing in Celery worker."""
     try:
         logger.info("miniservice_task_started", run_id=run_id)
-        asyncio.run(_execute_miniservice(run_id))
+        # Create a fresh event loop each time to avoid "Event loop is closed"
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            loop.run_until_complete(_execute_miniservice(run_id))
+        finally:
+            loop.close()
     except LLMRateLimitError as exc:
         raise self.retry(exc=exc, countdown=15)
     except (LLMTimeoutError, LLMAPIError) as exc:
@@ -268,4 +273,7 @@ def run_miniservice_task(self, run_id: str):
         sentry_sdk.capture_exception(exc)
         if self.request.retries < self.max_retries:
             raise self.retry(exc=exc)
+        # Max retries reached — NOW send failure notification
         logger.error("miniservice_task_max_retries", run_id=run_id, error=str(exc))
+        from app.workers.notification_tasks import send_failure_notification
+        send_failure_notification.delay(run_id)

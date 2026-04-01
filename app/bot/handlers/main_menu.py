@@ -5,10 +5,13 @@ from aiogram.types import Message, CallbackQuery
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.bot.messages import CANCEL_CONFIRMED
+from app.config import settings
 from app.modules.users.models import User
 from app.modules.billing.service import BillingService
 from app.modules.projects.service import ProjectService
+from app.modules.artifacts.models import MiniserviceRun, Artifact
 from app.redis_client import redis
+from sqlalchemy import delete as sa_delete, select
 
 logger = structlog.get_logger()
 router = Router(name="main_menu")
@@ -20,6 +23,8 @@ HELP_TEXT = (
     "/projects — мои проекты\n"
     "/plan — информация о тарифе\n"
     "/cancel — отменить текущую операцию\n"
+    "/reset — сбросить свои данные и начать заново\n"
+    "/wipe_all — удалить ВСЕ данные (только для админов)\n"
     "/help — показать эту справку\n"
     "/delete_account — удалить аккаунт\n\n"
     "Или просто напиши, чем хочешь заняться, и я помогу."
@@ -115,6 +120,72 @@ async def cmd_projects(message: Message, user: User, db_session: AsyncSession):
         lines.append(f"{i}. {project.name}")
 
     await message.answer("\n".join(lines))
+
+
+@router.message(Command("wipe_all"))
+async def cmd_wipe_all(message: Message, user: User, db_session: AsyncSession):
+    """Admin command: wipe ALL users data. Full DB reset without migrations."""
+    if not settings.is_admin(user.telegram_id):
+        await message.answer("Эта команда доступна только администраторам.")
+        return
+
+    from app.modules.projects.models import Project
+    from app.modules.artifacts.models import ChangeProposal
+    from app.modules.analytics.models import AnalyticsEvent, BugReport
+    from app.modules.billing.models import UserPlan
+
+    await db_session.execute(sa_delete(ChangeProposal))
+    await db_session.execute(sa_delete(Artifact))
+    await db_session.execute(sa_delete(MiniserviceRun))
+    await db_session.execute(sa_delete(AnalyticsEvent))
+    await db_session.execute(sa_delete(BugReport))
+    await db_session.execute(sa_delete(Project))
+    await db_session.execute(sa_delete(UserPlan))
+    await db_session.execute(sa_delete(User))
+    await db_session.commit()
+
+    # Flush Redis
+    await redis.flushall()
+
+    await message.answer("💣 Все данные всех пользователей удалены. /start для начала.")
+    logger.info("admin_wipe_all", telegram_id=user.telegram_id)
+
+
+@router.message(Command("reset"))
+async def cmd_reset(message: Message, user: User, db_session: AsyncSession):
+    """Reset own data: wipe projects, artifacts, runs for current user."""
+
+    # Clear Redis
+    for key_prefix in ["dialog:", "active_project:", "conversation:", "extracted_fields:", "pending_confirmation:", "dep_chain:"]:
+        await redis.delete(f"{key_prefix}{user.telegram_id}")
+
+    # Delete artifacts, runs, projects from DB
+    from app.modules.projects.models import Project
+    from app.modules.analytics.models import AnalyticsEvent, BugReport
+
+    projects = await db_session.execute(select(Project.id).where(Project.user_id == user.id))
+    project_ids = [row[0] for row in projects.all()]
+
+    if project_ids:
+        await db_session.execute(sa_delete(Artifact).where(Artifact.project_id.in_(project_ids)))
+        await db_session.execute(sa_delete(MiniserviceRun).where(MiniserviceRun.project_id.in_(project_ids)))
+        from app.modules.artifacts.models import ChangeProposal
+        await db_session.execute(sa_delete(ChangeProposal).where(ChangeProposal.project_id.in_(project_ids)))
+        await db_session.execute(sa_delete(Project).where(Project.id.in_(project_ids)))
+
+    # Reset onboarding
+    user.onboarding_completed = False
+    user.onboarding_role = None
+    user.onboarding_primary_goal = None
+
+    # Reset credits to monthly limit
+    billing_service = BillingService(db_session)
+    plan = await billing_service.get_or_create_plan(user.id)
+    plan.credits_remaining = plan.credits_monthly_limit
+    await db_session.commit()
+
+    await message.answer(f"🔄 Все данные сброшены. Кредиты восстановлены: {plan.credits_remaining}/{plan.credits_monthly_limit}.\nНапиши /start чтобы начать заново.")
+    logger.info("admin_reset", telegram_id=user.telegram_id)
 
 
 @router.message(Command("delete_account"))

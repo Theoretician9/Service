@@ -17,6 +17,7 @@ ORCHESTRATOR_SYSTEM_PROMPT = """Ты — AI-ассистент для предп
 8. Отвечай структурированным JSON согласно схеме OrchestratorDecision.
 9. КОНТЕКСТ ИЗ ПЕРВОГО СООБЩЕНИЯ: в истории разговора может быть подробное описание бизнес-идеи от пользователя. Используй эти данные при задавании вопросов — не спрашивай то, что пользователь уже написал. Если он описал бизнес в первом сообщении, учитывай это во всех минисервисах.
 10. ТОН: дружелюбный, поддерживающий. Никогда не обвиняй пользователя. Принимай ответ → подтверждай → мягко веди к следующему шагу.
+13. ВАЛЮТА: пользователи из разных стран (Россия, Казахстан, Беларусь). Если человек называет сумму БЕЗ указания валюты (например "100 тысяч", "50к") — ОБЯЗАТЕЛЬНО уточни: "В какой валюте? Рубли (₽), тенге (₸), белорусские рубли (BYN)?" Запомни ответ и используй эту валюту во всех дальнейших расчётах и вопросах. Не додумывай валюту сам.
 11. СЛЕДУЮЩИЙ ШАГ ПОСЛЕ МИНИСЕРВИСА: если пользователь написал "давай", "да", "погнали", "начинай" после предложения следующего минисервиса — запусти ИМЕННО предложенный минисервис. Цепочка: goal_setting → niche_selection → supplier_search → sales_scripts. Проверяй какие артефакты уже есть в проекте и запускай СЛЕДУЮЩИЙ по цепочке, а НЕ повтор уже пройденного.
 12. НЕ ЗАПУСКАЙ повторно минисервис, артефакт которого уже есть в проекте, если пользователь явно не попросил "переделай цель" или подобное.
 
@@ -98,6 +99,23 @@ ORCHESTRATOR_SYSTEM_PROMPT = """Ты — AI-ассистент для предп
 
 7. ВАЖНО: при каждом принятии ответа отправляй field_id и field_value. Не накапливай данные "в голове" — каждое принятое поле должно быть сохранено через params.
 
+8. ВСЕ ПОЛЯ СОБРАНЫ:
+   Когда все обязательные поля заполнены (смотри "Собранные поля" в контексте):
+   - Если пользователь подтверждает ("да", "готов", "погнали", любое согласие):
+     → action: LAUNCH_MINISERVICE, params: {{"miniservice_id": "<текущий>", "ready_to_process": true}}
+   - Если пользователь просит ИСПРАВИТЬ что-то ("неправильно записал", "исправь", претензия на данные):
+     → action: CONTINUE_COLLECTING, params: {{"field_id": "<поле для исправления>", "field_value": "<новое значение>"}}
+     → response_text: подтверди исправление и снова спроси "Готов?"
+   - Если пользователь задаёт вопрос или пишет что-то не связанное:
+     → action: RESPOND, ответь на вопрос и напомни: "Все данные собраны, запускаю анализ?"
+
+9. CHOICE-ПОЛЯ (type=choice или multi_choice):
+   - Показывай ТОЛЬКО варианты из манифеста (они указаны в контексте active_run)
+   - НЕ выдумывай свои варианты
+   - Если пользователь ответил цифрой — это номер из ТВОЕГО ПОСЛЕДНЕГО списка, не число
+   - Если ответ не совпадает ни с одним вариантом — попроси уточнить
+   - Для text-полей — свободный ввод, без ограничений
+
 ## ФИЛЬТР РЕАЛЬНОСТИ ЦЕЛИ (goal_setting)
 
 При сборе полей point_b и goal_deadline ты ОБЯЗАН проверить цель на реальность.
@@ -159,6 +177,11 @@ def build_dynamic_context(context: OrchestratorContext) -> str:
     """
     sections: list[str] = []
 
+    # ── Current date ───────────────────────────────────────────────
+    from datetime import datetime
+    today = datetime.now().strftime("%d %B %Y")
+    sections.append(f"## Текущая дата\nСегодня: {today}")
+
     # ── User info ───────────────────────────────────────────────────
     sections.append(
         f"## Пользователь\n"
@@ -211,14 +234,49 @@ def build_dynamic_context(context: OrchestratorContext) -> str:
     # ── Active run ──────────────────────────────────────────────────
     if context.active_run:
         run = context.active_run
-        collected = ", ".join(run.collected_fields.keys()) if run.collected_fields else "пока ничего"
+        collected_keys = list(run.collected_fields.keys()) if run.collected_fields else []
+        collected_str = ", ".join(collected_keys) if collected_keys else "пока ничего"
+
+        # Show next question with choices if it's a choice field
+        from app.miniservices.engine import get_next_question, all_required_collected as _all_req
+        # List ALL expected fields with exact IDs
+        from app.miniservices.engine import load_manifest as _load_m
+        manifest = _load_m(run.miniservice_id)
+        all_fields = manifest.get("input_schema", {}).get("fields", [])
+        required_ids = [f["id"] for f in all_fields if f.get("required")]
+        missing_ids = [fid for fid in required_ids if fid not in collected_keys]
+
+        next_field = get_next_question(run.miniservice_id, run.collected_fields)
+        all_collected = _all_req(run.miniservice_id, run.collected_fields)
+        next_field_info = ""
+
+        # Show all expected field IDs so LLM uses correct names
+        fields_map = "\n".join(f"  - {f['id']} ({f.get('type','text')}): {f.get('question','')}" for f in all_fields if f.get("required"))
+        next_field_info = f"\n\nОжидаемые поля (ИСПОЛЬЗУЙ ТОЧНО ЭТИ field_id в params):\n{fields_map}"
+        next_field_info += f"\nЕщё не заполнены: {', '.join(missing_ids) if missing_ids else 'ВСЕ ЗАПОЛНЕНЫ'}"
+
+        if all_collected:
+            next_field_info += "\n\n⚠️ ВСЕ ОБЯЗАТЕЛЬНЫЕ ПОЛЯ СОБРАНЫ. Жди подтверждения от пользователя, потом LAUNCH_MINISERVICE с ready_to_process=true."
+        elif next_field:
+            field_type = next_field.get("type", "text")
+            question = next_field.get("question", "")
+            choices = next_field.get("choices", [])
+            next_field_info += (
+                f"\n\nСЛЕДУЮЩЕЕ ПОЛЕ: {next_field['id']} (тип: {field_type})\n"
+                f"Вопрос: {question}"
+            )
+            if choices:
+                choices_str = "\n".join(f"  {i+1}. {c}" for i, c in enumerate(choices))
+                next_field_info += f"\nВарианты (СТРОГО из манифеста):\n{choices_str}"
+
         sections.append(
             f"## Активный запуск (сбор данных)\n"
             f"Минисервис: {run.miniservice_id}\n"
             f"Шаг: {run.step}\n"
-            f"Собранные поля: {collected}\n"
+            f"Собранные поля: {collected_str}\n"
             f"Проект: {run.project_id}\n"
             f"Коротких ответов подряд: {run.short_answer_count}"
+            f"{next_field_info}"
         )
     else:
         sections.append("## Активный запуск\nНет активного запуска.")

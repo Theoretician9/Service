@@ -3,7 +3,7 @@
   "schema_version": "1.0",
   "name": "Выбор ниши",
   "emoji": "🔍",
-  "description": "Подберу 3 ниши с оценкой, числовой моделью и рекомендацией лучшей",
+  "description": "Подберу 10 ниш на основе твоего опыта, интересов и окружения",
   "credit_cost": 2,
   "available_on_free": true,
   "mode": "standard",
@@ -23,7 +23,7 @@
         "type": "choice",
         "required": true,
         "choices": ["Россия", "Казахстан", "Беларусь", "Весь СНГ"],
-        "question": "Где планируешь продавать?",
+        "question": "Где планируешь работать/продавать?",
         "hint": null,
         "extract_from_free_text": false
       },
@@ -33,17 +33,47 @@
         "type": "choice",
         "required": true,
         "choices": ["до 50 тыс.", "50–200 тыс.", "200–500 тыс.", "500 тыс.+"],
-        "question": "Стартовый капитал?",
+        "question": "Какой стартовый капитал готов вложить?",
         "hint": null,
         "extract_from_free_text": false
       },
       {
-        "id": "competencies",
-        "label": "Компетенции",
+        "id": "work_history",
+        "label": "Все работы за 10 лет",
+        "type": "text",
+        "required": true,
+        "max_length": 500,
+        "question": "Перечисли ВСЕ свои работы и занятия за последние 10 лет — даже те, которые кажутся неважными. Каждая работа, подработка, хобби которое приносило деньги. Это критически важно для подбора ниш.",
+        "hint": null,
+        "extract_from_free_text": true
+      },
+      {
+        "id": "environment_requests",
+        "label": "Запросы окружения",
         "type": "text",
         "required": true,
         "max_length": 300,
-        "question": "Что умеешь? В каких сферах есть опыт или интерес?",
+        "question": "Что тебя чаще всего просят сделать друзья, родственники, знакомые?",
+        "hint": null,
+        "extract_from_free_text": true
+      },
+      {
+        "id": "personal_interest",
+        "label": "Личный интерес",
+        "type": "text",
+        "required": true,
+        "max_length": 300,
+        "question": "Что тебе самому нравится делать? Где время летит незаметно?",
+        "hint": null,
+        "extract_from_free_text": true
+      },
+      {
+        "id": "social_capital",
+        "label": "Социальный капитал",
+        "type": "text",
+        "required": true,
+        "max_length": 300,
+        "question": "Чем занимаются люди вокруг тебя — друзья, родственники? Какой бизнес, какие профессии?",
         "hint": null,
         "extract_from_free_text": true
       },
@@ -64,74 +94,6 @@
         "required": true,
         "choices": ["Маркетплейсы", "Соцсети", "Telegram", "Офлайн", "Всё"],
         "question": "Предпочтительные каналы продаж?",
-        "hint": null,
-        "extract_from_free_text": false
-      },
-      {
-        "id": "target_margin",
-        "label": "Маржинальность",
-        "type": "choice",
-        "required": false,
-        "choices": ["до 20%", "20–40%", "40%+"],
-        "question": "Желаемая маржинальность?",
-        "hint": null,
-        "extract_from_free_text": false
-      },
-      {
-        "id": "operations_readiness",
-        "label": "Готовность к операционке",
-        "type": "yes_no",
-        "required": false,
-        "question": "Готов к высокой операционной нагрузке (склад, логистика)?",
-        "hint": null,
-        "extract_from_free_text": false
-      },
-      {
-        "id": "practical_experience",
-        "label": "Практический опыт",
-        "type": "text",
-        "required": true,
-        "max_length": 500,
-        "question": "На чём ты зарабатывал последние 5-10 лет? Какой опыт?",
-        "hint": null,
-        "extract_from_free_text": true
-      },
-      {
-        "id": "environment_requests",
-        "label": "Запросы окружения",
-        "type": "text",
-        "required": false,
-        "max_length": 300,
-        "question": "Что тебя чаще всего просят сделать друзья/знакомые?",
-        "hint": null,
-        "extract_from_free_text": true
-      },
-      {
-        "id": "personal_interest",
-        "label": "Личный интерес",
-        "type": "text",
-        "required": false,
-        "max_length": 300,
-        "question": "Что тебе самому нравится делать?",
-        "hint": null,
-        "extract_from_free_text": true
-      },
-      {
-        "id": "social_capital",
-        "label": "Социальный капитал",
-        "type": "text",
-        "required": false,
-        "max_length": 300,
-        "question": "Чем занимаются люди вокруг тебя? Есть ли полезные связи?",
-        "hint": null,
-        "extract_from_free_text": true
-      },
-      {
-        "id": "ai_interest",
-        "label": "Интерес к AI",
-        "type": "yes_no",
-        "required": false,
-        "question": "Интересны ли тебе нейросети, AI, автоматизация?",
         "hint": null,
         "extract_from_free_text": false
       },
@@ -160,23 +122,19 @@
   "question_plan": [
     {"field_id": "geography", "step": 1, "condition": null},
     {"field_id": "available_capital", "step": 2, "condition": null},
-    {"field_id": "competencies", "step": 3, "condition": null},
-    {"field_id": "practical_experience", "step": 4, "condition": null},
-    {"field_id": "environment_requests", "step": 5, "condition": null},
-    {"field_id": "personal_interest", "step": 6, "condition": null},
-    {"field_id": "social_capital", "step": 7, "condition": null},
-    {"field_id": "format", "step": 8, "condition": null},
-    {"field_id": "channels", "step": 9, "condition": null},
-    {"field_id": "available_time", "step": 10, "condition": null},
-    {"field_id": "priority", "step": 11, "condition": null},
-    {"field_id": "target_margin", "step": 12, "condition": null},
-    {"field_id": "operations_readiness", "step": 13, "condition": null},
-    {"field_id": "ai_interest", "step": 14, "condition": null}
+    {"field_id": "work_history", "step": 3, "condition": null},
+    {"field_id": "environment_requests", "step": 4, "condition": null},
+    {"field_id": "personal_interest", "step": 5, "condition": null},
+    {"field_id": "social_capital", "step": 6, "condition": null},
+    {"field_id": "format", "step": 7, "condition": null},
+    {"field_id": "channels", "step": 8, "condition": null},
+    {"field_id": "available_time", "step": 9, "condition": null},
+    {"field_id": "priority", "step": 10, "condition": null}
   ],
   "output_schema": {
     "version": "1.0",
     "artifact_type": "niche_table",
-    "fields": ["niches", "recommendation", "recommended_niche", "action_plan_14_days", "red_flags"]
+    "fields": ["top_niches", "extra_niches", "niches", "recommendation", "recommended_niche", "search_data_used", "assumptions"]
   },
   "project_fields_mapping": {
     "niche_candidates": "niches",
@@ -188,9 +146,9 @@
   },
   "test_cases": [
     {
-      "input": {"geography": "Россия", "available_capital": "50–200 тыс.", "competencies": "маркетинг", "practical_experience": "5 лет в digital-маркетинге", "format": ["Товары"], "channels": ["Маркетплейсы"], "available_time": "20-40 ч/нед", "priority": "Баланс"},
+      "input": {"geography": "Россия", "available_capital": "50–200 тыс.", "work_history": "5 лет в digital-маркетинге", "environment_requests": "настроить рекламу, сделать сайт", "personal_interest": "фотография, путешествия", "social_capital": "друзья в IT и ресторанном бизнесе", "format": ["Услуги"], "channels": ["Соцсети", "Telegram"], "available_time": "20-40 ч/нед", "priority": "Баланс"},
       "expected_artifact_type": "niche_table",
-      "expected_fields": ["niches", "recommendation", "recommended_niche"]
+      "expected_fields": ["top_niches", "extra_niches", "niches", "recommendation", "recommended_niche"]
     }
   ]
 }

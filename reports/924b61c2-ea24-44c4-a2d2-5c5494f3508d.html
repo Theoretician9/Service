@@ -1,0 +1,2389 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Выбор ниши — 10 направлений</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+
+/* Cards */
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-recommended {
+    border: 2px solid #6366f1;
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.15);
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+/* Recommendation badge */
+.rec-badge {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.rec-text {
+    font-size: 15px;
+    color: #e4e4e7;
+    line-height: 1.6;
+}
+
+/* Section titles */
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin: 28px 0 16px;
+    padding-left: 4px;
+}
+
+/* Rank badge */
+.rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #6366f1;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* Source tags */
+.source-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border: 1px solid;
+}
+.source-blue {
+    color: #60a5fa;
+    border-color: rgba(96, 165, 250, 0.3);
+    background: rgba(96, 165, 250, 0.1);
+}
+.source-green {
+    color: #4ade80;
+    border-color: rgba(74, 222, 128, 0.3);
+    background: rgba(74, 222, 128, 0.1);
+}
+.source-amber {
+    color: #fbbf24;
+    border-color: rgba(251, 191, 36, 0.3);
+    background: rgba(251, 191, 36, 0.1);
+}
+.source-purple {
+    color: #c084fc;
+    border-color: rgba(192, 132, 252, 0.3);
+    background: rgba(192, 132, 252, 0.1);
+}
+.source-white {
+    color: #e4e4e7;
+    border-color: rgba(228, 228, 231, 0.3);
+    background: rgba(228, 228, 231, 0.1);
+}
+
+/* Niche card header */
+.niche-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+.niche-header h3 {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0;
+}
+.niche-desc {
+    color: #a1a1aa;
+    font-size: 14px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+/* Score bars */
+.scores-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 20px;
+    margin-bottom: 8px;
+}
+@media (max-width: 480px) {
+    .scores-grid { grid-template-columns: 1fr; }
+}
+.score-row {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+}
+.score-label {
+    color: #71717a;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.score-bar-wrap {
+    flex: 0 0 60px;
+    height: 6px;
+    background: #27272a;
+    border-radius: 3px;
+    margin: 0 8px;
+    overflow: hidden;
+}
+.score-bar {
+    height: 100%;
+    border-radius: 3px;
+}
+.score-value {
+    flex: 0 0 18px;
+    text-align: right;
+    font-weight: 600;
+}
+.score-green { background: #22c55e; color: #22c55e; }
+.score-amber { background: #f59e0b; color: #f59e0b; }
+.score-red { background: #ef4444; color: #ef4444; }
+
+/* Total score */
+.total-score {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #27272a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.total-score .label {
+    font-size: 12px;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+.total-score .value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+}
+
+/* Expandable details */
+.expand-toggle {
+    display: block;
+    width: 100%;
+    background: #1f1f23;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    color: #a1a1aa;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 16px;
+    cursor: pointer;
+    text-align: left;
+    margin-top: 12px;
+    transition: background 0.2s, color 0.2s;
+}
+.expand-toggle:hover {
+    background: #27272a;
+    color: #e4e4e7;
+}
+.expand-toggle::after {
+    content: ' ▾';
+}
+.expand-content {
+    display: none;
+    margin-top: 12px;
+}
+.expand-content.open {
+    display: block;
+}
+
+/* Decomposition subsections */
+.decomp-section {
+    margin-bottom: 16px;
+}
+.decomp-section:last-child { margin-bottom: 0; }
+.decomp-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+.decomp-value {
+    font-size: 15px;
+    color: #e4e4e7;
+}
+
+/* Lists */
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 6px 0 6px 20px;
+    position: relative;
+    border-bottom: 1px solid #1f1f23;
+    font-size: 14px;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.risk-list li::before { background: #ef4444; }
+.channel-list li::before { background: #3b82f6; }
+.test-list li::before { background: #22c55e; }
+.hypothesis-list li::before { background: #f59e0b; }
+
+/* Numbers grid */
+.numbers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+@media (max-width: 480px) {
+    .numbers-grid { grid-template-columns: 1fr; }
+}
+.number-item {
+    background: #1f1f23;
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+}
+.number-item .num {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+}
+.number-item .num-label {
+    font-size: 11px;
+    color: #71717a;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Plan blocks */
+.plan-block {
+    margin-bottom: 14px;
+}
+.plan-block:last-child { margin-bottom: 0; }
+.plan-block h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 6px;
+    padding: 6px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.plan-block li::before { background: #22c55e; }
+
+/* Why fits section */
+.why-fits {
+    background: #1f1f23;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #e4e4e7;
+    border-left: 3px solid #22c55e;
+}
+
+/* Extra niches list */
+.extra-niche {
+    background: #18181b;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    border: 1px solid #27272a;
+}
+.extra-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+.extra-header h3 {
+    flex: 1;
+    min-width: 0;
+    font-size: 16px;
+    margin-bottom: 0;
+}
+.extra-score {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
+.extra-desc {
+    color: #a1a1aa;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+.extra-why {
+    color: #71717a;
+    font-size: 13px;
+    font-style: italic;
+}
+
+/* Inline score mini-bars for extra niches */
+.mini-scores {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+.mini-score {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #71717a;
+}
+.mini-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>&#128269; Выбор ниши — 10 направлений</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+
+
+<div class="card card-recommended">
+    <div class="rec-badge">&#9733; Рекомендация</div>
+    
+    <h3>Премиальные ниваки и стриженые сосны под ключ</h3>
+    
+    
+    <div class="rec-text">Ниша №1 (Премиальные ниваки и стриженые сосны) — лучший выбор, потому что ты УЖЕ в этой нише, знаешь поставщиков, умеешь организовать выкопку и логистику. Переход из опта в премиум — логичный шаг, не требующий освоения новой сферы. Брат-компаньон, бригады, каналы продаж — всё на месте. Главное — сфокусироваться на поиске 1-2 премиальных клиентов, а не распыляться на новые ниши. Ниша №3 (Вывоз деревьев) — запасной вариант для быстрого заработка в межсезонье.</div>
+    
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-title">&#127942; ТОП-5 ниш с декомпозицией</div>
+
+
+<div class="card card-recommended" id="niche-1">
+    
+    <div class="niche-header">
+        <span class="rank-badge">1</span>
+        <h3>Премиальные ниваки и стриженые сосны под ключ</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">experience</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Продажа готовых формованных деревьев (ниваки, стриженые сосны) состоятельным клиентам с полным циклом: поиск экземпляра, выкопка, доставка, посадка. 1-2 дерева за сезон по 500 000–1 000 000₽.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-red" style="width: 40%"></div>
+            </div>
+            <span class="score-value score-red">2</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">22</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        Уже работаешь в этой нише, знаешь поставщиков, умеешь организовать выкопку и логистику. Переход из опта в премиум — логичный шаг. Брат-компаньон, бригады на связи, каналы продаж есть.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Готовое формованное дерево (ниваки, стриженая сосна) с доставкой, посадкой, гарантией приживаемости</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Владельцы загородных домов премиум-класса в Алматы и Астане</li>
+                
+                    <li>Ландшафтные дизайнеры, работающие с VIP-клиентами</li>
+                
+                    <li>Застройщики элитных коттеджных посёлков</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Telegram-каналы по недвижимости и ландшафту</li>
+                
+                    <li>Прямые контакты с ландшафтными дизайнерами</li>
+                
+                    <li>Авито Premium с профессиональными фото</li>
+                
+                    <li>Сарафанное радио через первых клиентов</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Состоятельные клиенты готовы платить за уникальность и статус</li>
+                
+                    <li>Ландшафтные дизайнеры ищут эксклюзивные деревья для проектов</li>
+                
+                    <li>Спрос на премиум-озеленение растёт вместе со строительством элитного жилья</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Сезонность — основные продажи весна-осень</li>
+                
+                    <li>Конкуренция с питомниками, продающими готовые ниваки</li>
+                
+                    <li>Сложность логистики крупномеров</li>
+                
+                    <li>Зависимость от погоды и приживаемости</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Найти 3-5 экземпляров ниваки у фермеров, сделать профессиональные фото</li>
+                
+                    <li>Разместить объявления на Авито Premium с ценой 500 000₽+</li>
+                
+                    <li>Написать 10 ландшафтным дизайнерам в Telegram с предложением</li>
+                
+                    <li>Договориться с бригадой о выкопке и посадке под ключ</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">1 000 000 ₽/сезон</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">500 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">1</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">0.25</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Продажа 2 деревьев за сезон по 500 000₽</li>
+                
+                    <li>Себестоимость дерева + выкопка + доставка + посадка = 200 000₽</li>
+                
+                    <li>Маржа 60%</li>
+                
+                    <li>Сезон апрель-октябрь</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Найти 5 экземпляров ниваки/стриженых сосен у фермеров</li>
+                    
+                        <li>Сделать профессиональные фото с разных ракурсов</li>
+                    
+                        <li>Подготовить описание: возраст, высота, форма, цена</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Разместить объявления на Авито Premium (3-5 объявлений)</li>
+                    
+                        <li>Создать пост в Telegram с фото и ценой</li>
+                    
+                        <li>Написать 10 ландшафтным дизайнерам в Алматы/Астане</li>
+                    
+                        <li>Договориться с бригадой о выкопке и посадке</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Обработать входящие запросы, провести 3-5 консультаций</li>
+                    
+                        <li>Организовать показ дерева клиенту (если есть интерес)</li>
+                    
+                        <li>Подготовить коммерческое предложение с гарантией приживаемости</li>
+                    
+                        <li>Зафиксировать обратную связь: что спрашивают, какие возражения</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+<div class="card" id="niche-2">
+    
+    <div class="niche-header">
+        <span class="rank-badge">2</span>
+        <h3>Перепродажа подержанных автомобилей с предпродажной подготовкой</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">experience</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Закупка ликвидных б/у авто у частников, предпродажная подготовка (детейлинг, мелкий ремонт), перепродажа с наценкой 15-25%. Оборот 2-3 авто в месяц.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-amber" style="width: 60%"></div>
+            </div>
+            <span class="score-value score-amber">3</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">19</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        Опыт закупки у поставщиков, организации логистики, работы с оптовиками. Умеешь находить выгодные предложения и договариваться. Стартовый капитал 200-500 тыс. достаточен для старта.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Подержанный автомобиль в хорошем состоянии с предпродажной подготовкой, документами, гарантией</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Покупатели первого авто (бюджет 1-2 млн₽)</li>
+                
+                    <li>Семьи, меняющие авто на более новое</li>
+                
+                    <li>Таксисты, ищущие рабочую лошадку</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Kolesa.kz, Avtoelon.kz</li>
+                
+                    <li>Telegram-каналы по авто</li>
+                
+                    <li>Сарафанное радио</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Спрос на б/у авто стабильно высокий в Казахстане</li>
+                
+                    <li>Покупатели готовы платить за подготовленное авто с гарантией</li>
+                
+                    <li>Ликвидные модели (Toyota, Lexus, Hyundai) продаются за 1-2 недели</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Скрытые дефекты авто</li>
+                
+                    <li>Конкуренция с перекупщиками</li>
+                
+                    <li>Заморозка капитала в непроданных авто</li>
+                
+                    <li>Изменение курса валют</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Купить 1 ликвидное авто (Toyota Camry, Lexus RX) у частника</li>
+                
+                    <li>Сделать детейлинг, мелкий ремонт (до 50 тыс₽)</li>
+                
+                    <li>Выставить на продажу с наценкой 20%</li>
+                
+                    <li>Продать за 2-3 недели</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">150 000 ₽/мес</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">50 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">3</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">0.75</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Закупка авто за 1 000 000₽, продажа за 1 200 000₽</li>
+                
+                    <li>Предпродажная подготовка 50 000₽</li>
+                
+                    <li>Чистая прибыль 150 000₽ с авто</li>
+                
+                    <li>Оборот 1 авто за 2-3 недели</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Изучить рынок б/у авто в Казахстане: ликвидные модели, цены</li>
+                    
+                        <li>Найти 5-7 вариантов для закупки на Kolesa.kz</li>
+                    
+                        <li>Договориться с детейлинг-центром о сотрудничестве</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Купить 1 авто у частника (Toyota Camry 2015-2017)</li>
+                    
+                        <li>Провести диагностику, мелкий ремонт</li>
+                    
+                        <li>Сделать детейлинг, профессиональные фото</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Выставить авто на продажу на Kolesa.kz, Telegram</li>
+                    
+                        <li>Провести 5-10 показов</li>
+                    
+                        <li>Продать авто или зафиксировать обратную связь</li>
+                    
+                        <li>Рассчитать реальную прибыль и сроки оборота</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+<div class="card" id="niche-3">
+    
+    <div class="niche-header">
+        <span class="rank-badge">3</span>
+        <h3>Услуги по вывозу и утилизации деревьев с участков</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">experience</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Спил, выкорчевка, вывоз старых/аварийных деревьев с частных участков и коммерческих объектов. Работа с бригадами, техникой, утилизацией. Сезонный спрос весна-осень.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-amber" style="width: 60%"></div>
+            </div>
+            <span class="score-value score-amber">3</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-red" style="width: 40%"></div>
+            </div>
+            <span class="score-value score-red">2</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">20</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        Опыт организации выкопки деревьев, работы с бригадами, логистики. Знаешь, как работать с деревьями, есть контакты исполнителей. Можно начать без больших вложений.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Услуга по спилу, выкорчевке, вывозу деревьев с участка под ключ</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Владельцы частных домов с аварийными деревьями</li>
+                
+                    <li>Застройщики, расчищающие участки под строительство</li>
+                
+                    <li>Управляющие компании, ТСЖ</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Авито Услуги</li>
+                
+                    <li>Telegram-каналы по ремонту и стройке</li>
+                
+                    <li>Сарафанное радио</li>
+                
+                    <li>Прямые контакты с застройщиками</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Спрос на вывоз деревьев стабильный, особенно весной и осенью</li>
+                
+                    <li>Частники не хотят возиться с утилизацией сами</li>
+                
+                    <li>Застройщики ищут подрядчиков для расчистки участков</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Сезонность — зимой спрос падает</li>
+                
+                    <li>Конкуренция с местными бригадами</li>
+                
+                    <li>Зависимость от исполнителей</li>
+                
+                    <li>Риск повреждения имущества клиента</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Разместить объявление на Авито Услуги</li>
+                
+                    <li>Договориться с 2-3 бригадами о сотрудничестве</li>
+                
+                    <li>Получить 3-5 заявок, провести замеры</li>
+                
+                    <li>Выполнить 1-2 заказа, зафиксировать прибыль</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">150 000 ₽/мес</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">15 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">10</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">2.5</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Средний чек 50 000₽ за вывоз 2-3 деревьев</li>
+                
+                    <li>Оплата бригаде 35 000₽</li>
+                
+                    <li>Чистая прибыль 15 000₽ с заказа</li>
+                
+                    <li>10 заказов в месяц в сезон</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Изучить цены конкурентов на Авито</li>
+                    
+                        <li>Договориться с 2-3 бригадами о расценках</li>
+                    
+                        <li>Подготовить прайс-лист и описание услуг</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Разместить объявления на Авито Услуги (3-5 объявлений)</li>
+                    
+                        <li>Создать пост в Telegram-каналах по ремонту</li>
+                    
+                        <li>Получить первые заявки, провести замеры</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Выполнить 1-2 заказа с бригадой</li>
+                    
+                        <li>Зафиксировать время, затраты, прибыль</li>
+                    
+                        <li>Собрать отзывы клиентов</li>
+                    
+                        <li>Скорректировать цены и процессы</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+<div class="card" id="niche-4">
+    
+    <div class="niche-header">
+        <span class="rank-badge">4</span>
+        <h3>Консалтинг по переходу из опта в премиум-сегмент для питомников</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">combination</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Помощь владельцам питомников и оптовикам перейти из массового сегмента в премиум: поиск ниш, работа с клиентами, ценообразование, маркетинг. Консультации, аудиты, сопровождение.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-amber" style="width: 60%"></div>
+            </div>
+            <span class="score-value score-amber">3</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">19</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        Сам прошёл этот путь — из опта в премиум. Знаешь боли оптовиков, понимаешь, как искать премиальных клиентов. Можешь упаковать опыт в услугу.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Консалтинговая услуга: аудит бизнеса, стратегия перехода в премиум, сопровождение на 3-6 месяцев</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Владельцы питомников, работающие в опте</li>
+                
+                    <li>Оптовики саженцев, желающие увеличить маржу</li>
+                
+                    <li>Фермеры, выращивающие крупномеры</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Прямые контакты с питомниками</li>
+                
+                    <li>Telegram-каналы по садоводству и бизнесу</li>
+                
+                    <li>Кейс-стади в соцсетях</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Оптовики устали от низкой маржи и хотят перейти в премиум</li>
+                
+                    <li>Не знают, как найти премиальных клиентов и выстроить процессы</li>
+                
+                    <li>Готовы платить за экспертизу и сопровождение</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Сложно продать консалтинг без кейсов</li>
+                
+                    <li>Клиенты могут не внедрять рекомендации</li>
+                
+                    <li>Долгий цикл сделки</li>
+                
+                    <li>Конкуренция с бизнес-консультантами</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Написать кейс-стади своего перехода из опта в премиум</li>
+                
+                    <li>Опубликовать в Telegram, LinkedIn</li>
+                
+                    <li>Предложить 3-5 питомникам бесплатный аудит</li>
+                
+                    <li>Продать первую консультацию</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">150 000 ₽/мес</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">150 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">1</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">0.25</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Аудит + стратегия = 50 000₽</li>
+                
+                    <li>Сопровождение 3 месяца = 100 000₽</li>
+                
+                    <li>1 клиент в месяц</li>
+                
+                    <li>Себестоимость минимальная (время)</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Написать кейс-стади перехода из опта в премиум</li>
+                    
+                        <li>Подготовить презентацию услуги</li>
+                    
+                        <li>Составить список 20 потенциальных клиентов</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Опубликовать кейс в Telegram, LinkedIn</li>
+                    
+                        <li>Написать 10 питомникам с предложением бесплатного аудита</li>
+                    
+                        <li>Провести 2-3 аудита</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Подготовить коммерческие предложения по итогам аудитов</li>
+                    
+                        <li>Продать первую консультацию или сопровождение</li>
+                    
+                        <li>Зафиксировать обратную связь и возражения</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+<div class="card" id="niche-5">
+    
+    <div class="niche-header">
+        <span class="rank-badge">5</span>
+        <h3>Поиск и доставка редких растений на заказ</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">interest</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Услуга для ландшафтных дизайнеров и коллекционеров: поиск редких/экзотических растений у фермеров, питомников, частников. Организация доставки. Работа на комиссии или наценке.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-amber" style="width: 60%"></div>
+            </div>
+            <span class="score-value score-amber">3</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-red" style="width: 40%"></div>
+            </div>
+            <span class="score-value score-red">2</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">19</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        Любишь искать экземпляры деревьев, знаешь поставщиков, умеешь организовать логистику. Можно начать без вложений — работа на комиссии.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Услуга поиска и доставки редких растений на заказ: клиент называет растение, ты находишь и привозишь</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Ландшафтные дизайнеры, работающие над проектами</li>
+                
+                    <li>Коллекционеры редких растений</li>
+                
+                    <li>Владельцы ботанических садов, парков</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Прямые контакты с дизайнерами</li>
+                
+                    <li>Telegram-каналы по ландшафту</li>
+                
+                    <li>Сарафанное радио</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Дизайнеры тратят много времени на поиск редких растений</li>
+                
+                    <li>Готовы платить за экономию времени и гарантию качества</li>
+                
+                    <li>Коллекционеры ищут редкие экземпляры и не знают, где купить</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Сложность поиска редких растений</li>
+                
+                    <li>Риск гибели при транспортировке</li>
+                
+                    <li>Сезонность</li>
+                
+                    <li>Зависимость от поставщиков</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Написать 10 ландшафтным дизайнерам с предложением услуги</li>
+                
+                    <li>Получить 2-3 заказа на поиск растений</li>
+                
+                    <li>Найти растения, организовать доставку</li>
+                
+                    <li>Зафиксировать прибыль и время на выполнение</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">150 000 ₽/мес</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">15 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">10</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">2.5</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Средний заказ: растение за 50 000₽</li>
+                
+                    <li>Комиссия 30% = 15 000₽</li>
+                
+                    <li>10 заказов в месяц</li>
+                
+                    <li>Время на поиск и доставку 2-3 дня</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Составить список 20 ландшафтных дизайнеров в Алматы/Астане</li>
+                    
+                        <li>Подготовить описание услуги</li>
+                    
+                        <li>Написать 10 дизайнерам с предложением</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Получить 2-3 запроса на поиск растений</li>
+                    
+                        <li>Найти растения у поставщиков</li>
+                    
+                        <li>Согласовать цену и сроки доставки</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Организовать доставку растений</li>
+                    
+                        <li>Получить оплату</li>
+                    
+                        <li>Собрать отзывы клиентов</li>
+                    
+                        <li>Зафиксировать время и прибыль</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+
+
+
+
+
+
+<div class="section-title">&#128218; Ещё 5 направлений</div>
+
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">6</span>
+        <h3>Производство и продажа натуральной косметики из растительных экстрактов</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">combination</span>
+        
+    
+
+        
+        <span class="extra-score">16</span>
+        
+    </div>
+    
+    <div class="extra-desc">Создание линейки натуральной косметики (кремы, масла, мыло) из растительных экстрактов. Продажа через соцсети, маркетплейсы. Маржа 60-70%.</div>
+    
+    
+    <div class="extra-why">Тренд на натуральность растёт в Казахстане. Можно начать с малых партий, тестировать спрос. Стартовый капитал 200-500 тыс. достаточен для запуска.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Скорость 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Прибыль 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Порог 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Ресурс 2
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Реализуемость 3
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">7</span>
+        <h3>Услуги по установке и обслуживанию систем вторичной переработки</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">requests</span>
+        
+    
+
+        
+        <span class="extra-score">15</span>
+        
+    </div>
+    
+    <div class="extra-desc">Установка контейнеров для раздельного сбора мусора, обслуживание систем переработки для бизнеса и ТСЖ. Тренд на экологию в Казахстане.</div>
+    
+    
+    <div class="extra-why">Правительство Казахстана ставит цели по сокращению отходов. Спрос на услуги по переработке растёт. Можно работать с ТСЖ, бизнес-центрами.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Скорость 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Прибыль 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Порог 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Ресурс 2
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Реализуемость 3
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">8</span>
+        <h3>Онлайн-курсы по ландшафтному дизайну и уходу за растениями</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">interest</span>
+        
+    
+
+        
+        <span class="extra-score">15</span>
+        
+    </div>
+    
+    <div class="extra-desc">Создание и продажа онлайн-курсов для владельцев участков: как спланировать сад, выбрать растения, ухаживать. Продажа через Telegram, соцсети.</div>
+    
+    
+    <div class="extra-why">Опыт работы с растениями, знание рынка. Можно упаковать знания в курс. Низкий порог входа, пассивный доход после запуска.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Скорость 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Прибыль 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Порог 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Ресурс 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Реализуемость 3
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">9</span>
+        <h3>Аренда строительной техники для выкопки и посадки деревьев</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">experience</span>
+        
+    
+
+        
+        <span class="extra-score">16</span>
+        
+    </div>
+    
+    <div class="extra-desc">Покупка или аренда спецтехники (экскаватор, манипулятор) и сдача в аренду бригадам, питомникам, застройщикам. Сезонный бизнес.</div>
+    
+    
+    <div class="extra-why">Знаешь рынок, понимаешь потребности бригад. Спрос на технику стабильный в сезон. Можно начать с аренды техники и субаренды.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Скорость 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Прибыль 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Порог 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Ресурс 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Реализуемость 3
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">10</span>
+        <h3>Телемедицина: онлайн-консультации по уходу за растениями</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">combination</span>
+        
+    
+
+        
+        <span class="extra-score">13</span>
+        
+    </div>
+    
+    <div class="extra-desc">Платформа для онлайн-консультаций агрономов, садоводов. Клиенты присылают фото растений, получают рекомендации. Работа на комиссии с экспертов.</div>
+    
+    
+    <div class="extra-why">IT-сфера и телемедицина — прибыльные направления в Казахстане. Можно адаптировать модель для растениеводства. Низкий порог входа.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Скорость 2
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Прибыль 2
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Порог 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Ресурс 2
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Реализуемость 3
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+<script>
+function toggleExpand(btn) {
+    var content = btn.nextElementSibling;
+    if (content.classList.contains('open')) {
+        content.classList.remove('open');
+        btn.textContent = 'Декомпозиция, цифры и план';
+    } else {
+        content.classList.add('open');
+        btn.textContent = 'Свернуть';
+    }
+}
+</script>
+
+</body>
+</html>

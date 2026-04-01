@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дерево целей</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-warn {
+    border-left: 4px solid #f59e0b;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-red {
+    border-left: 4px solid #ef4444;
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.smart-goal {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+}
+.points-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+@media (max-width: 480px) {
+    .points-grid { grid-template-columns: 1fr; }
+}
+.point-card {
+    background: #1f1f23;
+    border-radius: 12px;
+    padding: 16px;
+}
+.point-card .label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+.point-a .label { color: #f59e0b; }
+.point-b .label { color: #22c55e; }
+.deadline-badge {
+    display: inline-block;
+    background: #27272a;
+    color: #e4e4e7;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 12px;
+}
+.motivation-text {
+    font-size: 16px;
+    font-style: italic;
+    color: #fbbf24;
+    line-height: 1.5;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    border-bottom: 1px solid #27272a;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.week-block {
+    margin-bottom: 16px;
+}
+.week-block h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.week-block li::before { background: #22c55e; }
+.metric-list li::before { background: #3b82f6; }
+.risk-list li::before { background: #ef4444; }
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Дерево целей</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+<div class="card card-accent">
+    <h2>📌 SMART-цель</h2>
+    <div class="smart-goal">Выйти на стабильный доход 150 000₽/месяц от разработки Telegram-ботов к январю 2027 года (9 месяцев), сохранив сезонный бизнес по продаже саженцев как дополнительный источник дохода</div>
+</div>
+
+<div class="points-grid">
+    <div class="point-card point-a">
+        <div class="label">📍 Точка А — где сейчас</div>
+        <div>Владелец сезонного бизнеса по оптовой продаже саженцев с доходом 1 000 000₽ за 3-4 месяца сезона, после чего следует период без работы и дохода с быстрой тратой накоплений</div>
+    </div>
+    <div class="point-card point-b">
+        <div class="label">🏁 Точка Б — куда идём</div>
+        <div>Разработчик Telegram-ботов с постоянным месячным доходом 150 000₽, работающий круглый год удалённо, с сезонным бизнесом саженцев как бонусным источником дохода</div>
+    </div>
+</div>
+
+
+<div style="text-align: center; padding: 8px 0;">
+    <span class="deadline-badge">📅 Срок: Начало 2027 года (8-9 месяцев от апреля 2026)</span>
+</div>
+
+
+
+<div class="card card-warn">
+    <h2>💡 Настоящая мотивация</h2>
+    <div class="motivation-text">Быстро трачу миллион заработанный в сезон, потом остаюсь без работы и без денег. Нужно закрывать обычные потребности круглый год и чувствовать себя в деле, не считать себя бездельником в межсезонье</div>
+</div>
+
+
+
+<div class="card">
+    <h2>🌳 Три уровня «Почему»</h2>
+    <ul>
+    
+        <li>Быстрая трата сезонного миллиона приводит к финансовой нестабильности</li>
+    
+        <li>Периоды без работы вызывают ощущение бездельничества и потери самоидентификации</li>
+    
+        <li>Отсутствие постоянного дохода не позволяет планировать жизнь и закрывать базовые потребности круглый год</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>🚧 Ограничения и что с ними делать</h2>
+    <ul class="risk-list">
+    
+        <li>Сезонность основного дохода (1 млн за 3-4 месяца) → использовать межсезонье (8-9 месяцев) для обучения разработке ботов и набора первых клиентов</li>
+    
+        <li>Отсутствие опыта в разработке ботов → пройти интенсивный курс по Python + aiogram/python-telegram-bot за 1-2 месяца, делать pet-проекты для портфолио</li>
+    
+        <li>Нет клиентской базы для ботов → использовать контакты из бизнеса саженцев (оптовики, поставщики) как первых потенциальных клиентов для автоматизации</li>
+    
+        <li>Быстрая трата денег → внедрить жёсткий бюджет: 70% от миллиона заморозить на депозите/инвестициях, 30% на жизнь до следующего сезона</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-green">
+    <h2>📋 План действий</h2>
+    
+    <div class="week-block">
+        
+        <h3>Апрель 2026 (месяц 1)</h3>
+        <ul>
+        
+            <li>Записаться и начать онлайн-курс по созданию Telegram-ботов (Python + aiogram), уделять 2-3 часа ежедневно</li>
+        
+            <li>Создать первый учебный бот (например, бот-калькулятор стоимости саженцев для своего бизнеса)</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Май 2026 (месяц 2)</h3>
+        <ul>
+        
+            <li>Завершить базовый курс, сделать 2-3 pet-проекта для портфолио (бот-опросник, бот для приёма заказов, бот-напоминалка)</li>
+        
+            <li>Создать профиль на FL.ru, Kwork, Telegram-каналах для фрилансеров, разместить первые услуги по цене 5 000-15 000₽ за бота</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Июнь-Июль 2026 (месяцы 3-4)</h3>
+        <ul>
+        
+            <li>Взять первые 3-5 заказов на простые боты (даже по низкой цене для отзывов и опыта), цель — заработать первые 30 000-50 000₽</li>
+        
+            <li>Предложить 5-10 знакомым предпринимателям из своего окружения создать бота бесплатно/за символическую плату в обмен на отзыв и кейс</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Август-Сентябрь 2026 (месяцы 5-6)</h3>
+        <ul>
+        
+            <li>Поднять цены до 20 000-40 000₽ за бота, брать 4-5 заказов в месяц, цель — выйти на 80 000-100 000₽/месяц</li>
+        
+            <li>Запустить таргетированную рекламу ВКонтакте/Telegram Ads на малый бизнес (бюджет 10 000₽/месяц) с предложением автоматизации через ботов</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Октябрь-Ноябрь 2026 (месяцы 7-8)</h3>
+        <ul>
+        
+            <li>Стабилизировать поток заказов: 4-5 ботов по 30 000-40 000₽, выйти на 120 000-150 000₽/месяц</li>
+        
+            <li>Создать собственный Telegram-канал с кейсами и автоворонку для привлечения клиентов без бирж</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Декабрь 2026 - Январь 2027 (месяцы 9-10)</h3>
+        <ul>
+        
+            <li>Достичь цели 150 000₽/месяц стабильно (5 ботов по 30 000₽ или 3-4 по 40 000-50 000₽)</li>
+        
+            <li>Нанять помощника/джуна для рутинных задач, освободить время для масштабирования или возврата к сезону саженцев как бонусу</li>
+        
+        </ul>
+        
+    </div>
+    
+</div>
+
+
+
+<div class="card">
+    <h2>📊 Метрики успеха</h2>
+    <ul class="metric-list">
+    
+        <li>Доход от разработки ботов: 150 000₽/месяц к январю 2027</li>
+    
+        <li>Количество выполненных проектов: минимум 30-40 ботов за 9 месяцев</li>
+    
+        <li>Средний чек за бота: 30 000-40 000₽ к концу срока</li>
+    
+        <li>Количество постоянных клиентов (повторные заказы): минимум 5-7</li>
+    
+        <li>Портфолио: 10+ кейсов с описанием и результатами</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>⚠️ Риски</h2>
+    <ul class="risk-list">
+    
+        <li>Не хватит технических навыков для сложных заказов → начать с простых ботов (опросники, приём заявок), постепенно усложнять, использовать готовые библиотеки и шаблоны</li>
+    
+        <li>Низкий спрос на ботов в начале → активно предлагать услуги в нишах малого бизнеса (доставка, салоны красоты, консультанты), где автоматизация востребована</li>
+    
+        <li>Конкуренция с дешёвыми исполнителями → делать упор на качество, поддержку после запуска и понимание бизнеса клиента (опыт предпринимателя — преимущество)</li>
+    
+        <li>Соблазн вернуться только к сезонному бизнесу → зафиксировать цель письменно, отслеживать прогресс еженедельно, найти ментора или комьюнити разработчиков для поддержки</li>
+    
+        <li>Быстрая трата денег из сезона до выхода на доход от ботов → сразу после сезона 2026 заморозить 700 000₽ на депозите, жить на 300 000₽ до стабильного дохода от ботов</li>
+    
+    </ul>
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+</body>
+</html>

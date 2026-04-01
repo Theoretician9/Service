@@ -1,0 +1,2353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Выбор ниши — 10 направлений</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+
+/* Cards */
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-recommended {
+    border: 2px solid #6366f1;
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.15);
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+/* Recommendation badge */
+.rec-badge {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.rec-text {
+    font-size: 15px;
+    color: #e4e4e7;
+    line-height: 1.6;
+}
+
+/* Section titles */
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin: 28px 0 16px;
+    padding-left: 4px;
+}
+
+/* Rank badge */
+.rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #6366f1;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* Source tags */
+.source-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border: 1px solid;
+}
+.source-blue {
+    color: #60a5fa;
+    border-color: rgba(96, 165, 250, 0.3);
+    background: rgba(96, 165, 250, 0.1);
+}
+.source-green {
+    color: #4ade80;
+    border-color: rgba(74, 222, 128, 0.3);
+    background: rgba(74, 222, 128, 0.1);
+}
+.source-amber {
+    color: #fbbf24;
+    border-color: rgba(251, 191, 36, 0.3);
+    background: rgba(251, 191, 36, 0.1);
+}
+.source-purple {
+    color: #c084fc;
+    border-color: rgba(192, 132, 252, 0.3);
+    background: rgba(192, 132, 252, 0.1);
+}
+.source-white {
+    color: #e4e4e7;
+    border-color: rgba(228, 228, 231, 0.3);
+    background: rgba(228, 228, 231, 0.1);
+}
+
+/* Niche card header */
+.niche-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+.niche-header h3 {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0;
+}
+.niche-desc {
+    color: #a1a1aa;
+    font-size: 14px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+/* Score bars */
+.scores-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 20px;
+    margin-bottom: 8px;
+}
+@media (max-width: 480px) {
+    .scores-grid { grid-template-columns: 1fr; }
+}
+.score-row {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+}
+.score-label {
+    color: #71717a;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.score-bar-wrap {
+    flex: 0 0 60px;
+    height: 6px;
+    background: #27272a;
+    border-radius: 3px;
+    margin: 0 8px;
+    overflow: hidden;
+}
+.score-bar {
+    height: 100%;
+    border-radius: 3px;
+}
+.score-value {
+    flex: 0 0 18px;
+    text-align: right;
+    font-weight: 600;
+}
+.score-green { background: #22c55e; color: #22c55e; }
+.score-amber { background: #f59e0b; color: #f59e0b; }
+.score-red { background: #ef4444; color: #ef4444; }
+
+/* Total score */
+.total-score {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #27272a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.total-score .label {
+    font-size: 12px;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+.total-score .value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+}
+
+/* Expandable details */
+.expand-toggle {
+    display: block;
+    width: 100%;
+    background: #1f1f23;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    color: #a1a1aa;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 16px;
+    cursor: pointer;
+    text-align: left;
+    margin-top: 12px;
+    transition: background 0.2s, color 0.2s;
+}
+.expand-toggle:hover {
+    background: #27272a;
+    color: #e4e4e7;
+}
+.expand-toggle::after {
+    content: ' ▾';
+}
+.expand-content {
+    display: none;
+    margin-top: 12px;
+}
+.expand-content.open {
+    display: block;
+}
+
+/* Decomposition subsections */
+.decomp-section {
+    margin-bottom: 16px;
+}
+.decomp-section:last-child { margin-bottom: 0; }
+.decomp-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+.decomp-value {
+    font-size: 15px;
+    color: #e4e4e7;
+}
+
+/* Lists */
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 6px 0 6px 20px;
+    position: relative;
+    border-bottom: 1px solid #1f1f23;
+    font-size: 14px;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.risk-list li::before { background: #ef4444; }
+.channel-list li::before { background: #3b82f6; }
+.test-list li::before { background: #22c55e; }
+.hypothesis-list li::before { background: #f59e0b; }
+
+/* Numbers grid */
+.numbers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+@media (max-width: 480px) {
+    .numbers-grid { grid-template-columns: 1fr; }
+}
+.number-item {
+    background: #1f1f23;
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+}
+.number-item .num {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+}
+.number-item .num-label {
+    font-size: 11px;
+    color: #71717a;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Plan blocks */
+.plan-block {
+    margin-bottom: 14px;
+}
+.plan-block:last-child { margin-bottom: 0; }
+.plan-block h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 6px;
+    padding: 6px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.plan-block li::before { background: #22c55e; }
+
+/* Why fits section */
+.why-fits {
+    background: #1f1f23;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #e4e4e7;
+    border-left: 3px solid #22c55e;
+}
+
+/* Extra niches list */
+.extra-niche {
+    background: #18181b;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    border: 1px solid #27272a;
+}
+.extra-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+.extra-header h3 {
+    flex: 1;
+    min-width: 0;
+    font-size: 16px;
+    margin-bottom: 0;
+}
+.extra-score {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
+.extra-desc {
+    color: #a1a1aa;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+.extra-why {
+    color: #71717a;
+    font-size: 13px;
+    font-style: italic;
+}
+
+/* Inline score mini-bars for extra niches */
+.mini-scores {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+.mini-score {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #71717a;
+}
+.mini-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>&#128269; Выбор ниши — 10 направлений</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+
+
+<div class="card card-recommended">
+    <div class="rec-badge">&#9733; Рекомендация</div>
+    
+    <h3>Закупочный консалтинг для малых строительных бригад</h3>
+    
+    
+    <div class="rec-text">Закупочный консалтинг для малых строительных бригад — лучший старт. Это прямое попадание в запросы твоих знакомых, не требует вложений в товар или склад, первые деньги можно получить через 3-7 дней. Ты уже знаешь бригады, у тебя есть контакты поставщиков, тесть в стройке — готовая сеть для старта. Риски минимальны: даже если бригада запомнит поставщика, ты уже заработал. Можно масштабировать в перепродажу (ниша 2) или аутсорс-снабжение (ниша 4) после первых успехов. Главное — скорость: позвонил 3 бригадам, предложил найти материалы дешевле, заработал первые 10-20 тыс за неделю.</div>
+    
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-title">&#127942; ТОП-5 ниш с декомпозицией</div>
+
+
+<div class="card card-recommended" id="niche-1">
+    
+    <div class="niche-header">
+        <span class="rank-badge">1</span>
+        <h3>Закупочный консалтинг для малых строительных бригад</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">requests</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Помощь бригадам и мелким подрядчикам в поиске стройматериалов на 15-30% дешевле через твои связи с поставщиками. Разовая услуга или абонентское обслуживание.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-amber" style="width: 60%"></div>
+            </div>
+            <span class="score-value score-amber">3</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-red" style="width: 40%"></div>
+            </div>
+            <span class="score-value score-red">2</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">20</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        Прямое попадание в запросы знакомых бригад. Есть контакты поставщиков, опыт переговоров, тесть в стройке — готовая сеть для старта. Не требует складов и вложений в товар.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Услуга поиска и организации закупок стройматериалов со скидкой 15-30% от розницы. Комиссия 5-10% от суммы сделки или фиксированная плата за подбор.</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Малые строительные бригады (3-7 человек)</li>
+                
+                    <li>Частные прорабы на объектах</li>
+                
+                    <li>Знакомые, делающие ремонт самостоятельно</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Прямые звонки знакомым бригадам</li>
+                
+                    <li>Рекомендации через тестя</li>
+                
+                    <li>Сарафан после первых успешных кейсов</li>
+                
+                    <li>Посты в строительных чатах Telegram</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Бригады переплачивают 20-40% покупая в розницу</li>
+                
+                    <li>Готовы платить 3-5 тыс за экономию 15-30 тыс на объекте</li>
+                
+                    <li>Нужна скорость — материалы нужны завтра, не через неделю</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Бригады могут запомнить поставщиков и пойти напрямую</li>
+                
+                    <li>Поставщики могут отказать в скидках при малых объёмах</li>
+                
+                    <li>Сезонность — зимой спрос падает</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Позвонить 3 знакомым бригадам, предложить найти материалы на текущий объект дешевле</li>
+                
+                    <li>Договориться с 2 поставщиками о комиссии за приведённых клиентов</li>
+                
+                    <li>Сделать 1-2 бесплатных подбора для кейсов и отзывов</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">50 000 ₽/мес</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">3 000-7 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">8-15</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">2-4</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Средний чек закупки бригады 50-100 тыс ₽</li>
+                
+                    <li>Комиссия 5-10% или фикс 3-7 тыс за подбор</li>
+                
+                    <li>Первые 2-3 клиента из знакомых, далее сарафан</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Составить список 10 знакомых бригад и прорабов</li>
+                    
+                        <li>Позвонить 5 из них, узнать где покупают сейчас и сколько переплачивают</li>
+                    
+                        <li>Связаться с 3 поставщиками, договориться о схеме работы (комиссия или скидка)</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Предложить 2 бригадам бесплатно найти материалы на текущий объект</li>
+                    
+                        <li>Оформить 1-2 пробные сделки, зафиксировать экономию клиента</li>
+                    
+                        <li>Попросить отзыв и рекомендацию другим бригадам</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Написать пост с кейсом в строительный чат Telegram</li>
+                    
+                        <li>Обзвонить ещё 5 бригад с конкретным предложением</li>
+                    
+                        <li>Оформить 2-3 платные сделки, протестировать ценообразование (комиссия vs фикс)</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+<div class="card" id="niche-2">
+    
+    <div class="niche-header">
+        <span class="rank-badge">2</span>
+        <h3>Перепродажа стройматериалов под заказ (дропшиппинг)</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">experience</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Продажа стройматериалов частникам и бригадам без склада. Принимаешь заказ, заказываешь у поставщика с наценкой 15-25%, доставка от поставщика.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-red" style="width: 40%"></div>
+            </div>
+            <span class="score-value score-red">2</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">20</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        Есть связи с поставщиками, знаешь цены и ассортимент. Не нужен склад и большие вложения. Можешь работать вечерами, принимая заказы онлайн.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Стройматериалы (цемент, кирпич, утеплители, сухие смеси) с доставкой. Наценка 15-25% к оптовой цене поставщика.</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Частники, строящие дома/дачи</li>
+                
+                    <li>Малые бригады без своих поставщиков</li>
+                
+                    <li>Знакомые через сарафан</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Авито объявления</li>
+                
+                    <li>Группы ВК/Telegram по стройке в регионе</li>
+                
+                    <li>Сарафан через знакомых</li>
+                
+                    <li>Яндекс Директ на локальные запросы</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Частники ищут где купить с доставкой, не хотят ехать на базу</li>
+                
+                    <li>Готовы платить +15-20% за удобство и скорость</li>
+                
+                    <li>Сезон апрель-октябрь — пик спроса</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Конкуренция с крупными базами</li>
+                
+                    <li>Поставщик может сорвать сроки доставки</li>
+                
+                    <li>Низкая маржа при малых объёмах</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Разместить 5 объявлений на Авито (цемент, кирпич, утеплитель)</li>
+                
+                    <li>Договориться с 2 поставщиками о дропшиппинг-схеме</li>
+                
+                    <li>Продать 2-3 позиции знакомым для отработки процесса</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">50 000 ₽/мес</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">5 000-10 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">6-10</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">2-3</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Средний чек 30-60 тыс ₽</li>
+                
+                    <li>Наценка 20% = 6-12 тыс прибыли с заказа</li>
+                
+                    <li>Первые клиенты из Авито и знакомых</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Выбрать 5 ходовых позиций (цемент, кирпич, утеплитель, сухие смеси, OSB)</li>
+                    
+                        <li>Узнать оптовые цены у 3 поставщиков, договориться о схеме работы</li>
+                    
+                        <li>Создать прайс с наценкой 20%</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Разместить 5 объявлений на Авито с фото и ценами</li>
+                    
+                        <li>Создать пост в 2-3 местных строительных группах ВК/Telegram</li>
+                    
+                        <li>Обработать первые 3-5 звонков, оформить 1-2 заказа</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Продать 2-3 заказа, отследить доставку и оплату</li>
+                    
+                        <li>Попросить отзывы, разместить их в объявлениях</li>
+                    
+                        <li>Запустить Яндекс Директ на 5 000 ₽ на локальные запросы</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+<div class="card" id="niche-3">
+    
+    <div class="niche-header">
+        <span class="rank-badge">3</span>
+        <h3>Агентство по подбору подрядчиков для ремонта</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">social</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Сводишь заказчиков ремонта с проверенными бригадами. Берёшь комиссию 5-10% от суммы договора или фикс 15-30 тыс за подбор и контроль.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-red" style="width: 40%"></div>
+            </div>
+            <span class="score-value score-red">2</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">18</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        Знаешь бригады, понимаешь стройку, умеешь договариваться. Люди постоянно ищут надёжных исполнителей — высокий спрос, низкий порог входа.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Подбор проверенной бригады под задачу заказчика + контроль качества работ. Комиссия 5-10% от суммы договора или фикс 15-30 тыс.</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Владельцы квартир, делающие ремонт</li>
+                
+                    <li>Собственники коммерческой недвижимости</li>
+                
+                    <li>Люди, купившие жильё в новостройке</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Авито услуги</li>
+                
+                    <li>Профи.ру</li>
+                
+                    <li>Группы ВК/Telegram по недвижимости</li>
+                
+                    <li>Сарафан через знакомых риелторов</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Люди боятся нарваться на плохих мастеров</li>
+                
+                    <li>Готовы платить за гарантию качества и контроль</li>
+                
+                    <li>Нужна помощь в оценке адекватности сметы</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Бригада может подвести по срокам или качеству</li>
+                
+                    <li>Заказчик может пойти к бригаде напрямую после знакомства</li>
+                
+                    <li>Конфликты между заказчиком и бригадой</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Разместить объявление на Авито и Профи.ру</li>
+                
+                    <li>Договориться с 3 бригадами о партнёрстве (комиссия за заказы)</li>
+                
+                    <li>Найти 1-2 заказчиков через знакомых или объявления</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">50 000 ₽/мес</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">15 000-30 000 ₽</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">2-4</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">1</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Средняя стоимость ремонта 300-500 тыс ₽</li>
+                
+                    <li>Комиссия 5-10% = 15-50 тыс с объекта</li>
+                
+                    <li>Цикл сделки 2-4 недели от заявки до старта работ</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Составить список 5 проверенных бригад, узнать их загрузку и цены</li>
+                    
+                        <li>Создать простое коммерческое предложение для заказчиков</li>
+                    
+                        <li>Разместить объявления на Авито и Профи.ру</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Обработать первые 5-10 заявок, провести 2-3 консультации</li>
+                    
+                        <li>Свести 1 заказчика с бригадой, оформить договор</li>
+                    
+                        <li>Попросить знакомых риелторов рекомендовать тебя клиентам</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Контролировать выполнение первого заказа</li>
+                    
+                        <li>Получить отзыв от заказчика</li>
+                    
+                        <li>Разместить кейс в группах ВК/Telegram, привлечь 2-3 новых заявки</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+<div class="card" id="niche-4">
+    
+    <div class="niche-header">
+        <span class="rank-badge">4</span>
+        <h3>Оптимизация закупок для бизнеса тестя (аутсорс-снабженец)</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">social</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Берёшь на аутсорс закупки для строительного бизнеса тестя. Оптимизируешь поставщиков, снижаешь затраты на 10-20%, получаешь % от экономии или фикс.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-red" style="width: 40%"></div>
+            </div>
+            <span class="score-value score-red">2</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 100%"></div>
+            </div>
+            <span class="score-value score-green">5</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">20</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        Тесть в стройке — готовый клиент. Ты знаешь поставщиков и умеешь торговаться. Можешь показать результат быстро и масштабировать на других предпринимателей.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Аудит текущих закупок + поиск новых поставщиков + переговоры о скидках. Оплата: 30-50% от достигнутой экономии или фикс 30-50 тыс/мес.</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Малый строительный бизнес (бригады 10-30 человек)</li>
+                
+                    <li>Подрядчики на госконтрактах</li>
+                
+                    <li>Производители стройматериалов</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Прямые продажи через тестя и его знакомых</li>
+                
+                    <li>Строительные форумы и чаты</li>
+                
+                    <li>LinkedIn/VK для B2B-контактов</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Малый бизнес переплачивает 15-30% из-за отсутствия времени на поиск</li>
+                
+                    <li>Готовы платить за результат (% от экономии)</li>
+                
+                    <li>Нужна регулярная оптимизация, не разовая</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Тесть может не захотеть раскрывать финансы</li>
+                
+                    <li>Сложно доказать экономию без доступа к учёту</li>
+                
+                    <li>Конкуренция с штатными снабженцами</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Предложить тестю бесплатный аудит закупок за месяц</li>
+                
+                    <li>Найти 2-3 позиции, где можно сэкономить 10-20%</li>
+                
+                    <li>Договориться об оплате 40% от экономии за 3 месяца</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">50 000 ₽/мес</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">30 000-50 000 ₽/мес с клиента</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">1-2 клиента на абонементе</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">—</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Закупки клиента 500 тыс - 2 млн ₽/мес</li>
+                
+                    <li>Экономия 10-20% = 50-400 тыс ₽/мес</li>
+                
+                    <li>Твоя доля 30-50% от экономии = 15-200 тыс/мес с клиента</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Поговорить с тестем, предложить бесплатный аудит закупок</li>
+                    
+                        <li>Получить данные о текущих поставщиках и ценах (3-5 основных позиций)</li>
+                    
+                        <li>Найти альтернативных поставщиков с лучшими условиями</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Провести переговоры с 2-3 новыми поставщиками</li>
+                    
+                        <li>Подготовить презентацию с расчётом экономии</li>
+                    
+                        <li>Договориться о пилоте на 1 месяц</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Оформить первую закупку через нового поставщика</li>
+                    
+                        <li>Зафиксировать экономию, показать результат тестю</li>
+                    
+                        <li>Обсудить условия долгосрочного сотрудничества</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+<div class="card" id="niche-5">
+    
+    <div class="niche-header">
+        <span class="rank-badge">5</span>
+        <h3>Telegram-канал с инсайдами по стройке и закупкам</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">combination</span>
+        
+    
+
+    </div>
+
+    
+    <div class="niche-desc">Канал с актуальными ценами на стройматериалы, обзорами поставщиков, лайфхаками по экономии. Монетизация: платная подписка, реклама, комиссии от поставщиков.</div>
+    
+
+    
+    
+    
+
+<div class="scores-grid">
+    
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Скорость к деньгам</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-amber" style="width: 60%"></div>
+            </div>
+            <span class="score-value score-amber">3</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Прибыль со сделки</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-amber" style="width: 60%"></div>
+            </div>
+            <span class="score-value score-amber">3</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Порог входа</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-red" style="width: 20%"></div>
+            </div>
+            <span class="score-value score-red">1</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Ресурс-фит</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+        
+        
+        <div class="score-row">
+            <span class="score-label">Реализуемость</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar score-green" style="width: 80%"></div>
+            </div>
+            <span class="score-value score-green">4</span>
+        </div>
+        
+    
+</div>
+
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">15</span>
+</div>
+
+
+
+    
+
+    
+    
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        Ты разбираешься в теме, знаешь инсайды, умеешь находить выгодные варианты. Можешь делать контент вечерами. Канал = актив, который работает на тебя 24/7.
+    </div>
+    
+
+    
+    
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">Telegram-канал с еженедельными обзорами цен, рейтингами поставщиков, кейсами экономии. Платная подписка 500-1000 ₽/мес или реклама поставщиков.</div>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
+                <ul>
+                
+                    <li>Прорабы и бригадиры</li>
+                
+                    <li>Частники, строящие дома</li>
+                
+                    <li>Малые строительные компании</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                
+                    <li>Строительные чаты Telegram</li>
+                
+                    <li>Группы ВК по стройке</li>
+                
+                    <li>Сарафан через знакомых</li>
+                
+                    <li>Реклама в смежных каналах</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                
+                    <li>Люди хотят знать где купить дешевле прямо сейчас</li>
+                
+                    <li>Готовы платить 500-1000 ₽/мес за инсайды</li>
+                
+                    <li>Поставщики готовы платить за рекламу целевой аудитории</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                
+                    <li>Долгий набор аудитории (3-6 месяцев до 500+ подписчиков)</li>
+                
+                    <li>Нужно регулярно создавать контент</li>
+                
+                    <li>Конкуренция с бесплатными источниками</li>
+                
+                </ul>
+            </div>
+            
+
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                
+                    <li>Создать канал, опубликовать 5 постов с ценами и кейсами</li>
+                
+                    <li>Пригласить 50 знакомых из стройки</li>
+                
+                    <li>Разместить рекламу в 2-3 смежных каналах</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                
+                <div class="number-item">
+                    <div class="num">50 000 ₽/мес</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">500-1000 ₽/подписчик или 10-20 тыс за рекламу</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">50-100 платных подписчиков или 3-5 рекламных интеграций</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                
+                
+                <div class="number-item">
+                    <div class="num">—</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                
+            </div>
+            
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                
+                    <li>Нужно 50-100 платных подписчиков по 500-1000 ₽/мес</li>
+                
+                    <li>Или 500+ бесплатных + реклама поставщиков 10-20 тыс/пост</li>
+                
+                    <li>Рост 50-100 подписчиков в месяц при активном продвижении</li>
+                
+                </ul>
+            </div>
+            
+        </div>
+        
+
+        
+        
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            
+                
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    
+                        <li>Создать Telegram-канал, оформить описание и аватар</li>
+                    
+                        <li>Написать 5 постов: обзор цен, кейс экономии, рейтинг поставщиков, лайфхак, FAQ</li>
+                    
+                        <li>Пригласить 30 знакомых из стройки</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    
+                        <li>Опубликовать ещё 3-5 постов</li>
+                    
+                        <li>Разместить рекламу в 2 смежных каналах (бюджет 5-10 тыс)</li>
+                    
+                        <li>Привлечь 50-100 подписчиков</li>
+                    
+                    </ul>
+                </div>
+                
+                
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    
+                        <li>Запустить платную подписку или предложить рекламу поставщику</li>
+                    
+                        <li>Собрать обратную связь от подписчиков</li>
+                    
+                        <li>Оценить конверсию в платных подписчиков (цель 5-10%)</li>
+                    
+                    </ul>
+                </div>
+                
+            
+        </div>
+        
+
+    </div>
+    
+</div>
+
+
+
+
+
+
+
+<div class="section-title">&#128218; Ещё 5 направлений</div>
+
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">6</span>
+        <h3>Аренда строительного инструмента</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">experience</span>
+        
+    
+
+        
+        <span class="extra-score">15</span>
+        
+    </div>
+    
+    <div class="extra-desc">Покупка ходового инструмента (перфораторы, болгарки, леса, опалубка) и сдача в аренду бригадам и частникам. Окупаемость 6-12 месяцев.</div>
+    
+    
+    <div class="extra-why">Бригады часто арендуют инструмент под конкретный объект. Ты знаешь что нужно, можешь сдавать знакомым. Пассивный доход после закупки.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Скорость 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Прибыль 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Порог 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Ресурс 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Реализуемость 3
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">7</span>
+        <h3>Онлайн-курс по экономии на стройматериалах</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">interest</span>
+        
+    
+
+        
+        <span class="extra-score">15</span>
+        
+    </div>
+    
+    <div class="extra-desc">Запись курса для частников: как выбрать поставщиков, торговаться, избежать обмана. Продажа через соцсети и Telegram. Цена 3-10 тыс ₽.</div>
+    
+    
+    <div class="extra-why">Ты эксперт в теме, люди постоянно спрашивают советы. Курс = масштабирование твоих знаний. Один раз записал — продаёшь бесконечно.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Скорость 2
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Прибыль 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Порог 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Ресурс 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Реализуемость 3
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">8</span>
+        <h3>Перепродажа б/у строительного инструмента</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">combination</span>
+        
+    
+
+        
+        <span class="extra-score">16</span>
+        
+    </div>
+    
+    <div class="extra-desc">Скупка б/у инструмента у бригад, ремонт/чистка, перепродажа частникам через Авито. Наценка 30-50%.</div>
+    
+    
+    <div class="extra-why">Частники ищут дешёвый инструмент для разовых работ. Бригады продают отработанный. Ты знаешь обе стороны и можешь свести.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Скорость 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Прибыль 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Порог 2
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Ресурс 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Реализуемость 4
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">9</span>
+        <h3>Организация вывоза строительного мусора</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">requests</span>
+        
+    
+
+        
+        <span class="extra-score">14</span>
+        
+    </div>
+    
+    <div class="extra-desc">Посредничество между бригадами/частниками и компаниями по вывозу мусора. Берёшь комиссию 10-20% или фикс 2-5 тыс за заказ.</div>
+    
+    
+    <div class="extra-why">Каждый ремонт = мусор. Люди не знают куда звонить, переплачивают. Ты можешь свести с проверенными компаниями и взять комиссию.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Скорость 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Прибыль 2
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Порог 1
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Ресурс 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Реализуемость 4
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">10</span>
+        <h3>Продажа остатков стройматериалов со скидкой</h3>
+        
+    
+        
+        
+            <span class="source-tag source-white">combination</span>
+        
+    
+
+        
+        <span class="extra-score">15</span>
+        
+    </div>
+    
+    <div class="extra-desc">Договариваешься с поставщиками о выкупе неликвидов и остатков со скидкой 30-50%, продаёшь частникам через Авито с наценкой 20-30%.</div>
+    
+    
+    <div class="extra-why">Поставщики хотят избавиться от залежавшегося товара. Частники ищут дешёвые материалы. Ты знаешь обе стороны и можешь свести.</div>
+    
+
+    
+    
+    <div class="mini-scores">
+        
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Скорость 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Прибыль 3
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-red"></span>
+                Порог 2
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-green"></span>
+                Ресурс 4
+            </span>
+            
+        
+            
+            
+            <span class="mini-score">
+                <span class="mini-dot score-amber"></span>
+                Реализуемость 3
+            </span>
+            
+        
+    </div>
+    
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+<script>
+function toggleExpand(btn) {
+    var content = btn.nextElementSibling;
+    if (content.classList.contains('open')) {
+        content.classList.remove('open');
+        btn.textContent = 'Декомпозиция, цифры и план';
+    } else {
+        content.classList.add('open');
+        btn.textContent = 'Свернуть';
+    }
+}
+</script>
+
+</body>
+</html>

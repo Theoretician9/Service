@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дерево целей</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-warn {
+    border-left: 4px solid #f59e0b;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-red {
+    border-left: 4px solid #ef4444;
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.smart-goal {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+}
+.points-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+@media (max-width: 480px) {
+    .points-grid { grid-template-columns: 1fr; }
+}
+.point-card {
+    background: #1f1f23;
+    border-radius: 12px;
+    padding: 16px;
+}
+.point-card .label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+.point-a .label { color: #f59e0b; }
+.point-b .label { color: #22c55e; }
+.deadline-badge {
+    display: inline-block;
+    background: #27272a;
+    color: #e4e4e7;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 12px;
+}
+.motivation-text {
+    font-size: 16px;
+    font-style: italic;
+    color: #fbbf24;
+    line-height: 1.5;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    border-bottom: 1px solid #27272a;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.week-block {
+    margin-bottom: 16px;
+}
+.week-block h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.week-block li::before { background: #22c55e; }
+.metric-list li::before { background: #3b82f6; }
+.risk-list li::before { background: #ef4444; }
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Дерево целей</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+<div class="card card-accent">
+    <h2>📌 SMART-цель</h2>
+    <div class="smart-goal">Увеличить доход с 100 000₽ до 150 000₽ в месяц за 6 месяцев через запуск параллельного бизнеса в сфере строительных материалов или услуг, используя существующие связи и экспертизу в закупках</div>
+</div>
+
+<div class="points-grid">
+    <div class="point-card point-a">
+        <div class="label">📍 Точка А — где сейчас</div>
+        <div>Менеджер по закупкам в строительной компании с 16-летним опытом в строительной отрасли, доход 100 000₽/мес, кредитная нагрузка 25 000₽/мес, семья из 4 человек, ощущение карьерного тупика в 38 лет</div>
+    </div>
+    <div class="point-card point-b">
+        <div class="label">🏁 Точка Б — куда идём</div>
+        <div>Владелец собственного бизнеса с совокупным доходом 150-200 000₽/мес, работающий параллельно с основной занятостью первые 6-12 месяцев с перспективой полного перехода на собственное дело через 12-18 месяцев</div>
+    </div>
+</div>
+
+
+<div style="text-align: center; padding: 8px 0;">
+    <span class="deadline-badge">📅 Срок: 6 месяцев</span>
+</div>
+
+
+
+<div class="card card-warn">
+    <h2>💡 Настоящая мотивация</h2>
+    <div class="motivation-text">Устал чувствовать что время уходит. 38 лет, дети растут, сижу на одной зарплате. Хочу чтобы семья жила лучше, не считать каждую копейку. Хочу доказать себе что могу не только по найму — нужна свобода выбора и уверенность в себе</div>
+</div>
+
+
+
+<div class="card">
+    <h2>🌳 Три уровня «Почему»</h2>
+    <ul>
+    
+        <li>Финансовая стабильность семьи — перестать считать каждую копейку при доходе 100к с кредитом 25к и двумя детьми</li>
+    
+        <li>Самореализация — доказать себе способность зарабатывать вне найма после 16 лет работы на других</li>
+    
+        <li>Время — в 38 лет с растущими детьми острое ощущение что годы уходят без изменений</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>🚧 Ограничения и что с ними делать</h2>
+    <ul class="risk-list">
+    
+        <li>Кредит 25к/мес + семья — нельзя бросать работу → Запуск бизнеса параллельно, минимум 4-6 месяцев тестирования до увольнения</li>
+    
+        <li>Нет стартового капитала (не указано) → Бизнес на связях: посредничество в поставках стройматериалов, консалтинг по закупкам для малых подрядчиков, комиссионные схемы</li>
+    
+        <li>Ограничено время (работа 5/2) → Бизнес на выходных/вечерах: работа с 2-3 клиентами, автоматизация через WhatsApp/Telegram, делегирование логистики</li>
+    
+        <li>16 лет опыта только в найме — нет навыков продаж → Первые 2 недели: обучение холодным звонкам, изучение CRM, тестовые звонки 10 бывшим коллегам/поставщикам</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-green">
+    <h2>📋 План действий</h2>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 1-2</h3>
+        <ul>
+        
+            <li>Составить список 50 контактов из 16 лет работы: поставщики, подрядчики, прорабы. Выделить 10 с кем лучшие отношения</li>
+        
+            <li>Определить нишу: посредничество (комиссия 3-5% с поставок), консалтинг по оптимизации закупок (20-30к за проект), мелкооптовая торговля через знакомых прорабов</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 3-4</h3>
+        <ul>
+        
+            <li>Провести 10 звонков/встреч: предложить услугу поиска стройматериалов на 5-7% дешевле через своих поставщиков. Цель: 2 пилотных заказа</li>
+        
+            <li>Зарегистрировать ИП (если оборот &gt;200к планируется), открыть расчётный счёт в Тинькофф/Сбере (0₽ обслуживание первые месяцы)</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 5-8</h3>
+        <ul>
+        
+            <li>Закрыть 2-3 сделки на комиссии: например, поставка 500к материалов = 15-25к чистыми. Отработать схему работы</li>
+        
+            <li>Запустить сарафан: попросить клиентов рекомендовать 2-3 знакомым подрядчикам. Цель: +3 новых контакта</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 9-12</h3>
+        <ul>
+        
+            <li>Выйти на 3-5 активных клиентов с ежемесячными заказами. Доход цель: 30-50к/мес от бизнеса</li>
+        
+            <li>Оптимизировать процессы: шаблоны смет, автоматические расчёты в Excel, чат-бот для приёма заявок</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 13-16</h3>
+        <ul>
+        
+            <li>Масштабирование: нанять помощника на проценты (студент/знакомый) для обработки рутины — звонки, документы</li>
+        
+            <li>Тестировать рекламу: таргет ВК на прорабов/мелких застройщиков в регионе, бюджет 10к, цель 5-7 заявок</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 17-24</h3>
+        <ul>
+        
+            <li>Стабилизировать доход 50-70к/мес от бизнеса. Общий доход: 150-170к (100к работа + 50-70к бизнес)</li>
+        
+            <li>Принять решение: продолжать параллельно или через 2-3 месяца уходить с найма при достижении 100к чистыми от бизнеса</li>
+        
+        </ul>
+        
+    </div>
+    
+</div>
+
+
+
+<div class="card">
+    <h2>📊 Метрики успеха</h2>
+    <ul class="metric-list">
+    
+        <li>Месяц 1: 2 пилотных сделки закрыты, доход от бизнеса 10-15 000₽</li>
+    
+        <li>Месяц 2: 3-4 активных клиента, доход 25-35 000₽</li>
+    
+        <li>Месяц 3: 5-7 клиентов, доход 40-50 000₽, общий доход 140-150 000₽</li>
+    
+        <li>Месяц 6: 8-12 клиентов, доход от бизнеса 60-80 000₽, общий доход 160-180 000₽, решение о переходе на полную занятость</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>⚠️ Риски</h2>
+    <ul class="risk-list">
+    
+        <li>Конфликт интересов с работодателем — работать с клиентами вне географии/ниши текущей компании, не переманивать прямых поставщиков первые 6 месяцев</li>
+    
+        <li>Нехватка времени на семью — выделить жёсткие рамки: бизнес только суббота (6 часов) + 3 вечера по 2 часа, воскресенье — семья</li>
+    
+        <li>Первые месяцы доход нестабилен — не трогать кредитный платёж, формировать подушку: откладывать 50% дохода от бизнеса первые 3 месяца</li>
+    
+        <li>Клиенты не платят вовремя — работать по предоплате 30-50%, с новыми клиентами только 100% предоплата первые 2 сделки</li>
+    
+        <li>Выгорание от двух работ — через 3 месяца нанять помощника на 10-15к/мес для рутины, освободить 30% времени</li>
+    
+    </ul>
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+</body>
+</html>

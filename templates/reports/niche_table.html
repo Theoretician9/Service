@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Выбор ниши и декомпозиция</title>
+<title>Выбор ниши — 10 направлений</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -15,6 +15,8 @@ body {
     max-width: 720px;
     margin: 0 auto;
 }
+
+/* Header */
 .header {
     text-align: center;
     padding: 32px 0 24px;
@@ -29,6 +31,8 @@ body {
     color: #71717a;
     font-size: 14px;
 }
+
+/* Cards */
 .card {
     background: #18181b;
     border-radius: 16px;
@@ -39,14 +43,8 @@ body {
 .card-accent {
     border-left: 4px solid #6366f1;
 }
-.card-warn {
-    border-left: 4px solid #f59e0b;
-}
 .card-green {
     border-left: 4px solid #22c55e;
-}
-.card-red {
-    border-left: 4px solid #ef4444;
 }
 .card-recommended {
     border: 2px solid #6366f1;
@@ -67,75 +65,119 @@ body {
     margin-bottom: 8px;
 }
 
-/* Context card */
-.smart-goal {
-    font-size: 20px;
+/* Recommendation badge */
+.rec-badge {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
     font-weight: 600;
-    color: #fff;
-    line-height: 1.4;
-    margin-bottom: 16px;
-}
-.profile-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-}
-@media (max-width: 480px) {
-    .profile-grid { grid-template-columns: 1fr; }
-}
-.profile-item {
-    background: #1f1f23;
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 13px;
-}
-.profile-item .label {
-    color: #71717a;
-    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 2px;
+    margin-bottom: 12px;
 }
-.profile-item .value {
+.rec-text {
+    font-size: 15px;
     color: #e4e4e7;
-    font-weight: 500;
+    line-height: 1.6;
 }
 
-/* Niche cards grid */
-.niches-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 16px;
+/* Section titles */
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin: 28px 0 16px;
+    padding-left: 4px;
 }
-@media (max-width: 600px) {
-    .niches-grid { grid-template-columns: 1fr; }
+
+/* Rank badge */
+.rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #6366f1;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
 }
-.niche-card {
-    background: #18181b;
-    border-radius: 16px;
-    padding: 20px;
-    border: 1px solid #27272a;
+
+/* Source tags */
+.source-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border: 1px solid;
+}
+.source-blue {
+    color: #60a5fa;
+    border-color: rgba(96, 165, 250, 0.3);
+    background: rgba(96, 165, 250, 0.1);
+}
+.source-green {
+    color: #4ade80;
+    border-color: rgba(74, 222, 128, 0.3);
+    background: rgba(74, 222, 128, 0.1);
+}
+.source-amber {
+    color: #fbbf24;
+    border-color: rgba(251, 191, 36, 0.3);
+    background: rgba(251, 191, 36, 0.1);
+}
+.source-purple {
+    color: #c084fc;
+    border-color: rgba(192, 132, 252, 0.3);
+    background: rgba(192, 132, 252, 0.1);
+}
+.source-white {
+    color: #e4e4e7;
+    border-color: rgba(228, 228, 231, 0.3);
+    background: rgba(228, 228, 231, 0.1);
+}
+
+/* Niche card header */
+.niche-header {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
 }
-.niche-card h3 {
-    font-size: 16px;
-    margin-bottom: 6px;
+.niche-header h3 {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0;
 }
 .niche-desc {
     color: #a1a1aa;
-    font-size: 13px;
-    margin-bottom: 14px;
-    flex-grow: 1;
+    font-size: 14px;
+    margin-bottom: 16px;
+    line-height: 1.5;
 }
 
 /* Score bars */
+.scores-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 20px;
+    margin-bottom: 8px;
+}
+@media (max-width: 480px) {
+    .scores-grid { grid-template-columns: 1fr; }
+}
 .score-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 6px;
     font-size: 12px;
 }
 .score-label {
@@ -147,7 +189,7 @@ body {
     text-overflow: ellipsis;
 }
 .score-bar-wrap {
-    flex: 0 0 80px;
+    flex: 0 0 60px;
     height: 6px;
     background: #27272a;
     border-radius: 3px;
@@ -157,10 +199,9 @@ body {
 .score-bar {
     height: 100%;
     border-radius: 3px;
-    transition: width 0.3s ease;
 }
 .score-value {
-    flex: 0 0 20px;
+    flex: 0 0 18px;
     text-align: right;
     font-weight: 600;
 }
@@ -185,74 +226,43 @@ body {
     letter-spacing: 0.5px;
 }
 .total-score .value {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 700;
     color: #fff;
 }
 
-/* Recommendation card */
-.rec-badge {
-    display: inline-block;
-    background: rgba(99, 102, 241, 0.15);
-    color: #818cf8;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 12px;
-}
-.rec-text {
-    font-size: 15px;
-    color: #e4e4e7;
-    line-height: 1.6;
-}
-.why-not-item {
-    padding: 8px 0 8px 24px;
-    position: relative;
-    border-bottom: 1px solid #27272a;
-    font-size: 14px;
+/* Expandable details */
+.expand-toggle {
+    display: block;
+    width: 100%;
+    background: #1f1f23;
+    border: 1px solid #27272a;
+    border-radius: 8px;
     color: #a1a1aa;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 16px;
+    cursor: pointer;
+    text-align: left;
+    margin-top: 12px;
+    transition: background 0.2s, color 0.2s;
 }
-.why-not-item:last-child { border-bottom: none; }
-.why-not-item::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 16px;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #71717a;
+.expand-toggle:hover {
+    background: #27272a;
+    color: #e4e4e7;
+}
+.expand-toggle::after {
+    content: ' ▾';
+}
+.expand-content {
+    display: none;
+    margin-top: 12px;
+}
+.expand-content.open {
+    display: block;
 }
 
-/* Lists */
-ul {
-    list-style: none;
-    padding: 0;
-}
-ul li {
-    padding: 8px 0 8px 24px;
-    position: relative;
-    border-bottom: 1px solid #27272a;
-}
-ul li:last-child { border-bottom: none; }
-ul li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 16px;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #6366f1;
-}
-.risk-list li::before { background: #ef4444; }
-.channel-list li::before { background: #3b82f6; }
-.test-list li::before { background: #22c55e; }
-
-/* Decomposition sections */
+/* Decomposition subsections */
 .decomp-section {
     margin-bottom: 16px;
 }
@@ -270,54 +280,147 @@ ul li::before {
     color: #e4e4e7;
 }
 
-/* Numbers card */
+/* Lists */
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 6px 0 6px 20px;
+    position: relative;
+    border-bottom: 1px solid #1f1f23;
+    font-size: 14px;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.risk-list li::before { background: #ef4444; }
+.channel-list li::before { background: #3b82f6; }
+.test-list li::before { background: #22c55e; }
+.hypothesis-list li::before { background: #f59e0b; }
+
+/* Numbers grid */
 .numbers-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 16px;
+    gap: 10px;
+    margin-bottom: 12px;
 }
 @media (max-width: 480px) {
     .numbers-grid { grid-template-columns: 1fr; }
 }
 .number-item {
     background: #1f1f23;
-    border-radius: 12px;
-    padding: 16px;
+    border-radius: 10px;
+    padding: 14px;
     text-align: center;
 }
 .number-item .num {
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 700;
     color: #fff;
     line-height: 1.2;
 }
 .number-item .num-label {
-    font-size: 12px;
+    font-size: 11px;
     color: #71717a;
     margin-top: 4px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-/* Action plan */
+/* Plan blocks */
 .plan-block {
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 }
 .plan-block:last-child { margin-bottom: 0; }
-.plan-block h3 {
+.plan-block h4 {
     font-size: 14px;
     font-weight: 600;
     color: #6366f1;
-    margin-bottom: 8px;
-    padding: 8px 12px;
+    margin-bottom: 6px;
+    padding: 6px 12px;
     background: #1f1f23;
     border-radius: 8px;
 }
 .plan-block li::before { background: #22c55e; }
 
-/* Red flags */
-.red-flags li::before { background: #ef4444; }
+/* Why fits section */
+.why-fits {
+    background: #1f1f23;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #e4e4e7;
+    border-left: 3px solid #22c55e;
+}
+
+/* Extra niches list */
+.extra-niche {
+    background: #18181b;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    border: 1px solid #27272a;
+}
+.extra-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+.extra-header h3 {
+    flex: 1;
+    min-width: 0;
+    font-size: 16px;
+    margin-bottom: 0;
+}
+.extra-score {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
+.extra-desc {
+    color: #a1a1aa;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+.extra-why {
+    color: #71717a;
+    font-size: 13px;
+    font-style: italic;
+}
+
+/* Inline score mini-bars for extra niches */
+.mini-scores {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+.mini-score {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #71717a;
+}
+.mini-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
 
 /* Footer */
 .footer {
@@ -331,359 +434,356 @@ ul li::before {
 <body>
 
 <div class="header">
-    <h1>🔍 Выбор ниши и декомпозиция</h1>
+    <h1>&#128269; Выбор ниши — 10 направлений</h1>
     <div class="subtitle">AI-ассистент для предпринимателей</div>
 </div>
 
-{# ── 1. Контекст: Опора на цель ── #}
-<div class="card card-accent">
-    <h2>📌 Опора на цель</h2>
-    {% if smart_goal %}
-    <div class="smart-goal">{{ smart_goal }}</div>
-    {% endif %}
-    {% if capital or geography or format or competencies or operations_readiness %}
-    <div class="profile-grid">
-        {% if capital %}
-        <div class="profile-item">
-            <div class="label">Капитал</div>
-            <div class="value">{{ capital }}</div>
-        </div>
-        {% endif %}
-        {% if geography %}
-        <div class="profile-item">
-            <div class="label">География</div>
-            <div class="value">{{ geography }}</div>
-        </div>
-        {% endif %}
-        {% if format %}
-        <div class="profile-item">
-            <div class="label">Формат</div>
-            <div class="value">{{ format if format is string else format | join(', ') }}</div>
-        </div>
-        {% endif %}
-        {% if competencies %}
-        <div class="profile-item">
-            <div class="label">Опыт / Компетенции</div>
-            <div class="value">{{ competencies }}</div>
-        </div>
-        {% endif %}
-        {% if operations_readiness is not none %}
-        <div class="profile-item">
-            <div class="label">Готовность к операционке</div>
-            <div class="value">{{ 'Да' if operations_readiness else 'Нет' }}</div>
-        </div>
-        {% endif %}
-        {% if target_margin %}
-        <div class="profile-item">
-            <div class="label">Желаемая маржинальность</div>
-            <div class="value">{{ target_margin }}</div>
-        </div>
-        {% endif %}
-    </div>
-    {% endif %}
-</div>
-
-{# ── 2. Сравнение ниш ── #}
-{% if niches %}
-<div class="niches-grid">
-    {% for niche in niches[:3] %}
-    <div class="niche-card{% if niche.name == recommended_niche %} card-recommended{% endif %}">
-        <h3>{{ niche.name or '—' }}</h3>
-        {% if niche.description %}
-        <div class="niche-desc">{{ niche.description }}</div>
-        {% endif %}
-
-        {# Scoring criteria — support both naming conventions #}
-        {% set criteria = [
-            ('Скорость к деньгам', niche.speed_to_money or niche.potential),
-            ('Прибыль со сделки', niche.profit_per_deal or niche.competition),
-            ('Порог входа', niche.entry_threshold),
-            ('Ресурс-фит', niche.resource_fit),
-            ('Реализуемость', niche.feasibility)
-        ] %}
-        {% for label, score in criteria %}
-            {% if score is not none and score is defined %}
-                {% set s = score | int %}
-                {% if s >= 4 %}
-                    {% set color_class = 'score-green' %}
-                {% elif s == 3 %}
-                    {% set color_class = 'score-amber' %}
-                {% else %}
-                    {% set color_class = 'score-red' %}
-                {% endif %}
-                <div class="score-row">
-                    <span class="score-label">{{ label }}</span>
-                    <div class="score-bar-wrap">
-                        <div class="score-bar {{ color_class }}" style="width: {{ (s / 5 * 100) | int }}%"></div>
-                    </div>
-                    <span class="score-value {{ color_class }}">{{ s }}</span>
-                </div>
-            {% endif %}
-        {% endfor %}
-
-        {% if niche.total_score is defined and niche.total_score is not none %}
-        <div class="total-score">
-            <span class="label">Итого</span>
-            <span class="value">{{ niche.total_score }}</span>
-        </div>
-        {% endif %}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
-{# ── 3. Рекомендованная ниша ── #}
-{% if recommended_niche or recommendation %}
+{# ── Recommendation Card ── #}
+{% if recommendation or recommended_niche %}
 <div class="card card-recommended">
-    <div class="rec-badge">Рекомендация</div>
+    <div class="rec-badge">&#9733; Рекомендация</div>
     {% if recommended_niche %}
     <h3>{{ recommended_niche }}</h3>
     {% endif %}
     {% if recommendation %}
     <div class="rec-text">{{ recommendation }}</div>
     {% endif %}
-    {% if why_not_others %}
-    <div style="margin-top: 16px;">
-        <div class="decomp-label">Почему не другие</div>
-        {% for item in why_not_others %}
-        <div class="why-not-item">{{ item }}</div>
-        {% endfor %}
-    </div>
-    {% endif %}
 </div>
 {% endif %}
 
-{# ── 4. Декомпозиция рекомендованной ниши ── #}
-{% set decomp = none %}
-{% if niches %}
-    {% for niche in niches %}
-        {% if niche.name == recommended_niche and niche.decomposition is defined %}
-            {% set decomp = niche.decomposition %}
+{# ── Macro: source tag ── #}
+{% macro source_tag(source) %}
+    {% if source %}
+        {% set src = source | lower %}
+        {% if 'опыт' in src %}
+            <span class="source-tag source-blue">{{ source }}</span>
+        {% elif 'интерес' in src %}
+            <span class="source-tag source-green">{{ source }}</span>
+        {% elif 'окружени' in src %}
+            <span class="source-tag source-amber">{{ source }}</span>
+        {% elif 'запрос' in src %}
+            <span class="source-tag source-purple">{{ source }}</span>
+        {% elif 'комбинаци' in src %}
+            <span class="source-tag source-white">{{ source }}</span>
+        {% else %}
+            <span class="source-tag source-white">{{ source }}</span>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
+{# ── Macro: score color class ── #}
+{% macro score_class(val) %}{% set s = val | int %}{% if s >= 4 %}score-green{% elif s == 3 %}score-amber{% else %}score-red{% endif %}{% endmacro %}
+
+{# ── Macro: render score bars ── #}
+{% macro render_scores(scores) %}
+{% if scores %}
+<div class="scores-grid">
+    {% set criteria = [
+        ('Скорость к деньгам', scores.speed_to_money),
+        ('Прибыль со сделки', scores.profit_per_deal),
+        ('Порог входа', scores.entry_threshold),
+        ('Ресурс-фит', scores.resource_fit),
+        ('Реализуемость', scores.feasibility)
+    ] %}
+    {% for label, val in criteria %}
+        {% if val is defined and val is not none %}
+        {% set s = val | int %}
+        <div class="score-row">
+            <span class="score-label">{{ label }}</span>
+            <div class="score-bar-wrap">
+                <div class="score-bar {{ score_class(val) }}" style="width: {{ (s / 5 * 100) | int }}%"></div>
+            </div>
+            <span class="score-value {{ score_class(val) }}">{{ s }}</span>
+        </div>
         {% endif %}
     {% endfor %}
-{% endif %}
-{# Also accept top-level decomposition #}
-{% if decomp is none or decomp is not defined %}
-    {% if decomposition is defined and decomposition %}
-        {% set decomp = decomposition %}
-    {% endif %}
-{% endif %}
-
-{% if decomp %}
-<div class="card card-green">
-    <h2>🧩 Декомпозиция ниши</h2>
-
-    {% if decomp.product %}
-    <div class="decomp-section">
-        <div class="decomp-label">Продукт</div>
-        <div class="decomp-value">{{ decomp.product }}</div>
-    </div>
-    {% endif %}
-
-    {% if decomp.audience_segments %}
-    <div class="decomp-section">
-        <div class="decomp-label">Сегменты аудитории</div>
-        <ul>
-        {% for seg in decomp.audience_segments %}
-            <li>{{ seg }}</li>
-        {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
-
-    {% if decomp.channels %}
-    <div class="decomp-section">
-        <div class="decomp-label">Каналы продаж</div>
-        <ul class="channel-list">
-        {% for ch in decomp.channels %}
-            <li>{{ ch }}</li>
-        {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
-
-    {% if decomp.demand_hypotheses %}
-    <div class="decomp-section">
-        <div class="decomp-label">Гипотезы спроса</div>
-        <ul>
-        {% for hyp in decomp.demand_hypotheses %}
-            <li>{{ hyp }}</li>
-        {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
-
-    {% if decomp.risks %}
-    <div class="decomp-section">
-        <div class="decomp-label">Риски</div>
-        <ul class="risk-list">
-        {% for r in decomp.risks %}
-            <li>{{ r }}</li>
-        {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
-
-    {% if decomp.first_tests %}
-    <div class="decomp-section">
-        <div class="decomp-label">Первые тесты</div>
-        <ul class="test-list">
-        {% for t in decomp.first_tests %}
-            <li>{{ t }}</li>
-        {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
+</div>
+{% if scores.total is defined and scores.total is not none %}
+<div class="total-score">
+    <span class="label">Итого</span>
+    <span class="value">{{ scores.total }}</span>
 </div>
 {% endif %}
+{% endif %}
+{% endmacro %}
 
-{# ── 5. Блок цифр ── #}
-{% if numbers %}
-<div class="card card-accent">
-    <h2>📊 Цифры</h2>
-    <div class="numbers-grid">
-        {% if numbers.income_target %}
-        <div class="number-item">
-            <div class="num">{{ numbers.income_target }}</div>
-            <div class="num-label">Цель по доходу</div>
-        </div>
-        {% endif %}
-        {% if numbers.estimated_profit_per_deal or numbers.profit_per_deal %}
-        <div class="number-item">
-            <div class="num">{{ numbers.estimated_profit_per_deal or numbers.profit_per_deal }}</div>
-            <div class="num-label">Прибыль со сделки</div>
-        </div>
-        {% endif %}
-        {% if numbers.deals_total %}
-        <div class="number-item">
-            <div class="num">{{ numbers.deals_total }}</div>
-            <div class="num-label">Сделок всего</div>
-        </div>
-        {% endif %}
-        {% if numbers.deals_per_month %}
-        <div class="number-item">
-            <div class="num">{{ numbers.deals_per_month }}</div>
-            <div class="num-label">Сделок в месяц</div>
-        </div>
-        {% endif %}
-        {% if numbers.deals_per_week %}
-        <div class="number-item">
-            <div class="num">{{ numbers.deals_per_week }}</div>
-            <div class="num-label">Сделок в неделю</div>
-        </div>
-        {% endif %}
+{# ══════════════════════════════════════ #}
+{# ── TOP 5 NICHES ── #}
+{# ══════════════════════════════════════ #}
+{% if top_niches %}
+<div class="section-title">&#127942; ТОП-5 ниш с декомпозицией</div>
+
+{% for niche in top_niches %}
+<div class="card{% if niche.name == recommended_niche %} card-recommended{% endif %}" id="niche-{{ loop.index }}">
+    {# Header: rank + name + source #}
+    <div class="niche-header">
+        <span class="rank-badge">{{ niche.rank if niche.rank is defined and niche.rank is not none else loop.index }}</span>
+        <h3>{{ niche.name | default('—') }}</h3>
+        {{ source_tag(niche.source) }}
     </div>
-    {% if numbers.assumptions %}
-    <div class="decomp-section">
-        <div class="decomp-label">Допущения</div>
-        <ul>
-        {% for a in numbers.assumptions %}
-            <li>{{ a }}</li>
-        {% endfor %}
-        </ul>
+
+    {% if niche.description %}
+    <div class="niche-desc">{{ niche.description }}</div>
+    {% endif %}
+
+    {# Score bars #}
+    {% if niche.scores %}
+    {{ render_scores(niche.scores) }}
+    {% endif %}
+
+    {# Why fits you #}
+    {% if niche.why_fits_you %}
+    <div class="why-fits">
+        <div class="decomp-label">&#128161; Почему подходит тебе</div>
+        {{ niche.why_fits_you }}
     </div>
     {% endif %}
-</div>
-{% endif %}
 
-{# ── 6. План действий на 14 дней ── #}
-{% if action_plan_14 or action_plan %}
-{% set plan = action_plan_14 or action_plan %}
-<div class="card card-green">
-    <h2>📋 План действий на 14 дней</h2>
+    {# Expandable details #}
+    {% if niche.decomposition or niche.numbers or niche.test_plan_14_days %}
+    <button class="expand-toggle" onclick="toggleExpand(this)">Декомпозиция, цифры и план</button>
+    <div class="expand-content">
 
-    {% if plan is mapping %}
-        {% if plan.days_1_3 %}
-        <div class="plan-block">
-            <h3>Дни 1–3</h3>
-            <ul>
-            {% for item in plan.days_1_3 %}
-                <li>{{ item }}</li>
-            {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-        {% if plan.days_4_7 %}
-        <div class="plan-block">
-            <h3>Дни 4–7</h3>
-            <ul>
-            {% for item in plan.days_4_7 %}
-                <li>{{ item }}</li>
-            {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-        {% if plan.days_8_14 %}
-        <div class="plan-block">
-            <h3>Дни 8–14</h3>
-            <ul>
-            {% for item in plan.days_8_14 %}
-                <li>{{ item }}</li>
-            {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-    {% elif plan is iterable and plan is not string %}
-        {% for block in plan %}
-            {% if block is mapping %}
-            <div class="plan-block">
-                <h3>{{ block.period or block.title or 'Этап' }}</h3>
+        {# Decomposition #}
+        {% if niche.decomposition %}
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#129513; Декомпозиция</h2>
+
+            {% if niche.decomposition.product %}
+            <div class="decomp-section">
+                <div class="decomp-label">Продукт</div>
+                <div class="decomp-value">{{ niche.decomposition.product }}</div>
+            </div>
+            {% endif %}
+
+            {% if niche.decomposition.audience_segments %}
+            <div class="decomp-section">
+                <div class="decomp-label">Сегменты аудитории</div>
                 <ul>
-                {% for item in block.actions or block.items or [] %}
-                    <li>{{ item }}</li>
+                {% for seg in niche.decomposition.audience_segments %}
+                    <li>{{ seg }}</li>
                 {% endfor %}
                 </ul>
             </div>
-            {% else %}
-            <div class="plan-block">
-                <ul><li>{{ block }}</li></ul>
+            {% endif %}
+
+            {% if niche.decomposition.channels %}
+            <div class="decomp-section">
+                <div class="decomp-label">Каналы продаж</div>
+                <ul class="channel-list">
+                {% for ch in niche.decomposition.channels %}
+                    <li>{{ ch }}</li>
+                {% endfor %}
+                </ul>
             </div>
             {% endif %}
-        {% endfor %}
+
+            {% if niche.decomposition.demand_hypotheses %}
+            <div class="decomp-section">
+                <div class="decomp-label">Гипотезы спроса</div>
+                <ul class="hypothesis-list">
+                {% for hyp in niche.decomposition.demand_hypotheses %}
+                    <li>{{ hyp }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if niche.decomposition.risks %}
+            <div class="decomp-section">
+                <div class="decomp-label">Риски</div>
+                <ul class="risk-list">
+                {% for r in niche.decomposition.risks %}
+                    <li>{{ r }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if niche.decomposition.first_tests %}
+            <div class="decomp-section">
+                <div class="decomp-label">Первые тесты</div>
+                <ul class="test-list">
+                {% for t in niche.decomposition.first_tests %}
+                    <li>{{ t }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {# Numbers #}
+        {% if niche.numbers %}
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128202; Цифры</h2>
+            <div class="numbers-grid">
+                {% if niche.numbers.income_target %}
+                <div class="number-item">
+                    <div class="num">{{ niche.numbers.income_target }}</div>
+                    <div class="num-label">Цель по доходу</div>
+                </div>
+                {% endif %}
+                {% if niche.numbers.estimated_profit_per_deal %}
+                <div class="number-item">
+                    <div class="num">{{ niche.numbers.estimated_profit_per_deal }}</div>
+                    <div class="num-label">Прибыль со сделки</div>
+                </div>
+                {% endif %}
+                {% if niche.numbers.deals_per_month %}
+                <div class="number-item">
+                    <div class="num">{{ niche.numbers.deals_per_month }}</div>
+                    <div class="num-label">Сделок в месяц</div>
+                </div>
+                {% endif %}
+                {% if niche.numbers.deals_per_week %}
+                <div class="number-item">
+                    <div class="num">{{ niche.numbers.deals_per_week }}</div>
+                    <div class="num-label">Сделок в неделю</div>
+                </div>
+                {% endif %}
+            </div>
+            {% if niche.numbers.assumptions %}
+            <div class="decomp-section">
+                <div class="decomp-label">Допущения</div>
+                <ul>
+                {% for a in niche.numbers.assumptions %}
+                    <li>{{ a }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {# 14-day test plan #}
+        {% if niche.test_plan_14_days %}
+        <div class="card" style="margin-bottom: 12px; padding: 18px;">
+            <h2>&#128197; План тестирования — 14 дней</h2>
+
+            {% if niche.test_plan_14_days is mapping %}
+                {% if niche.test_plan_14_days.days_1_3 %}
+                <div class="plan-block">
+                    <h4>Дни 1–3</h4>
+                    <ul>
+                    {% for item in niche.test_plan_14_days.days_1_3 %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                {% if niche.test_plan_14_days.days_4_7 %}
+                <div class="plan-block">
+                    <h4>Дни 4–7</h4>
+                    <ul>
+                    {% for item in niche.test_plan_14_days.days_4_7 %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                {% if niche.test_plan_14_days.days_8_14 %}
+                <div class="plan-block">
+                    <h4>Дни 8–14</h4>
+                    <ul>
+                    {% for item in niche.test_plan_14_days.days_8_14 %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            {% elif niche.test_plan_14_days is iterable and niche.test_plan_14_days is not string %}
+                {% for block in niche.test_plan_14_days %}
+                    {% if block is mapping %}
+                    <div class="plan-block">
+                        <h4>{{ block.period or block.title or 'Этап' }}</h4>
+                        <ul>
+                        {% for item in block.actions or block.items or [] %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                    {% else %}
+                    <div class="plan-block">
+                        <ul><li>{{ block }}</li></ul>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% endif %}
+
+    </div>{# /expand-content #}
     {% endif %}
 </div>
+{% endfor %}
 {% endif %}
 
-{# ── 7. Красные флаги ── #}
-{% if red_flags %}
-<div class="card card-red">
-    <h2>🚩 Красные флаги</h2>
+{# ══════════════════════════════════════ #}
+{# ── EXTRA 5 NICHES ── #}
+{# ══════════════════════════════════════ #}
+{% if extra_niches %}
+<div class="section-title">&#128218; Ещё 5 направлений</div>
 
-    {% if red_flags is mapping %}
-        {% if red_flags.when_to_pivot %}
-        <div class="decomp-section">
-            <div class="decomp-label">Когда менять нишу</div>
-            <ul class="red-flags">
-            {% for item in red_flags.when_to_pivot %}
-                <li>{{ item }}</li>
-            {% endfor %}
-            </ul>
-        </div>
+{% for niche in extra_niches %}
+<div class="extra-niche">
+    <div class="extra-header">
+        <span class="rank-badge" style="background: #3f3f46; font-size: 12px; width: 24px; height: 24px;">{{ niche.rank if niche.rank is defined and niche.rank is not none else (loop.index + 5) }}</span>
+        <h3>{{ niche.name | default('—') }}</h3>
+        {{ source_tag(niche.source) }}
+        {% if niche.scores and niche.scores.total is defined and niche.scores.total is not none %}
+        <span class="extra-score">{{ niche.scores.total }}</span>
         {% endif %}
-        {% if red_flags.warning_signs %}
-        <div class="decomp-section">
-            <div class="decomp-label">Тревожные сигналы</div>
-            <ul class="red-flags">
-            {% for item in red_flags.warning_signs %}
-                <li>{{ item }}</li>
-            {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-    {% elif red_flags is iterable and red_flags is not string %}
-        <ul class="red-flags">
-        {% for item in red_flags %}
-            <li>{{ item }}</li>
+    </div>
+    {% if niche.description %}
+    <div class="extra-desc">{{ niche.description }}</div>
+    {% endif %}
+    {% if niche.why_might_work %}
+    <div class="extra-why">{{ niche.why_might_work }}</div>
+    {% endif %}
+
+    {# Mini score indicators #}
+    {% if niche.scores %}
+    <div class="mini-scores">
+        {% set mini_criteria = [
+            ('Скорость', niche.scores.speed_to_money),
+            ('Прибыль', niche.scores.profit_per_deal),
+            ('Порог', niche.scores.entry_threshold),
+            ('Ресурс', niche.scores.resource_fit),
+            ('Реализуемость', niche.scores.feasibility)
+        ] %}
+        {% for label, val in mini_criteria %}
+            {% if val is defined and val is not none %}
+            {% set s = val | int %}
+            <span class="mini-score">
+                <span class="mini-dot {{ score_class(val) }}"></span>
+                {{ label }} {{ s }}
+            </span>
+            {% endif %}
         {% endfor %}
-        </ul>
+    </div>
     {% endif %}
 </div>
+{% endfor %}
 {% endif %}
 
 {# ── Footer ── #}
 <div class="footer">
     Сгенерировано AI-ассистентом
 </div>
+
+<script>
+function toggleExpand(btn) {
+    var content = btn.nextElementSibling;
+    if (content.classList.contains('open')) {
+        content.classList.remove('open');
+        btn.textContent = 'Декомпозиция, цифры и план';
+    } else {
+        content.classList.add('open');
+        btn.textContent = 'Свернуть';
+    }
+}
+</script>
 
 </body>
 </html>
