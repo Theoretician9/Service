@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дерево целей</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-warn {
+    border-left: 4px solid #f59e0b;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-red {
+    border-left: 4px solid #ef4444;
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.smart-goal {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+}
+.points-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+@media (max-width: 480px) {
+    .points-grid { grid-template-columns: 1fr; }
+}
+.point-card {
+    background: #1f1f23;
+    border-radius: 12px;
+    padding: 16px;
+}
+.point-card .label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+.point-a .label { color: #f59e0b; }
+.point-b .label { color: #22c55e; }
+.deadline-badge {
+    display: inline-block;
+    background: #27272a;
+    color: #e4e4e7;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 12px;
+}
+.motivation-text {
+    font-size: 16px;
+    font-style: italic;
+    color: #fbbf24;
+    line-height: 1.5;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    border-bottom: 1px solid #27272a;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.week-block {
+    margin-bottom: 16px;
+}
+.week-block h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.week-block li::before { background: #22c55e; }
+.metric-list li::before { background: #3b82f6; }
+.risk-list li::before { background: #ef4444; }
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Дерево целей</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+<div class="card card-accent">
+    <h2>📌 SMART-цель</h2>
+    <div class="smart-goal">Увеличить ежемесячный доход с 1 млн₽ до 10 млн₽ за 18 месяцев (к 01.07.2026) через масштабирование готового продукта с использованием имеющихся инвестиций</div>
+</div>
+
+<div class="points-grid">
+    <div class="point-card point-a">
+        <div class="label">📍 Точка А — где сейчас</div>
+        <div>Предприниматель с устойчивым бизнесом, генерирующим 1 млн₽ ежемесячной прибыли, имеющий готовый к масштабированию продукт и доступ к инвестиционным ресурсам</div>
+    </div>
+    <div class="point-card point-b">
+        <div class="label">🏁 Точка Б — куда идём</div>
+        <div>Владелец масштабированного бизнеса с ежемесячным доходом 10 млн₽, обеспечивающим финансовую свободу: закрытие долговых обязательств, улучшение качества жизни и возможность регулярных путешествий</div>
+    </div>
+</div>
+
+
+<div style="text-align: center; padding: 8px 0;">
+    <span class="deadline-badge">📅 Срок: 01.07.2026</span>
+</div>
+
+
+
+<div class="card card-warn">
+    <h2>💡 Настоящая мотивация</h2>
+    <div class="motivation-text">Оплатить долги, купить одежду и технику, путешествовать — чтобы почувствовать состояние лёгкости и финансовую свободу</div>
+</div>
+
+
+
+<div class="card">
+    <h2>🌳 Три уровня «Почему»</h2>
+    <ul>
+    
+        <li>Закрыть долги — избавиться от финансового давления и психологического груза</li>
+    
+        <li>Улучшить качество жизни через покупку одежды и техники — почувствовать результаты своего труда</li>
+    
+        <li>Получить возможность путешествовать — достичь состояния лёгкости и настоящей финансовой свободы</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>🚧 Ограничения и что с ними делать</h2>
+    <ul class="risk-list">
+    
+        <li>Не указан конкретный продукт и его текущие метрики (количество клиентов, средний чек, конверсия) — запросить детализацию для построения точной модели роста</li>
+    
+        <li>Не указан размер доступных инвестиций и условия их использования — определить бюджет на масштабирование и распределение по каналам</li>
+    
+        <li>Не указаны текущие каналы продаж и их эффективность — провести аудит существующих каналов для выявления точек роста</li>
+    
+        <li>Рост в 10 раз за 18 месяцев требует системного подхода — внедрить CRM, автоматизацию продаж и аналитику с первого месяца</li>
+    
+        <li>Не указана команда и её возможности — оценить потребность в найме специалистов (маркетолог, продажник, операционист)</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-green">
+    <h2>📋 План действий</h2>
+    
+    <div class="week-block">
+        
+        <h3>Месяц 1-2: Аудит и стратегия</h3>
+        <ul>
+        
+            <li>Детальный анализ текущего продукта: юнит-экономика (CAC, LTV, маржинальность), воронка продаж, портрет клиента</li>
+        
+            <li>Разработка стратегии масштабирования: выбор 2-3 приоритетных каналов привлечения, расчёт инвестиций на каждый канал</li>
+        
+            <li>Внедрение системы аналитики: настройка дашбордов для отслеживания ключевых метрик (выручка, количество клиентов, конверсия)</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Месяц 3-6: Запуск масштабирования</h3>
+        <ul>
+        
+            <li>Инвестиции в рекламу: запуск тестовых кампаний в выбранных каналах с бюджетом 15-20% от текущей прибыли</li>
+        
+            <li>Усиление отдела продаж: найм 1-2 менеджеров или внедрение автоматизированных воронок продаж</li>
+        
+            <li>Оптимизация продукта: улучшение на основе обратной связи клиентов для увеличения повторных покупок и среднего чека</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Месяц 7-12: Рост и оптимизация</h3>
+        <ul>
+        
+            <li>Масштабирование успешных каналов: увеличение бюджета на рекламу в каналах с лучшим ROI до 30-40% от прибыли</li>
+        
+            <li>Построение команды: найм ключевых специалистов (маркетолог, руководитель продаж, операционный директор)</li>
+        
+            <li>Автоматизация процессов: внедрение CRM, автоматизация маркетинга и операционных процессов для снижения нагрузки</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Месяц 13-18: Достижение цели</h3>
+        <ul>
+        
+            <li>Диверсификация доходов: запуск дополнительных продуктов или услуг для текущей базы клиентов</li>
+        
+            <li>Масштабирование команды: расширение штата до 10-15 человек для обработки возросшего потока клиентов</li>
+        
+            <li>Финальный рывок: агрессивное инвестирование в рекламу (до 50% прибыли) для достижения целевых 10 млн₽/месяц к июлю 2026</li>
+        
+        </ul>
+        
+    </div>
+    
+</div>
+
+
+
+<div class="card">
+    <h2>📊 Метрики успеха</h2>
+    <ul class="metric-list">
+    
+        <li>Ежемесячная выручка: рост с 1 млн₽ до 10 млн₽ к 01.07.2026 (промежуточные цели: 2 млн через 6 мес, 5 млн через 12 мес)</li>
+    
+        <li>Количество клиентов: увеличение в 5-10 раз в зависимости от стратегии (повышение среднего чека или объёма продаж)</li>
+    
+        <li>ROI рекламных кампаний: не менее 200% (на каждый вложенный рубль — 2 рубля прибыли)</li>
+    
+        <li>Размер команды: рост с текущего состава до 10-15 человек к концу срока</li>
+    
+        <li>Закрытие долгов: полное погашение к месяцу 12 (при достижении 5 млн₽/месяц)</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>⚠️ Риски</h2>
+    <ul class="risk-list">
+    
+        <li>Продукт не масштабируется линейно — провести тестирование на малых объёмах, скорректировать стратегию до крупных вложений</li>
+    
+        <li>Инвестиции расходуются неэффективно (низкий ROI) — еженедельный контроль метрик, быстрое отключение неэффективных каналов</li>
+    
+        <li>Команда не справляется с ростом нагрузки — нанимать с опережением, внедрять автоматизацию с первых месяцев</li>
+    
+        <li>Конкуренты копируют продукт или демпингуют — создать уникальное торговое предложение, работать над брендом и лояльностью клиентов</li>
+    
+        <li>Личное выгорание из-за высокого темпа роста — делегировать операционные задачи к месяцу 6, сохранить фокус на стратегии</li>
+    
+    </ul>
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+</body>
+</html>
