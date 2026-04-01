@@ -187,10 +187,11 @@ async def _execute_miniservice(run_id: str) -> None:
                 tokens_used=ms_result.llm_tokens_used,
             )
 
-            # Clear dialog from Redis after completion
+            # Clear dialog and agent conversation from Redis after completion
             if user_obj:
-                from app.miniservices.session import clear_dialog
+                from app.miniservices.session import clear_dialog, clear_agent_conversation
                 await clear_dialog(user_obj.telegram_id)
+                await clear_agent_conversation(user_obj.telegram_id)
 
             # Send result notification
             from app.workers.notification_tasks import send_result_notification

@@ -242,3 +242,42 @@ async def clear_conversation(telegram_user_id: int) -> None:
     """Delete conversation history."""
     key = f"conversation:{telegram_user_id}"
     await redis.delete(key)
+
+
+# ── Agent Conversation (miniservice slot-filling) ───────────────────
+
+AGENT_CONV_TTL = 24 * 3600  # 24 hours
+
+
+async def get_agent_conversation(
+    telegram_user_id: int,
+    limit: int = 20,
+) -> list[dict]:
+    """Get agent-specific conversation history."""
+    key = f"agent_conversation:{telegram_user_id}"
+    raw = await redis.get(key)
+    if not raw:
+        return []
+    messages = json.loads(raw)
+    return messages[-limit:]
+
+
+async def append_agent_conversation(
+    telegram_user_id: int,
+    role: str,
+    content: str,
+) -> None:
+    """Append to agent conversation."""
+    key = f"agent_conversation:{telegram_user_id}"
+    raw = await redis.get(key)
+    messages = json.loads(raw) if raw else []
+    messages.append({"role": role, "content": content})
+    # Keep max 30 messages
+    if len(messages) > 30:
+        messages = messages[-30:]
+    await redis.set(key, json.dumps(messages, ensure_ascii=False), ex=AGENT_CONV_TTL)
+
+
+async def clear_agent_conversation(telegram_user_id: int) -> None:
+    """Clear agent conversation when miniservice completes."""
+    await redis.delete(f"agent_conversation:{telegram_user_id}")

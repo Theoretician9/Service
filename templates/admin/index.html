@@ -15,7 +15,7 @@
         .stat-card:hover { transform: translateY(-2px); }
         .table-responsive { overflow-x: auto; }
         #app { display: none; }
-        #login { display: none; }
+        #login { display: block; }
         .chart-container { position: relative; height: 300px; }
     </style>
 </head>
@@ -79,6 +79,12 @@
                             <a class="nav-link" href="#" data-page="costs">
                                 <span class="nav-link-icon"><i class="ti ti-currency-dollar"></i></span>
                                 <span class="nav-link-title">Расходы</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="staging">
+                                <span class="nav-link-icon"><i class="ti ti-flask"></i></span>
+                                <span class="nav-link-title">Тест (staging)</span>
                             </a>
                         </li>
                         <li class="nav-item mt-auto">
@@ -359,6 +365,56 @@
                         </div>
                     </div>
 
+                    <!-- ═══ STAGING PAGE ═══ -->
+                    <div id="page-staging" class="page-content d-none">
+                        <div class="page-header mb-3">
+                            <div class="row align-items-center">
+                                <div class="col-auto"><h2 class="page-title"><i class="ti ti-flask me-2"></i>Тестовый бот (staging)</h2></div>
+                                <div class="col-auto ms-auto">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="loadStaging()"><i class="ti ti-refresh me-1"></i>Обновить</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="table-responsive">
+                                <table class="table table-vcenter card-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Имя</th>
+                                            <th>Telegram ID</th>
+                                            <th>Тариф</th>
+                                            <th>Кредиты</th>
+                                            <th>Запусков</th>
+                                            <th>Токенов</th>
+                                            <th>Онбординг</th>
+                                            <th>Последняя активность</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="staging-users-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <h3 class="mt-4 mb-2">Запуски (staging)</h3>
+                        <div class="card">
+                            <div class="table-responsive">
+                                <table class="table table-vcenter card-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Пользователь</th>
+                                            <th>Минисервис</th>
+                                            <th>Статус</th>
+                                            <th>Кредиты</th>
+                                            <th>Токены</th>
+                                            <th>Поиски</th>
+                                            <th>Дата</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="staging-runs-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -510,6 +566,7 @@ function navigate(page) {
     else if (page === 'users') loadUsers();
     else if (page === 'runs') loadRuns();
     else if (page === 'costs') loadCosts();
+    else if (page === 'staging') loadStaging();
 }
 
 document.querySelectorAll('[data-page]').forEach(link => {
@@ -730,17 +787,92 @@ function esc(str) {
 // ═══════════════════════════════════════════════════════════════════════
 // Init
 // ═══════════════════════════════════════════════════════════════════════
+// ═══ STAGING TAB ═══
+let stagingToken = localStorage.getItem('staging_token') || null;
+
+async function ensureStagingToken() {
+    if (stagingToken) return;
+    const r = await fetch('/admin/api/staging/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username: 'admin', password: 'admin123'})
+    });
+    if (r.ok) {
+        const data = await r.json();
+        stagingToken = data.token;
+        localStorage.setItem('staging_token', stagingToken);
+    }
+}
+
+async function stagingApi(endpoint) {
+    await ensureStagingToken();
+    const r = await fetch('/admin/api/staging/' + endpoint, {
+        headers: {'Authorization': 'Bearer ' + (stagingToken || '')}
+    });
+    if (r.status === 401) {
+        stagingToken = null;
+        localStorage.removeItem('staging_token');
+        await ensureStagingToken();
+        const r2 = await fetch('/admin/api/staging/' + endpoint, {
+            headers: {'Authorization': 'Bearer ' + (stagingToken || '')}
+        });
+        if (!r2.ok) throw new Error(r2.status);
+        return r2.json();
+    }
+    if (!r.ok) throw new Error(r.status);
+    return r.json();
+}
+
+async function loadStaging() {
+    try {
+        const [users, runs] = await Promise.all([
+            stagingApi('users'),
+            stagingApi('runs'),
+        ]);
+        const tbody = document.getElementById('staging-users-body');
+        tbody.innerHTML = users.map(u => `<tr>
+            <td><strong>${u.first_name || ''}</strong> ${u.username ? '@'+u.username : ''}</td>
+            <td><code>${u.telegram_id}</code></td>
+            <td><span class="badge ${u.plan_type==='paid'?'bg-green':'bg-blue'}">${u.plan_type}</span></td>
+            <td>${u.credits_remaining}/${u.credits_monthly_limit}</td>
+            <td>${u.total_runs || 0}</td>
+            <td>${(u.total_tokens || 0).toLocaleString()}</td>
+            <td>${u.onboarding_completed ? '✅' : '❌'}</td>
+            <td>${u.last_activity ? new Date(u.last_activity).toLocaleString('ru') : '—'}</td>
+        </tr>`).join('');
+
+        const rbody = document.getElementById('staging-runs-body');
+        const statusColors = {completed:'green',failed:'red',collecting:'blue',processing:'yellow',partially_completed:'orange'};
+        rbody.innerHTML = runs.map(r => `<tr>
+            <td>${r.user_name || r.telegram_id}</td>
+            <td>${r.miniservice_id}</td>
+            <td><span class="badge bg-${statusColors[r.status]||'secondary'}">${r.status}</span></td>
+            <td>${r.credits_spent}</td>
+            <td>${(r.llm_tokens_used||0).toLocaleString()}</td>
+            <td>${r.web_searches_used||0}</td>
+            <td>${r.started_at ? new Date(r.started_at).toLocaleString('ru') : '—'}</td>
+        </tr>`).join('');
+    } catch(e) {
+        console.error('Staging load error:', e);
+        document.getElementById('staging-users-body').innerHTML = '<tr><td colspan="8" class="text-center text-danger">Не удалось загрузить данные staging</td></tr>';
+    }
+}
+
 (async function init() {
     if (token) {
         try {
-            await api('/dashboard');
-            showApp();
+            const controller = new AbortController();
+            setTimeout(() => controller.abort(), 5000);
+            const r = await fetch('/admin/api/dashboard', {
+                headers: {'Authorization': 'Bearer ' + token},
+                signal: controller.signal
+            });
+            if (r.ok) { showApp(); return; }
         } catch (e) {
-            showLogin();
+            console.log('Init check failed:', e);
         }
-    } else {
-        showLogin();
     }
+    showLogin();
 })();
 </script>
 

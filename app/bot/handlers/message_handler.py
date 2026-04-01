@@ -32,10 +32,12 @@ from app.miniservices.engine import (
     load_manifest,
 )
 from app.miniservices.session import (
+    append_agent_conversation,
     append_conversation,
     clear_dialog,
     clear_pending_confirmation,
     get_active_project,
+    get_agent_conversation,
     get_dialog,
     get_pending_confirmation,
     set_active_project,
@@ -45,6 +47,7 @@ from app.miniservices.session import (
     set_pending_confirmation,
     update_dialog_field,
 )
+from app.miniservices.agents.registry import get_agent
 from app.modules.analytics.service import AnalyticsService
 from app.modules.artifacts.models import MiniserviceRun
 from app.modules.billing.service import BillingService
@@ -126,6 +129,67 @@ async def handle_message(
                         await message.answer(f"✅ Записал: {matched}")
                     await append_conversation(telegram_id, "user", text)
                     return
+
+        # ── Route to miniservice agent if active dialog ──────────────
+        if dialog and dialog.get("miniservice_id"):
+            agent = get_agent(dialog["miniservice_id"])
+            if agent:
+                ms_id = dialog["miniservice_id"]
+                collected = dialog.get("collected_fields", {})
+
+                # Get agent conversation history (separate from main)
+                agent_history = await get_agent_conversation(telegram_id, limit=15)
+
+                # Build project context
+                context_data = await build_context(telegram_id, db_session)
+                project_ctx: dict[str, Any] = {}
+                if context_data.active_project:
+                    project_ctx = dict(context_data.active_project.profile or {})
+                    project_ctx["project_name"] = context_data.active_project.name
+
+                # Call agent
+                agent_response = await agent.handle_message(
+                    user_message=text,
+                    collected_fields=collected,
+                    conversation_history=agent_history,
+                    project_context=project_ctx,
+                )
+
+                # Save field if accepted
+                if agent_response.field_id and agent_response.field_value:
+                    await update_dialog_field(telegram_id, agent_response.field_id, agent_response.field_value)
+
+                # Check if ready to process
+                if agent_response.ready_to_process:
+                    updated = await get_dialog(telegram_id)
+                    if updated:
+                        run_id = updated["run_id"]
+                        updated_collected = updated.get("collected_fields", {})
+                        # Sync collected_fields to DB
+                        from app.database import async_session as _async_session
+                        async with _async_session() as _s:
+                            from sqlalchemy import update as sa_update
+                            await _s.execute(
+                                sa_update(MiniserviceRun)
+                                .where(MiniserviceRun.id == uuid.UUID(run_id))
+                                .values(collected_fields=updated_collected)
+                            )
+                            await _s.commit()
+                        run_miniservice_task.delay(run_id)
+                        await message.answer(PROCESSING)
+                elif agent_response.all_collected and not agent_response.ready_to_process:
+                    # All fields collected but waiting for confirmation
+                    await message.answer(agent_response.text)
+                else:
+                    # Normal response (probing, clarifying, next question)
+                    if agent_response.text:
+                        await message.answer(agent_response.text)
+
+                # Save to agent conversation (NOT main conversation)
+                await append_agent_conversation(telegram_id, "user", text)
+                if agent_response.text:
+                    await append_agent_conversation(telegram_id, "assistant", agent_response.text)
+                return
 
         # ② Build OrchestratorContext -------------------------------------
         context = await build_context(telegram_id, db_session)
