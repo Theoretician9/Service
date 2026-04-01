@@ -683,12 +683,41 @@ async def _action_launch_miniservice(
             collected_fields=collected_fields,
         )
 
-        next_field = get_next_question(miniservice_id, collected_fields)
-        if next_field:
-            question = next_field.get("question", next_field.get("label", "Уточни данные:"))
-            await message.answer(question)
+        # Let the agent introduce the miniservice with context (not a raw manifest question)
+        from app.miniservices.agents.registry import get_agent as _get_agent
+        agent = _get_agent(miniservice_id)
+        if agent:
+            # Build project context for agent
+            project_ctx: dict = {}
+            if context_data := getattr(message, '_context_data', None):
+                pass  # Not available here
+            # Get project from DB
+            from sqlalchemy import select as sa_select
+            from app.modules.projects.models import Project
+            proj_stmt = sa_select(Project).where(Project.id == project_id)
+            proj_result = await db_session.execute(proj_stmt)
+            project = proj_result.scalar_one_or_none()
+            if project:
+                for pf in ["name", "goal_statement", "point_a", "point_b", "goal_deadline", "constraints", "chosen_niche", "geography", "budget_range"]:
+                    val = getattr(project, pf, None)
+                    if val:
+                        project_ctx[pf] = val
+
+            intro = await agent.handle_message(
+                user_message="[СТАРТ СЕССИИ]",
+                collected_fields=collected_fields,
+                conversation_history=[],
+                project_context=project_ctx,
+            )
+            await message.answer(intro.text)
+            await append_agent_conversation(telegram_id, "assistant", intro.text)
         else:
-            await message.answer("Расскажи подробнее о задаче:")
+            next_field = get_next_question(miniservice_id, collected_fields)
+            if next_field:
+                question = next_field.get("question", next_field.get("label", "Уточни данные:"))
+                await message.answer(question)
+            else:
+                await message.answer("Расскажи подробнее о задаче:")
 
         logger.info(
             "miniservice_collecting",
