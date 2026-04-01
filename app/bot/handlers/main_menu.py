@@ -152,11 +152,12 @@ async def cmd_wipe_all(message: Message, user: User, db_session: AsyncSession):
 
 
 @router.message(Command("reset"))
+@router.message(Command("restart"))
 async def cmd_reset(message: Message, user: User, db_session: AsyncSession):
     """Reset own data: wipe projects, artifacts, runs for current user."""
 
-    # Clear Redis
-    for key_prefix in ["dialog:", "active_project:", "conversation:", "extracted_fields:", "pending_confirmation:", "dep_chain:"]:
+    # Clear Redis (including agent conversation)
+    for key_prefix in ["dialog:", "active_project:", "conversation:", "extracted_fields:", "pending_confirmation:", "dep_chain:", "agent_conversation:"]:
         await redis.delete(f"{key_prefix}{user.telegram_id}")
 
     # Delete artifacts, runs, projects from DB
