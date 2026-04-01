@@ -32,6 +32,9 @@ from fastapi.staticfiles import StaticFiles
 app = FastAPI(title="AI Marketplace Bot", version="0.1.0", lifespan=lifespan)
 app.include_router(webhook_router)
 
+from app.admin.routes import router as admin_router
+app.include_router(admin_router)
+
 # Serve HTML reports as static files
 reports_dir = Path(__file__).parent.parent / "reports"
 reports_dir.mkdir(exist_ok=True)

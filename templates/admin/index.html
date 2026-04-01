@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ru" class="theme-dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI Marketplace — Админ-панель</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta20/dist/css/tabler.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.3.0/dist/tabler-icons.min.css">
+    <style>
+        .login-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .login-card { width: 100%; max-width: 380px; }
+        .status-badge { font-size: 0.75rem; }
+        .nav-link.active { background: rgba(var(--tblr-primary-rgb), 0.1) !important; }
+        .stat-card { transition: transform 0.15s; }
+        .stat-card:hover { transform: translateY(-2px); }
+        .table-responsive { overflow-x: auto; }
+        #app { display: none; }
+        #login { display: none; }
+        .chart-container { position: relative; height: 300px; }
+    </style>
+</head>
+<body class="theme-dark">
+
+<!-- ═══════════════ LOGIN ═══════════════ -->
+<div id="login" class="login-wrapper">
+    <div class="login-card card">
+        <div class="card-body p-4">
+            <h2 class="card-title text-center mb-4">
+                <i class="ti ti-robot me-2"></i>AI Marketplace
+            </h2>
+            <p class="text-secondary text-center mb-4">Вход в админ-панель</p>
+            <div id="login-error" class="alert alert-danger d-none"></div>
+            <div class="mb-3">
+                <label class="form-label">Логин</label>
+                <input type="text" id="login-username" class="form-control" autocomplete="username">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Пароль</label>
+                <input type="password" id="login-password" class="form-control" autocomplete="current-password">
+            </div>
+            <button id="login-btn" class="btn btn-primary w-100">Войти</button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ APP ═══════════════ -->
+<div id="app">
+    <div class="page">
+        <!-- Sidebar -->
+        <aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <h1 class="navbar-brand navbar-brand-autodark">
+                    <span class="ms-2">AI Marketplace</span>
+                </h1>
+                <div class="collapse navbar-collapse" id="sidebar-menu">
+                    <ul class="navbar-nav pt-lg-3">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="dashboard">
+                                <span class="nav-link-icon"><i class="ti ti-dashboard"></i></span>
+                                <span class="nav-link-title">Дашборд</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="users">
+                                <span class="nav-link-icon"><i class="ti ti-users"></i></span>
+                                <span class="nav-link-title">Пользователи</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="runs">
+                                <span class="nav-link-icon"><i class="ti ti-player-play"></i></span>
+                                <span class="nav-link-title">Запуски</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="costs">
+                                <span class="nav-link-icon"><i class="ti ti-currency-dollar"></i></span>
+                                <span class="nav-link-title">Расходы</span>
+                            </a>
+                        </li>
+                        <li class="nav-item mt-auto">
+                            <a class="nav-link text-danger" href="#" id="logout-btn">
+                                <span class="nav-link-icon"><i class="ti ti-logout"></i></span>
+                                <span class="nav-link-title">Выйти</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main content wrapper -->
+        <div class="page-wrapper">
+            <div class="page-body">
+                <div class="container-xl">
+                    <!-- Loading -->
+                    <div id="loading" class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status"></div>
+                        <p class="mt-2 text-secondary">Загрузка...</p>
+                    </div>
+
+                    <!-- ═══ DASHBOARD PAGE ═══ -->
+                    <div id="page-dashboard" class="page-content d-none">
+                        <div class="page-header mb-3">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <h2 class="page-title">Дашборд</h2>
+                                </div>
+                                <div class="col-auto ms-auto">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="loadDashboard()">
+                                        <i class="ti ti-refresh me-1"></i>Обновить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Stat cards row 1 -->
+                        <div class="row row-deck row-cards mb-3">
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="card stat-card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="subheader">Пользователи</div>
+                                        </div>
+                                        <div class="h1 mb-0" id="stat-total-users">0</div>
+                                        <div class="text-secondary mt-1">
+                                            <span id="stat-active-7d">0</span> активных за 7 дней
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="card stat-card">
+                                    <div class="card-body">
+                                        <div class="subheader">Запуски</div>
+                                        <div class="h1 mb-0" id="stat-total-runs">0</div>
+                                        <div class="text-secondary mt-1">
+                                            <span class="text-green" id="stat-completed">0</span> завершено /
+                                            <span class="text-red" id="stat-failed">0</span> ошибок
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="card stat-card">
+                                    <div class="card-body">
+                                        <div class="subheader">Кредиты потрачено</div>
+                                        <div class="h1 mb-0" id="stat-credits">0</div>
+                                        <div class="text-secondary mt-1">всего</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="card stat-card">
+                                    <div class="card-body">
+                                        <div class="subheader">Токены LLM</div>
+                                        <div class="h1 mb-0" id="stat-tokens">0</div>
+                                        <div class="text-secondary mt-1">
+                                            <span id="stat-searches">0</span> веб-поисков
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts -->
+                        <div class="row row-deck row-cards">
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-header"><h3 class="card-title">Запуски по минисервисам</h3></div>
+                                    <div class="card-body">
+                                        <div class="chart-container">
+                                            <canvas id="chart-miniservices"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-header"><h3 class="card-title">Запуски по статусам</h3></div>
+                                    <div class="card-body">
+                                        <div class="chart-container">
+                                            <canvas id="chart-statuses"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ═══ USERS PAGE ═══ -->
+                    <div id="page-users" class="page-content d-none">
+                        <div class="page-header mb-3">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <h2 class="page-title">Пользователи</h2>
+                                </div>
+                                <div class="col-auto ms-auto">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="loadUsers()">
+                                        <i class="ti ti-refresh me-1"></i>Обновить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="table-responsive">
+                                <table class="table table-vcenter card-table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Пользователь</th>
+                                            <th>Telegram ID</th>
+                                            <th>План</th>
+                                            <th>Кредиты</th>
+                                            <th>Запуски</th>
+                                            <th>Токены</th>
+                                            <th>Онбординг</th>
+                                            <th>Регистрация</th>
+                                            <th>Активность</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="users-table-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ═══ RUNS PAGE ═══ -->
+                    <div id="page-runs" class="page-content d-none">
+                        <div class="page-header mb-3">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <h2 class="page-title">Запуски минисервисов</h2>
+                                </div>
+                                <div class="col-auto ms-auto">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="loadRuns()">
+                                        <i class="ti ti-refresh me-1"></i>Обновить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="table-responsive">
+                                <table class="table table-vcenter card-table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Пользователь</th>
+                                            <th>Минисервис</th>
+                                            <th>Статус</th>
+                                            <th>Кредиты</th>
+                                            <th>Токены</th>
+                                            <th>Веб-поиски</th>
+                                            <th>Начало</th>
+                                            <th>Завершение</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="runs-table-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ═══ COSTS PAGE ═══ -->
+                    <div id="page-costs" class="page-content d-none">
+                        <div class="page-header mb-3">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <h2 class="page-title">Расходы на LLM</h2>
+                                </div>
+                                <div class="col-auto ms-auto">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="loadCosts()">
+                                        <i class="ti ti-refresh me-1"></i>Обновить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cost summary cards -->
+                        <div class="row row-deck row-cards mb-3">
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="card stat-card">
+                                    <div class="card-body">
+                                        <div class="subheader">Всего токенов</div>
+                                        <div class="h1 mb-0" id="cost-total-tokens">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="card stat-card">
+                                    <div class="card-body">
+                                        <div class="subheader">Оценка стоимости</div>
+                                        <div class="h1 mb-0">$<span id="cost-total-usd">0.00</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-4">
+                                <div class="card stat-card">
+                                    <div class="card-body">
+                                        <div class="subheader">Моделей используется</div>
+                                        <div class="h1 mb-0" id="cost-models-count">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row row-deck row-cards mb-3">
+                            <!-- By model -->
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-header"><h3 class="card-title">Расходы по моделям</h3></div>
+                                    <div class="table-responsive">
+                                        <table class="table table-vcenter card-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Модель</th>
+                                                    <th>Токены</th>
+                                                    <th>Стоимость (USD)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="costs-model-body"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- By miniservice -->
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-header"><h3 class="card-title">Расходы по минисервисам</h3></div>
+                                    <div class="table-responsive">
+                                        <table class="table table-vcenter card-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Минисервис</th>
+                                                    <th>Токены</th>
+                                                    <th>Запуски</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="costs-ms-body"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Daily chart -->
+                        <div class="row row-deck row-cards">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header"><h3 class="card-title">Токены по дням (30 дней)</h3></div>
+                                    <div class="card-body">
+                                        <div class="chart-container">
+                                            <canvas id="chart-daily-tokens"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta20/dist/js/tabler.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+// State
+// ═══════════════════════════════════════════════════════════════════════
+const BASE = '/admin/api';
+let token = localStorage.getItem('admin_token');
+let charts = {};
+
+const MS_NAMES = {
+    goal_setting: 'Постановка целей',
+    niche_selection: 'Выбор ниши',
+    supplier_search: 'Поиск поставщиков',
+    sales_scripts: 'Скрипты продаж',
+    ad_creation: 'Создание рекламы',
+    lead_search: 'Поиск лидов',
+};
+
+const STATUS_COLORS = {
+    completed: 'success',
+    failed: 'danger',
+    collecting: 'info',
+    processing: 'warning',
+    partially_completed: 'orange',
+};
+
+const STATUS_NAMES = {
+    completed: 'Завершён',
+    failed: 'Ошибка',
+    collecting: 'Сбор данных',
+    processing: 'Обработка',
+    partially_completed: 'Частично',
+};
+
+const CHART_COLORS = ['#206bc4', '#2fb344', '#d63939', '#f59f00', '#ae3ec9', '#4299e1', '#f76707', '#74b816'];
+
+// ═══════════════════════════════════════════════════════════════════════
+// API helpers
+// ═══════════════════════════════════════════════════════════════════════
+async function api(path) {
+    const resp = await fetch(BASE + path, {
+        headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (resp.status === 401) {
+        logout();
+        throw new Error('Unauthorized');
+    }
+    if (!resp.ok) throw new Error('API error: ' + resp.status);
+    return resp.json();
+}
+
+function fmtNum(n) {
+    if (n === null || n === undefined) return '0';
+    return n.toLocaleString('ru-RU');
+}
+
+function fmtDate(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    return d.toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' });
+}
+
+function shortDate(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    return d.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Auth
+// ═══════════════════════════════════════════════════════════════════════
+function showLogin() {
+    document.getElementById('login').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+}
+
+function showApp() {
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    navigate('dashboard');
+}
+
+function logout() {
+    token = null;
+    localStorage.removeItem('admin_token');
+    showLogin();
+}
+
+document.getElementById('login-btn').addEventListener('click', async () => {
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
+    const errEl = document.getElementById('login-error');
+    errEl.classList.add('d-none');
+
+    try {
+        const resp = await fetch(BASE + '/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        if (!resp.ok) {
+            errEl.textContent = 'Неверный логин или пароль';
+            errEl.classList.remove('d-none');
+            return;
+        }
+        const data = await resp.json();
+        token = data.token;
+        localStorage.setItem('admin_token', token);
+        showApp();
+    } catch (e) {
+        errEl.textContent = 'Ошибка подключения';
+        errEl.classList.remove('d-none');
+    }
+});
+
+document.getElementById('login-password').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('login-btn').click();
+});
+
+document.getElementById('logout-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    logout();
+});
+
+// ═══════════════════════════════════════════════════════════════════════
+// Navigation
+// ═══════════════════════════════════════════════════════════════════════
+function navigate(page) {
+    document.querySelectorAll('.page-content').forEach(el => el.classList.add('d-none'));
+    document.querySelectorAll('[data-page]').forEach(el => el.classList.remove('active'));
+
+    const target = document.getElementById('page-' + page);
+    if (target) target.classList.remove('d-none');
+
+    const navLink = document.querySelector('[data-page="' + page + '"]');
+    if (navLink) navLink.classList.add('active');
+
+    document.getElementById('loading').classList.add('d-none');
+
+    if (page === 'dashboard') loadDashboard();
+    else if (page === 'users') loadUsers();
+    else if (page === 'runs') loadRuns();
+    else if (page === 'costs') loadCosts();
+}
+
+document.querySelectorAll('[data-page]').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigate(link.dataset.page);
+    });
+});
+
+// ═══════════════════════════════════════════════════════════════════════
+// Dashboard
+// ═══════════════════════════════════════════════════════════════════════
+async function loadDashboard() {
+    try {
+        const d = await api('/dashboard');
+        document.getElementById('stat-total-users').textContent = fmtNum(d.total_users);
+        document.getElementById('stat-active-7d').textContent = fmtNum(d.active_users_7d);
+        document.getElementById('stat-total-runs').textContent = fmtNum(d.total_runs);
+        document.getElementById('stat-completed').textContent = fmtNum(d.completed_runs);
+        document.getElementById('stat-failed').textContent = fmtNum(d.failed_runs);
+        document.getElementById('stat-credits').textContent = fmtNum(d.total_credits_spent);
+        document.getElementById('stat-tokens').textContent = fmtNum(d.total_tokens_used);
+        document.getElementById('stat-searches').textContent = fmtNum(d.total_searches_used);
+
+        // Miniservices pie chart
+        const msLabels = Object.keys(d.runs_by_miniservice).map(k => MS_NAMES[k] || k);
+        const msData = Object.values(d.runs_by_miniservice);
+        renderChart('chart-miniservices', 'doughnut', msLabels, msData, 'ms-pie');
+
+        // Status pie chart
+        const stLabels = Object.keys(d.runs_by_status).map(k => STATUS_NAMES[k] || k);
+        const stData = Object.values(d.runs_by_status);
+        const stColors = Object.keys(d.runs_by_status).map(k => {
+            const map = { completed: '#2fb344', failed: '#d63939', collecting: '#4299e1', processing: '#f59f00', partially_completed: '#f76707' };
+            return map[k] || '#adb5bd';
+        });
+        renderChart('chart-statuses', 'doughnut', stLabels, stData, 'status-pie', stColors);
+    } catch (e) {
+        console.error('Dashboard load error:', e);
+    }
+}
+
+function renderChart(canvasId, type, labels, data, chartKey, colors) {
+    if (charts[chartKey]) charts[chartKey].destroy();
+    const ctx = document.getElementById(canvasId).getContext('2d');
+    const bgColors = colors || CHART_COLORS.slice(0, labels.length);
+    charts[chartKey] = new Chart(ctx, {
+        type: type,
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: bgColors,
+                borderWidth: 0,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { color: '#adb5bd', padding: 12 } },
+            }
+        }
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Users
+// ═══════════════════════════════════════════════════════════════════════
+async function loadUsers() {
+    try {
+        const users = await api('/users');
+        const tbody = document.getElementById('users-table-body');
+        tbody.innerHTML = '';
+        users.forEach(u => {
+            const planBadge = u.plan_type === 'paid'
+                ? '<span class="badge bg-green">Paid</span>'
+                : '<span class="badge bg-secondary">Free</span>';
+            const onb = u.onboarding_completed
+                ? '<span class="badge bg-green">Да</span>'
+                : '<span class="badge bg-yellow">Нет</span>';
+            tbody.innerHTML += `<tr>
+                <td><strong>${esc(u.first_name)}</strong>${u.username ? ' <span class="text-secondary">@' + esc(u.username) + '</span>' : ''}</td>
+                <td><code>${u.telegram_id}</code></td>
+                <td>${planBadge}</td>
+                <td>${u.credits_remaining} / ${u.credits_monthly_limit}</td>
+                <td>${u.total_runs} <span class="text-secondary">(${u.completed_runs} OK)</span></td>
+                <td>${fmtNum(u.total_tokens)}</td>
+                <td>${onb}</td>
+                <td>${fmtDate(u.created_at)}</td>
+                <td>${fmtDate(u.last_activity)}</td>
+            </tr>`;
+        });
+        if (users.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="9" class="text-center text-secondary">Нет данных</td></tr>';
+        }
+    } catch (e) {
+        console.error('Users load error:', e);
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Runs
+// ═══════════════════════════════════════════════════════════════════════
+async function loadRuns() {
+    try {
+        const runs = await api('/runs');
+        const tbody = document.getElementById('runs-table-body');
+        tbody.innerHTML = '';
+        runs.forEach(r => {
+            const color = STATUS_COLORS[r.status] || 'secondary';
+            const label = STATUS_NAMES[r.status] || r.status;
+            tbody.innerHTML += `<tr>
+                <td>${esc(r.user_name)} <span class="text-secondary">(${r.telegram_id})</span></td>
+                <td>${MS_NAMES[r.miniservice_id] || r.miniservice_id}</td>
+                <td><span class="badge bg-${color} status-badge">${label}</span></td>
+                <td>${r.credits_spent}</td>
+                <td>${fmtNum(r.llm_tokens_used)}</td>
+                <td>${r.web_searches_used}</td>
+                <td>${fmtDate(r.started_at)}</td>
+                <td>${fmtDate(r.completed_at)}</td>
+            </tr>`;
+        });
+        if (runs.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8" class="text-center text-secondary">Нет данных</td></tr>';
+        }
+    } catch (e) {
+        console.error('Runs load error:', e);
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Costs
+// ═══════════════════════════════════════════════════════════════════════
+async function loadCosts() {
+    try {
+        const c = await api('/costs');
+        document.getElementById('cost-total-tokens').textContent = fmtNum(c.total_tokens);
+        document.getElementById('cost-total-usd').textContent = c.estimated_cost_usd.toFixed(2);
+        document.getElementById('cost-models-count').textContent = Object.keys(c.by_model).length;
+
+        // Models table
+        const modelTbody = document.getElementById('costs-model-body');
+        modelTbody.innerHTML = '';
+        for (const [model, data] of Object.entries(c.by_model)) {
+            modelTbody.innerHTML += `<tr>
+                <td><code>${esc(model)}</code></td>
+                <td>${fmtNum(data.tokens)}</td>
+                <td>$${data.cost.toFixed(4)}</td>
+            </tr>`;
+        }
+        if (Object.keys(c.by_model).length === 0) {
+            modelTbody.innerHTML = '<tr><td colspan="3" class="text-center text-secondary">Нет данных</td></tr>';
+        }
+
+        // Miniservice table
+        const msTbody = document.getElementById('costs-ms-body');
+        msTbody.innerHTML = '';
+        for (const [ms, data] of Object.entries(c.by_miniservice)) {
+            msTbody.innerHTML += `<tr>
+                <td>${MS_NAMES[ms] || ms}</td>
+                <td>${fmtNum(data.tokens)}</td>
+                <td>${data.runs}</td>
+            </tr>`;
+        }
+        if (Object.keys(c.by_miniservice).length === 0) {
+            msTbody.innerHTML = '<tr><td colspan="3" class="text-center text-secondary">Нет данных</td></tr>';
+        }
+
+        // Daily tokens line chart
+        if (c.daily_tokens && c.daily_tokens.length > 0) {
+            const labels = c.daily_tokens.map(d => shortDate(d.date));
+            const data = c.daily_tokens.map(d => d.tokens);
+            if (charts['daily-tokens']) charts['daily-tokens'].destroy();
+            const ctx = document.getElementById('chart-daily-tokens').getContext('2d');
+            charts['daily-tokens'] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Токены',
+                        data: data,
+                        borderColor: '#206bc4',
+                        backgroundColor: 'rgba(32,107,196,0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 3,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                    },
+                    scales: {
+                        x: { ticks: { color: '#adb5bd' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        y: { ticks: { color: '#adb5bd' }, grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true },
+                    }
+                }
+            });
+        }
+    } catch (e) {
+        console.error('Costs load error:', e);
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Utils
+// ═══════════════════════════════════════════════════════════════════════
+function esc(str) {
+    if (!str) return '';
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Init
+// ═══════════════════════════════════════════════════════════════════════
+(async function init() {
+    if (token) {
+        try {
+            await api('/dashboard');
+            showApp();
+        } catch (e) {
+            showLogin();
+        }
+    } else {
+        showLogin();
+    }
+})();
+</script>
+
+</body>
+</html>

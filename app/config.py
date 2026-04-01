@@ -68,6 +68,10 @@ class Settings(BaseSettings):
     # Mentor
     mentor_max_fallback_attempts: int = 3
 
+    # Admin dashboard
+    admin_username: str = "admin"
+    admin_password: str = "admin123"
+
     # Goal reality filter thresholds
     goal_max_ratio_1_month: int = 10
     goal_max_ratio_3_months: int = 20
