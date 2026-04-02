@@ -84,9 +84,9 @@ async def handle_message(
         # ① Smart extractor (best-effort) --------------------------------
         await _run_smart_extraction(telegram_id, text)
 
-        # ── Direct choice-field matching (no LLM needed) ──────────────
-        # If active dialog and next field is choice/multi_choice,
-        # try to match user's text directly to one of the options
+        # ── Pre-save choice fields before agent call (saves LLM tokens) ──
+        # If active dialog and next field is choice, save the match
+        # but let the agent formulate the next question with context
         dialog = await get_dialog(telegram_id)
         if dialog and dialog.get("miniservice_id"):
             ms_id = dialog["miniservice_id"]
@@ -102,7 +102,6 @@ async def handle_message(
                     updated_dialog = await get_dialog(telegram_id)
                     updated_collected = updated_dialog.get("collected_fields", {})
                     if all_required_collected(ms_id, updated_collected):
-                        # Sync to DB and launch
                         run_id = updated_dialog["run_id"]
                         from app.database import async_session as _async_session
                         async with _async_session() as _s:
@@ -116,19 +115,8 @@ async def handle_message(
                         run_miniservice_task.delay(run_id)
                         await message.answer(f"✅ Записал: {matched}\n\n⏳ Все данные собраны. Анализирую...")
                         return
-                    # Ask next question
-                    next_q = get_next_question(ms_id, updated_collected)
-                    if next_q:
-                        q_text = next_q.get("question", "Продолжим:")
-                        choices = next_q.get("choices", [])
-                        if choices:
-                            opts = "\n".join(f"  {i+1}. {c}" for i, c in enumerate(choices))
-                            q_text += f"\n\n{opts}"
-                        await message.answer(f"✅ Записал: {matched}\n\n{q_text}")
-                    else:
-                        await message.answer(f"✅ Записал: {matched}")
-                    await append_conversation(telegram_id, "user", text)
-                    return
+                    # Field saved — fall through to agent for next question
+                    # (agent sees updated collected_fields and asks contextually)
 
         # ── Route to miniservice agent if active dialog ──────────────
         if dialog and dialog.get("miniservice_id"):
