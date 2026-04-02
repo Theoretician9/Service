@@ -124,7 +124,10 @@ class BaseAgent:
     ) -> str:
         """Build dynamic state section for agent prompt."""
         from datetime import datetime
-        parts = [f"Текущая дата: {datetime.now().strftime('%d %B %Y')}"]
+        parts = [
+            f"Текущая дата: {datetime.now().strftime('%d %B %Y')}",
+            "ВАЖНО: Не здоровайся. Пользователь уже в диалоге — для него ты часть единого разговора.",
+        ]
 
         # Project context
         if project_context:

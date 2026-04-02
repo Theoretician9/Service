@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дерево целей</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-warn {
+    border-left: 4px solid #f59e0b;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-red {
+    border-left: 4px solid #ef4444;
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.smart-goal {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+}
+.points-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+@media (max-width: 480px) {
+    .points-grid { grid-template-columns: 1fr; }
+}
+.point-card {
+    background: #1f1f23;
+    border-radius: 12px;
+    padding: 16px;
+}
+.point-card .label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+.point-a .label { color: #f59e0b; }
+.point-b .label { color: #22c55e; }
+.deadline-badge {
+    display: inline-block;
+    background: #27272a;
+    color: #e4e4e7;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 12px;
+}
+.motivation-text {
+    font-size: 16px;
+    font-style: italic;
+    color: #fbbf24;
+    line-height: 1.5;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    border-bottom: 1px solid #27272a;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.week-block {
+    margin-bottom: 16px;
+}
+.week-block h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.week-block li::before { background: #22c55e; }
+.metric-list li::before { background: #3b82f6; }
+.risk-list li::before { background: #ef4444; }
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Дерево целей</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+<div class="card card-accent">
+    <h2>📌 SMART-цель</h2>
+    <div class="smart-goal">Заработать 150 000 тенге за 2 месяца через увеличение подработки или дополнительный заработок для покупки наушников и подготовки к марафону</div>
+</div>
+
+<div class="points-grid">
+    <div class="point-card point-a">
+        <div class="label">📍 Точка А — где сейчас</div>
+        <div>Студент с ежемесячным доходом 95 000 тенге от подработки, который хочет улучшить свою физическую форму и качество жизни</div>
+    </div>
+    <div class="point-card point-b">
+        <div class="label">🏁 Точка Б — куда идём</div>
+        <div>Человек с достаточным доходом для покупки качественных наушников и полноценной подготовки к марафону без финансовых ограничений</div>
+    </div>
+</div>
+
+
+
+
+<div class="card card-warn">
+    <h2>💡 Настоящая мотивация</h2>
+    <div class="motivation-text">Хочу купить наушники и подготовиться к марафону</div>
+</div>
+
+
+
+<div class="card">
+    <h2>🌳 Три уровня «Почему»</h2>
+    <ul>
+    
+        <li>Наушники нужны для комфортных тренировок и мотивации во время бега</li>
+    
+        <li>Марафон — конкретная спортивная цель, требующая систематической подготовки</li>
+    
+        <li>Улучшение физической формы и достижение личного результата в спорте</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>🚧 Ограничения и что с ними делать</h2>
+    <ul class="risk-list">
+    
+        <li>Ограниченный доход 95 000 тенге — найти дополнительную подработку на 2-3 часа в день (доставка, фриланс, репетиторство)</li>
+    
+        <li>Нехватка времени из-за учёбы — составить чёткий график: учёба + работа + тренировки</li>
+    
+        <li>Неизвестная стоимость наушников и подготовки — определить конкретную сумму: наушники 50-80 тыс. тенге + экипировка/питание 30-50 тыс. тенге</li>
+    
+        <li>Нет опыта марафона — начать с бега 3 раза в неделю, постепенно увеличивая дистанцию с 5 до 21 км</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-green">
+    <h2>📋 План действий</h2>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 1</h3>
+        <ul>
+        
+            <li>Определить точную модель наушников и их стоимость, рассчитать бюджет на экипировку для марафона (кроссовки, одежда, питание)</li>
+        
+            <li>Найти 2-3 варианта дополнительного заработка: разместить объявления на OLX/Kolesa о репетиторстве, зарегистрироваться в Glovo/Chocofood курьером</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 2</h3>
+        <ul>
+        
+            <li>Начать дополнительную подработку минимум 15 часов в неделю для заработка +30-40 тыс. тенге</li>
+        
+            <li>Составить план тренировок: 3 пробежки в неделю по 30-40 минут, купить базовые беговые кроссовки (15-20 тыс. тенге)</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 3</h3>
+        <ul>
+        
+            <li>Накопить 50% от суммы на наушники (25-40 тыс. тенге), продолжать подработку</li>
+        
+            <li>Увеличить дистанцию пробежек до 7-10 км, следить за питанием и восстановлением</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 4</h3>
+        <ul>
+        
+            <li>Купить наушники при достижении нужной суммы или продолжить накопление до конца 2-го месяца</li>
+        
+            <li>Бегать 10-12 км 3 раза в неделю, добавить силовые упражнения 2 раза в неделю</li>
+        
+        </ul>
+        
+    </div>
+    
+</div>
+
+
+
+<div class="card">
+    <h2>📊 Метрики успеха</h2>
+    <ul class="metric-list">
+    
+        <li>Заработано 150 000 тенге за 2 месяца (95 000 основная работа + 55 000 дополнительно)</li>
+    
+        <li>Куплены наушники стоимостью 50-80 тыс. тенге</li>
+    
+        <li>Пробежки 3 раза в неделю по 10-15 км к концу 2-го месяца</li>
+    
+        <li>Минимум 20 часов дополнительной работы в месяц</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>⚠️ Риски</h2>
+    <ul class="risk-list">
+    
+        <li>Не найдётся подработка — использовать фриланс-платформы (Upwork, Fiverr), продавать конспекты/помощь студентам</li>
+    
+        <li>Не хватит времени на тренировки — тренироваться утром до учёбы или поздно вечером, минимум 3 раза в неделю по 40 минут</li>
+    
+        <li>Травма при подготовке к марафону — начинать с малых дистанций, делать разминку и заминку, купить качественные кроссовки сразу</li>
+    
+        <li>Потеря мотивации — найти партнёра для пробежек, зарегистрироваться на конкретный марафон с датой</li>
+    
+    </ul>
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+</body>
+</html>
