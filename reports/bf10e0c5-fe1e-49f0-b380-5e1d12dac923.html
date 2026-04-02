@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дерево целей</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-warn {
+    border-left: 4px solid #f59e0b;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-red {
+    border-left: 4px solid #ef4444;
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.smart-goal {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+}
+.points-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+@media (max-width: 480px) {
+    .points-grid { grid-template-columns: 1fr; }
+}
+.point-card {
+    background: #1f1f23;
+    border-radius: 12px;
+    padding: 16px;
+}
+.point-card .label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+.point-a .label { color: #f59e0b; }
+.point-b .label { color: #22c55e; }
+.deadline-badge {
+    display: inline-block;
+    background: #27272a;
+    color: #e4e4e7;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 12px;
+}
+.motivation-text {
+    font-size: 16px;
+    font-style: italic;
+    color: #fbbf24;
+    line-height: 1.5;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    border-bottom: 1px solid #27272a;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.week-block {
+    margin-bottom: 16px;
+}
+.week-block h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.week-block li::before { background: #22c55e; }
+.metric-list li::before { background: #3b82f6; }
+.risk-list li::before { background: #ef4444; }
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Дерево целей</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+<div class="card card-accent">
+    <h2>📌 SMART-цель</h2>
+    <div class="smart-goal">Увеличить чистую прибыль бизнеса по установке натяжных потолков в Москве с текущего уровня до 500 000₽ ежемесячно в течение 12 месяцев через масштабирование количества заказов и оптимизацию маржинальности</div>
+</div>
+
+<div class="points-grid">
+    <div class="point-card point-a">
+        <div class="label">📍 Точка А — где сейчас</div>
+        <div>Действующий бизнес по установке натяжных потолков в Москве с текущим уровнем чистой прибыли (не указано конкретное значение)</div>
+    </div>
+    <div class="point-card point-b">
+        <div class="label">🏁 Точка Б — куда идём</div>
+        <div>Масштабированный бизнес по установке натяжных потолков, генерирующий стабильную чистую прибыль 500 000₽ ежемесячно</div>
+    </div>
+</div>
+
+
+<div style="text-align: center; padding: 8px 0;">
+    <span class="deadline-badge">📅 Срок: 1 год</span>
+</div>
+
+
+
+<div class="card card-warn">
+    <h2>💡 Настоящая мотивация</h2>
+    <div class="motivation-text">Независимость, безопасность семьи, стабильность, возможность развивать другие проекты</div>
+</div>
+
+
+
+<div class="card">
+    <h2>🌳 Три уровня «Почему»</h2>
+    <ul>
+    
+        <li>Независимость — контроль над собственным временем и решениями без зависимости от работодателя или внешних обстоятельств</li>
+    
+        <li>Безопасность семьи — финансовая подушка для обеспечения близких в любых ситуациях</li>
+    
+        <li>Стабильность — предсказуемый денежный поток для планирования будущего</li>
+    
+        <li>Возможность развивать другие проекты — свободные ресурсы для реализации новых бизнес-идей и инвестиций</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>🚧 Ограничения и что с ними делать</h2>
+    <ul class="risk-list">
+    
+        <li>Не указан текущий уровень прибыли — провести финансовый аудит за последние 3 месяца: выручка, себестоимость, операционные расходы, чистая прибыль</li>
+    
+        <li>Не указано количество заказов в месяц — зафиксировать текущие показатели: количество заявок, конверсия в продажу, средний чек, количество бригад</li>
+    
+        <li>Не указаны каналы привлечения клиентов — проанализировать текущие источники лидов и их стоимость (Яндекс.Директ, Авито, сарафан, агрегаторы)</li>
+    
+        <li>Не указана маржинальность — рассчитать маржу на один заказ и найти точки роста (закупка материалов, оптимизация работы бригад, повышение среднего чека через допуслуги)</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-green">
+    <h2>📋 План действий</h2>
+    
+    <div class="week-block">
+        
+        <h3>Месяц 1</h3>
+        <ul>
+        
+            <li>Финансовый аудит: выручка, себестоимость, чистая прибыль за последние 3 месяца. Расчёт текущей маржинальности и точки безубыточности</li>
+        
+            <li>Сбор данных: количество заявок/месяц, конверсия в продажу, средний чек, стоимость привлечения клиента по каждому каналу</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Месяцы 2-3</h3>
+        <ul>
+        
+            <li>Запуск тестовых рекламных кампаний в Яндекс.Директ и ВКонтакте с бюджетом 50 000₽/месяц. Цель: снизить стоимость заявки до 500₽ и ниже</li>
+        
+            <li>Внедрение CRM (Битрикс24 или amoCRM) для учёта всех заявок и контроля конверсии. Обучение менеджера работе с базой</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Месяцы 4-6</h3>
+        <ul>
+        
+            <li>Масштабирование рекламы: увеличение бюджета до 150 000₽/месяц по эффективным каналам. Цель: 200+ заявок/месяц</li>
+        
+            <li>Найм и обучение второй монтажной бригады. Стандартизация процессов установки для сохранения качества при росте объёмов</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Месяцы 7-9</h3>
+        <ul>
+        
+            <li>Внедрение допродаж: освещение, карнизы, шумоизоляция. Цель: увеличить средний чек на 20-30%</li>
+        
+            <li>Запуск реферальной программы: скидка 10% за рекомендацию. Цель: 15-20% заказов через сарафан</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Месяцы 10-12</h3>
+        <ul>
+        
+            <li>Оптимизация закупок: переход на прямые поставки от производителей, снижение себестоимости на 10-15%</li>
+        
+            <li>Найм менеджера по продажам на KPI (процент от прибыли). Делегирование обработки заявок для фокуса на стратегии</li>
+        
+        </ul>
+        
+    </div>
+    
+</div>
+
+
+
+<div class="card">
+    <h2>📊 Метрики успеха</h2>
+    <ul class="metric-list">
+    
+        <li>Чистая прибыль 500 000₽/месяц (основная метрика)</li>
+    
+        <li>Количество заказов: 80-100 объектов/месяц при среднем чеке 35 000₽ и марже 30%</li>
+    
+        <li>Стоимость привлечения клиента: не выше 1 500₽</li>
+    
+        <li>Конверсия заявка → продажа: не ниже 40%</li>
+    
+        <li>Средний чек: рост с текущего уровня до 40 000₽ за счёт допродаж</li>
+    
+        <li>Доля повторных/реферальных клиентов: 20%+</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>⚠️ Риски</h2>
+    <ul class="risk-list">
+    
+        <li>Сезонность спроса (спад летом) — формировать финансовую подушку в высокий сезон (осень-зима), запускать акции летом</li>
+    
+        <li>Рост стоимости рекламы — диверсификация каналов (SEO, Авито, партнёрства с дизайнерами и ремонтными бригадами)</li>
+    
+        <li>Проблемы с качеством при масштабировании — чек-листы для бригад, контроль качества через фото до/после, система штрафов/бонусов</li>
+    
+        <li>Кассовые разрывы при найме бригад — поэтапное масштабирование, найм новой бригады только после выхода на +100 000₽ чистой прибыли</li>
+    
+        <li>Демпинг конкурентов — фокус на качество и сервис, работа с отзывами, гарантия 3-5 лет, быстрые сроки установки</li>
+    
+    </ul>
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+</body>
+</html>

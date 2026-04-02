@@ -231,21 +231,54 @@ async def list_runs(session: AsyncSession = Depends(get_session)):
 
 # Approximate costs per 1M tokens (input+output blended estimate)
 MODEL_COSTS_PER_1M = {
-    "claude-sonnet": 9.0,
     "claude-sonnet-4-5": 9.0,
-    "claude-haiku": 1.0,
-    "claude-haiku-3-5": 1.0,
+    "claude-haiku-4-5": 1.0,
     "gpt-4o-mini": 0.6,
 }
 
 
+def _parse_log_tokens(log_path: str = "/app/logs/conversations.jsonl") -> dict:
+    """Parse JSONL logs to get token usage by model (agents + orchestrator + generation)."""
+    import json
+    from pathlib import Path
+
+    by_model: dict[str, dict] = {}
+    p = Path(log_path)
+    if not p.exists():
+        return by_model
+
+    try:
+        for line in p.read_text(encoding="utf-8").splitlines():
+            try:
+                d = json.loads(line.strip())
+                event = d.get("event", "")
+                if event in ("agent_llm_call", "llm_call"):
+                    model = d.get("model", "unknown")
+                    tokens_in = d.get("tokens_in", 0) or d.get("input_tokens", 0)
+                    tokens_out = d.get("tokens_out", 0) or d.get("output_tokens", 0)
+                    total = tokens_in + tokens_out
+                    if model not in by_model:
+                        by_model[model] = {"tokens": 0, "calls": 0, "tokens_in": 0, "tokens_out": 0}
+                    by_model[model]["tokens"] += total
+                    by_model[model]["tokens_in"] += tokens_in
+                    by_model[model]["tokens_out"] += tokens_out
+                    by_model[model]["calls"] += 1
+            except (json.JSONDecodeError, KeyError):
+                continue
+    except Exception:
+        pass
+
+    return by_model
+
+
 @router.get("/api/costs", dependencies=[Depends(require_auth)])
 async def cost_breakdown(session: AsyncSession = Depends(get_session)):
-    total_tokens = (await session.execute(
+    # DB tokens (generation only — stored in MiniserviceRun)
+    total_db_tokens = (await session.execute(
         select(func.coalesce(func.sum(MiniserviceRun.llm_tokens_used), 0))
     )).scalar() or 0
 
-    # By miniservice
+    # By miniservice from DB
     by_ms_rows = (await session.execute(
         select(
             MiniserviceRun.miniservice_id,
@@ -259,31 +292,45 @@ async def cost_breakdown(session: AsyncSession = Depends(get_session)):
     for row in by_ms_rows:
         by_miniservice[row[0]] = {"tokens": int(row[1]), "runs": row[2]}
 
-    # Map miniservices to primary models for cost estimation
-    ms_model_map = {
-        "goal_setting": "claude-sonnet",
-        "niche_selection": "claude-sonnet",
-        "supplier_search": "claude-sonnet",
-        "sales_scripts": "claude-sonnet",
-        "ad_creation": "gpt-4o-mini",
-        "lead_search": "claude-sonnet",
-    }
+    # Real token usage by model from logs (agents + orchestrator + generation)
+    log_by_model = _parse_log_tokens()
 
-    by_model: dict[str, dict] = {}
-    for ms_id, data in by_miniservice.items():
-        model = ms_model_map.get(ms_id, "claude-sonnet")
-        if model not in by_model:
-            by_model[model] = {"tokens": 0, "cost": 0.0}
-        by_model[model]["tokens"] += data["tokens"]
-        cost_per_m = MODEL_COSTS_PER_1M.get(model, 9.0)
-        by_model[model]["cost"] += data["tokens"] / 1_000_000 * cost_per_m
+    # If logs available — use real data; otherwise estimate from DB
+    if log_by_model:
+        by_model = {}
+        for model, data in log_by_model.items():
+            cost_per_m = MODEL_COSTS_PER_1M.get(model, 9.0)
+            by_model[model] = {
+                "tokens": data["tokens"],
+                "tokens_in": data["tokens_in"],
+                "tokens_out": data["tokens_out"],
+                "calls": data["calls"],
+                "cost": round(data["tokens"] / 1_000_000 * cost_per_m, 4),
+            }
+        total_tokens = sum(d["tokens"] for d in by_model.values())
+    else:
+        # Fallback: estimate from DB (generation tokens only)
+        by_model = {}
+        ms_model_map = {
+            "goal_setting": "claude-sonnet-4-5",
+            "niche_selection": "claude-sonnet-4-5",
+            "supplier_search": "claude-sonnet-4-5",
+            "sales_scripts": "claude-sonnet-4-5",
+            "ad_creation": "gpt-4o-mini",
+            "lead_search": "claude-sonnet-4-5",
+        }
+        for ms_id, data in by_miniservice.items():
+            model = ms_model_map.get(ms_id, "claude-sonnet-4-5")
+            if model not in by_model:
+                by_model[model] = {"tokens": 0, "cost": 0.0}
+            by_model[model]["tokens"] += data["tokens"]
+            cost_per_m = MODEL_COSTS_PER_1M.get(model, 9.0)
+            by_model[model]["cost"] += round(data["tokens"] / 1_000_000 * cost_per_m, 4)
+        total_tokens = int(total_db_tokens)
 
     estimated_cost_usd = sum(m["cost"] for m in by_model.values())
-    # Round costs
-    for m in by_model.values():
-        m["cost"] = round(m["cost"], 4)
 
-    # Daily tokens (last 30 days)
+    # Daily tokens (last 30 days) from DB
     thirty_days_ago = datetime.now(timezone.utc) - timedelta(days=30)
     daily_rows = (await session.execute(
         select(
