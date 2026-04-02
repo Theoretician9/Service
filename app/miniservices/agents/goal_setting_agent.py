@@ -4,7 +4,7 @@ from app.miniservices.agents.base_agent import BaseAgent
 
 class GoalSettingAgent(BaseAgent):
     miniservice_id = "goal_setting"
-    model = "claude-sonnet-4-5"
+    model = "claude-haiku-4-5"
     max_tokens = 800
     temperature = 0.3
 

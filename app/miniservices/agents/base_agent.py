@@ -6,6 +6,7 @@ Each miniservice agent:
 - Decides when to accept, probe deeper, or move to next field
 - Returns structured response with field_id/value or follow-up question
 """
+import asyncio
 import json
 import structlog
 from dataclasses import dataclass
@@ -78,22 +79,40 @@ class BaseAgent:
             messages.append({"role": msg["role"], "content": msg["content"]})
         messages.append({"role": "user", "content": user_message})
 
-        # Call LLM
-        try:
-            response = await llm_gateway.complete(
-                provider="anthropic",
-                model=self.model,
-                system=self.system_prompt + "\n\n" + state_prompt,
-                messages=messages,
-                max_tokens=self.max_tokens,
-                temperature=self.temperature,
-            )
-            return self._parse_response(response.content, collected_fields)
-        except Exception as e:
-            logger.error("agent_error", agent=self.miniservice_id, error=str(e))
-            return AgentResponse(
-                text="Произошла ошибка. Попробуй ещё раз или напиши /cancel.",
-            )
+        # Call LLM with retry on 429/rate_limit
+        max_retries = 3
+        delays = [5, 15, 30]
+        for attempt in range(max_retries):
+            try:
+                response = await llm_gateway.complete(
+                    provider="anthropic",
+                    model=self.model,
+                    system=self.system_prompt + "\n\n" + state_prompt,
+                    messages=messages,
+                    max_tokens=self.max_tokens,
+                    temperature=self.temperature,
+                )
+                return self._parse_response(response.content, collected_fields)
+            except Exception as e:
+                err_str = str(e)
+                if ("429" in err_str or "rate_limit" in err_str) and attempt < max_retries - 1:
+                    logger.warning(
+                        "agent_rate_limited",
+                        agent=self.miniservice_id,
+                        attempt=attempt + 1,
+                        delay=delays[attempt],
+                        error=err_str,
+                    )
+                    await asyncio.sleep(delays[attempt])
+                    continue
+                logger.error("agent_error", agent=self.miniservice_id, error=err_str)
+                if "429" in err_str or "rate_limit" in err_str:
+                    return AgentResponse(
+                        text="Сервис перегружен, попробуй через минуту.",
+                    )
+                return AgentResponse(
+                    text="Произошла ошибка. Попробуй ещё раз или напиши /cancel.",
+                )
 
     def _build_state_prompt(
         self,

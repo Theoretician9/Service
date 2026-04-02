@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дерево целей</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-warn {
+    border-left: 4px solid #f59e0b;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-red {
+    border-left: 4px solid #ef4444;
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.smart-goal {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+}
+.points-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+@media (max-width: 480px) {
+    .points-grid { grid-template-columns: 1fr; }
+}
+.point-card {
+    background: #1f1f23;
+    border-radius: 12px;
+    padding: 16px;
+}
+.point-card .label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+.point-a .label { color: #f59e0b; }
+.point-b .label { color: #22c55e; }
+.deadline-badge {
+    display: inline-block;
+    background: #27272a;
+    color: #e4e4e7;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 12px;
+}
+.motivation-text {
+    font-size: 16px;
+    font-style: italic;
+    color: #fbbf24;
+    line-height: 1.5;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    border-bottom: 1px solid #27272a;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.week-block {
+    margin-bottom: 16px;
+}
+.week-block h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.week-block li::before { background: #22c55e; }
+.metric-list li::before { background: #3b82f6; }
+.risk-list li::before { background: #ef4444; }
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Дерево целей</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+<div class="card card-accent">
+    <h2>📌 SMART-цель</h2>
+    <div class="smart-goal">Запустить разработку ботов и получить первый доход 100 000₽ в месяц к январю 2027 года (через 9 месяцев), работая в межсезонье перепродажи саженцев</div>
+</div>
+
+<div class="points-grid">
+    <div class="point-card point-a">
+        <div class="label">📍 Точка А — где сейчас</div>
+        <div>Сезонный бизнес по перепродаже крупномеров с доходом ~1 млн₽ за сезон, но без стабильного заработка в межсезонье</div>
+    </div>
+    <div class="point-card point-b">
+        <div class="label">🏁 Точка Б — куда идём</div>
+        <div>Стабильный ежемесячный доход 100-150 тысяч рублей от разработки ботов в период с января по февраль, когда саженцы не продаются</div>
+    </div>
+</div>
+
+
+<div style="text-align: center; padding: 8px 0;">
+    <span class="deadline-badge">📅 Срок: январь-февраль 2027 (9-10 месяцев)</span>
+</div>
+
+
+
+<div class="card card-warn">
+    <h2>💡 Настоящая мотивация</h2>
+    <div class="motivation-text">Быстро трачу основной заработок, потом сижу и виню себя что ничего не делаю — нужна стабильность в межсезонье</div>
+</div>
+
+
+
+<div class="card">
+    <h2>🌳 Три уровня «Почему»</h2>
+    <ul>
+    
+        <li>Деньги от саженцев заканчиваются быстро из-за импульсивных трат</li>
+    
+        <li>В межсезонье нет дохода, появляется чувство вины и бездействия</li>
+    
+        <li>Нужен стабильный источник дохода, чтобы не зависеть от сезонности</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>🚧 Ограничения и что с ними делать</h2>
+    <ul class="risk-list">
+    
+        <li>Нет опыта в разработке ботов — пройти 1-2 курса по Python/Telegram Bot API до мая 2026</li>
+    
+        <li>Нет первых клиентов — сделать 2-3 бота бесплатно для портфолио до июля 2026</li>
+    
+        <li>Нет времени в сезон саженцев — начать обучение и поиск клиентов уже сейчас (апрель-май 2026)</li>
+    
+        <li>Быстро трачу деньги — открыть отдельный счёт и откладывать 30% от дохода с саженцев</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-green">
+    <h2>📋 План действий</h2>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 1 (апрель 2026)</h3>
+        <ul>
+        
+            <li>Выбрать курс по созданию Telegram-ботов (Stepik, YouTube, Udemy) и начать обучение — 1 час в день</li>
+        
+            <li>Открыть отдельный накопительный счёт и перевести туда 100 000₽ из текущего дохода</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 2 (апрель 2026)</h3>
+        <ul>
+        
+            <li>Пройти первые 3-5 уроков курса, написать простого эхо-бота</li>
+        
+            <li>Изучить 5-10 примеров ботов в Telegram (автоматизация, уведомления, продажи) — записать идеи</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 3 (апрель 2026)</h3>
+        <ul>
+        
+            <li>Создать первого рабочего бота для себя (например, напоминания о задачах или учёт расходов)</li>
+        
+            <li>Написать 3-5 постам в соцсетях/чатах про свой путь в разработку ботов — начать формировать аудиторию</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 4 (апрель 2026)</h3>
+        <ul>
+        
+            <li>Предложить 2-3 знакомым/бизнесменам сделать бота бесплатно для портфолио (автоматизация заказов, уведомления)</li>
+        
+            <li>Продолжить обучение — пройти ещё 5-7 уроков, изучить работу с базами данных (SQLite)</li>
+        
+        </ul>
+        
+    </div>
+    
+</div>
+
+
+
+<div class="card">
+    <h2>📊 Метрики успеха</h2>
+    <ul class="metric-list">
+    
+        <li>К июлю 2026 — 3 бота в портфолио (бесплатные проекты)</li>
+    
+        <li>К сентябрю 2026 — первый платный заказ на 20-30 тысяч рублей</li>
+    
+        <li>К декабрю 2026 — 2-3 платных клиента, доход 50-70 тысяч рублей</li>
+    
+        <li>К январю 2027 — стабильный доход 100 000₽/месяц от разработки ботов</li>
+    
+        <li>На накопительном счёте — минимум 300 000₽ к концу 2026 года</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>⚠️ Риски</h2>
+    <ul class="risk-list">
+    
+        <li>Не хватит времени на обучение в сезон саженцев (апрель-октябрь) — учиться по 30-60 минут в день, даже в загруженные дни</li>
+    
+        <li>Первые клиенты не появятся — активно предлагать услуги в тематических чатах, на Авито, Kwork, FL.ru с июля 2026</li>
+    
+        <li>Быстро потрачу деньги до января 2027 — автоматически переводить 30% дохода на отдельный счёт сразу после получения</li>
+    
+        <li>Конкуренция на рынке ботов — специализироваться на нише (боты для малого бизнеса, автоматизация продаж через Telegram)</li>
+    
+    </ul>
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+</body>
+</html>

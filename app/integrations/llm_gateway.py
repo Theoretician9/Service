@@ -1,3 +1,4 @@
+import itertools
 import json
 import time
 import uuid
@@ -29,7 +30,29 @@ class LLMGateway:
 
     def __init__(self):
         self._anthropic_client = None
+        self._anthropic_clients: list = []
+        self._client_cycle = None
         self._openai_client = None
+
+    def _get_anthropic_clients(self) -> list:
+        """Lazily initialize Anthropic clients from all available keys."""
+        if not self._anthropic_clients:
+            import anthropic
+            keys = settings.all_anthropic_keys
+            if not keys:
+                # Fallback to single empty-key client (will fail on call)
+                self._anthropic_clients = [anthropic.AsyncAnthropic(api_key="")]
+            else:
+                for key in keys:
+                    self._anthropic_clients.append(anthropic.AsyncAnthropic(api_key=key))
+            self._client_cycle = itertools.cycle(range(len(self._anthropic_clients)))
+        return self._anthropic_clients
+
+    def _next_anthropic_client(self):
+        """Get next Anthropic client via round-robin."""
+        clients = self._get_anthropic_clients()
+        idx = next(self._client_cycle)
+        return clients[idx]
 
     @property
     def anthropic_client(self):
@@ -115,12 +138,33 @@ class LLMGateway:
         }
         if system:
             kwargs["system"] = system
-        response = await self.anthropic_client.messages.create(**kwargs)
-        return {
-            "content": response.content[0].text,
-            "input_tokens": response.usage.input_tokens,
-            "output_tokens": response.usage.output_tokens,
-        }
+
+        clients = self._get_anthropic_clients()
+        last_error = None
+
+        for _ in range(len(clients)):
+            client = self._next_anthropic_client()
+            try:
+                response = await client.messages.create(**kwargs)
+                return {
+                    "content": response.content[0].text,
+                    "input_tokens": response.usage.input_tokens,
+                    "output_tokens": response.usage.output_tokens,
+                }
+            except Exception as e:
+                err_str = str(e)
+                last_error = e
+                if "429" in err_str or "rate_limit" in err_str:
+                    logger.warning(
+                        "anthropic_key_rate_limited",
+                        model=model,
+                        error=err_str,
+                    )
+                    continue  # Try next key
+                raise  # Non-429 errors propagate immediately
+
+        # All keys exhausted with 429
+        raise last_error
 
     async def _call_openai(self, model, messages, system, max_tokens, temperature) -> dict:
         msgs = []

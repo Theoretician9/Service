@@ -33,7 +33,18 @@ class Settings(BaseSettings):
 
     # LLM
     anthropic_api_key: str = ""
+    anthropic_api_keys: str = ""  # comma-separated additional Anthropic API keys
     openai_api_key: str = ""
+
+    @property
+    def all_anthropic_keys(self) -> list[str]:
+        """Return list of all Anthropic API keys (main + additional)."""
+        keys = []
+        if self.anthropic_api_key:
+            keys.append(self.anthropic_api_key)
+        if self.anthropic_api_keys:
+            keys.extend(k.strip() for k in self.anthropic_api_keys.split(",") if k.strip())
+        return keys
 
     # Search
     tavily_api_key: str = ""
