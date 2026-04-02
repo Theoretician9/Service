@@ -689,8 +689,6 @@ async def _action_launch_miniservice(
         if agent:
             # Build project context for agent
             project_ctx: dict = {}
-            if context_data := getattr(message, '_context_data', None):
-                pass  # Not available here
             # Get project from DB
             from sqlalchemy import select as sa_select
             from app.modules.projects.models import Project
