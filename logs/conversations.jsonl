@@ -1,2 +1,4 @@
 {"url": "https://service1.vps.webdock.cloud/webhook/x2-H6rB9MeIm6Ujpc1b9MRg00MCjIJfIZuBAdqFmZ7A", "event": "webhook_registered", "timestamp": "2026-04-02T08:47:56.535901Z", "level": "info"}
 {"event": "webhook_deleted", "timestamp": "2026-04-02T08:58:14.150025Z", "level": "info"}
+{"url": "https://service1.vps.webdock.cloud/webhook/x2-H6rB9MeIm6Ujpc1b9MRg00MCjIJfIZuBAdqFmZ7A", "event": "webhook_registered", "timestamp": "2026-04-02T08:58:22.221807Z", "level": "info"}
+{"event": "webhook_deleted", "timestamp": "2026-04-02T09:02:07.636407Z", "level": "info"}
