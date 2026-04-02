@@ -227,6 +227,73 @@ async def list_runs(session: AsyncSession = Depends(get_session)):
     return runs
 
 
+# ── User credit management ───────────────────────────────────────────────
+
+
+@router.post("/api/users/{user_id}/credits", dependencies=[Depends(require_auth)])
+async def update_user_credits(user_id: str, request: Request, session: AsyncSession = Depends(get_session)):
+    """Update credits for a specific user. Body: {"credits": int, "unlimited": bool, "monthly_limit": int}"""
+    import uuid as _uuid
+    body = await request.json()
+
+    try:
+        uid = _uuid.UUID(user_id)
+    except ValueError:
+        raise HTTPException(400, "Invalid user_id")
+
+    plan = (await session.execute(
+        select(UserPlan).where(UserPlan.user_id == uid)
+    )).scalar_one_or_none()
+
+    if not plan:
+        raise HTTPException(404, "User plan not found")
+
+    # Set unlimited (9999 credits + 9999 limit)
+    if body.get("unlimited"):
+        plan.credits_remaining = 9999
+        plan.credits_monthly_limit = 9999
+        await session.commit()
+        return {"status": "ok", "credits_remaining": 9999, "credits_monthly_limit": 9999, "unlimited": True}
+
+    # Set specific credits
+    if "credits" in body:
+        plan.credits_remaining = int(body["credits"])
+    if "monthly_limit" in body:
+        plan.credits_monthly_limit = int(body["monthly_limit"])
+
+    await session.commit()
+    return {
+        "status": "ok",
+        "credits_remaining": plan.credits_remaining,
+        "credits_monthly_limit": plan.credits_monthly_limit,
+        "unlimited": plan.credits_monthly_limit >= 9999,
+    }
+
+
+@router.get("/api/users/{user_id}/credits", dependencies=[Depends(require_auth)])
+async def get_user_credits(user_id: str, session: AsyncSession = Depends(get_session)):
+    """Get current credits for a specific user."""
+    import uuid as _uuid
+    try:
+        uid = _uuid.UUID(user_id)
+    except ValueError:
+        raise HTTPException(400, "Invalid user_id")
+
+    plan = (await session.execute(
+        select(UserPlan).where(UserPlan.user_id == uid)
+    )).scalar_one_or_none()
+
+    if not plan:
+        raise HTTPException(404, "User plan not found")
+
+    return {
+        "credits_remaining": plan.credits_remaining,
+        "credits_monthly_limit": plan.credits_monthly_limit,
+        "plan_type": plan.plan_type,
+        "unlimited": plan.credits_monthly_limit >= 9999,
+    }
+
+
 # ── Cost breakdown ───────────────────────────────────────────────────────
 
 # Approximate costs per 1M tokens (input+output blended estimate)

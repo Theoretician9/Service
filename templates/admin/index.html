@@ -648,11 +648,17 @@ async function loadUsers() {
             const onb = u.onboarding_completed
                 ? '<span class="badge bg-green">Да</span>'
                 : '<span class="badge bg-yellow">Нет</span>';
+            const unlimited = u.credits_monthly_limit >= 9999;
+            const creditsDisplay = unlimited
+                ? '<span class="badge bg-purple">∞ безлимит</span>'
+                : `${u.credits_remaining} / ${u.credits_monthly_limit}`;
             tbody.innerHTML += `<tr>
                 <td><strong>${esc(u.first_name)}</strong>${u.username ? ' <span class="text-secondary">@' + esc(u.username) + '</span>' : ''}</td>
                 <td><code>${u.telegram_id}</code></td>
                 <td>${planBadge}</td>
-                <td>${u.credits_remaining} / ${u.credits_monthly_limit}</td>
+                <td>${creditsDisplay}
+                    <button class="btn btn-sm btn-outline-primary ms-1" onclick="openCreditsModal('${u.id}', '${esc(u.first_name)}', ${u.credits_remaining}, ${u.credits_monthly_limit})">✏️</button>
+                </td>
                 <td>${u.total_runs} <span class="text-secondary">(${u.completed_runs} OK)</span></td>
                 <td>${fmtNum(u.total_tokens)}</td>
                 <td>${onb}</td>
@@ -874,7 +880,94 @@ async function loadStaging() {
     }
     showLogin();
 })();
+
+// ═══════════════════════════════════════════════════════════════════════
+// Credits modal
+// ═══════════════════════════════════════════════════════════════════════
+let creditsModalUserId = null;
+
+function openCreditsModal(userId, userName, credits, limit) {
+    creditsModalUserId = userId;
+    document.getElementById('credits-modal-user').textContent = userName;
+    document.getElementById('credits-input').value = credits;
+    document.getElementById('credits-limit-input').value = limit;
+    document.getElementById('credits-unlimited').checked = (limit >= 9999);
+    document.getElementById('credits-modal').style.display = 'flex';
+}
+
+function closeCreditsModal() {
+    document.getElementById('credits-modal').style.display = 'none';
+    creditsModalUserId = null;
+}
+
+async function saveCredits() {
+    if (!creditsModalUserId) return;
+    const unlimited = document.getElementById('credits-unlimited').checked;
+    const body = unlimited
+        ? { unlimited: true }
+        : {
+            credits: parseInt(document.getElementById('credits-input').value) || 0,
+            monthly_limit: parseInt(document.getElementById('credits-limit-input').value) || 5,
+        };
+    try {
+        await fetch(`/admin/api/users/${creditsModalUserId}/credits`, {
+            method: 'POST',
+            headers: {'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json'},
+            body: JSON.stringify(body),
+        });
+        closeCreditsModal();
+        loadUsers();
+    } catch (e) {
+        alert('Ошибка: ' + e.message);
+    }
+}
+
+async function setUnlimited() {
+    if (!creditsModalUserId) return;
+    try {
+        await fetch(`/admin/api/users/${creditsModalUserId}/credits`, {
+            method: 'POST',
+            headers: {'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json'},
+            body: JSON.stringify({ unlimited: true }),
+        });
+        closeCreditsModal();
+        loadUsers();
+    } catch (e) {
+        alert('Ошибка: ' + e.message);
+    }
+}
 </script>
+
+<!-- Credits Modal -->
+<div id="credits-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center;">
+    <div class="card" style="width:400px; max-width:90%;">
+        <div class="card-header">
+            <h3 class="card-title">Кредиты: <span id="credits-modal-user"></span></h3>
+            <button class="btn-close" onclick="closeCreditsModal()"></button>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Текущие кредиты</label>
+                <input type="number" id="credits-input" class="form-control" min="0">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Месячный лимит</label>
+                <input type="number" id="credits-limit-input" class="form-control" min="0">
+            </div>
+            <div class="mb-3">
+                <label class="form-check">
+                    <input type="checkbox" id="credits-unlimited" class="form-check-input">
+                    <span class="form-check-label">Безлимит (∞)</span>
+                </label>
+            </div>
+        </div>
+        <div class="card-footer d-flex gap-2">
+            <button class="btn btn-primary" onclick="saveCredits()">Сохранить</button>
+            <button class="btn btn-purple" onclick="setUnlimited()">∞ Безлимит</button>
+            <button class="btn btn-secondary ms-auto" onclick="closeCreditsModal()">Отмена</button>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
