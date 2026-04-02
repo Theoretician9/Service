@@ -59,8 +59,10 @@ from app.orchestrator.intent import OrchestratorAction, OrchestratorDecision
 from app.orchestrator.orchestrator import decide
 from app.orchestrator.smart_extractor import extract_fields
 from app.workers.miniservice_tasks import run_miniservice_task
+from app.logging_config import get_conversation_logger
 
 logger = structlog.get_logger()
+conv_logger = get_conversation_logger()
 router = Router(name="message_handler")
 
 
@@ -79,6 +81,17 @@ async def handle_message(
         return
 
     telegram_id = user.telegram_id
+
+    # Log every incoming user message
+    dialog = await get_dialog(telegram_id)
+    conv_logger.info(
+        "user_message",
+        telegram_id=telegram_id,
+        user_name=user.first_name,
+        text=text,
+        has_active_dialog=bool(dialog and dialog.get("miniservice_id")),
+        miniservice_id=dialog.get("miniservice_id") if dialog else None,
+    )
 
     try:
         # ① Smart extractor (best-effort) --------------------------------
@@ -143,6 +156,19 @@ async def handle_message(
                     project_context=project_ctx,
                 )
 
+                # Log agent response
+                conv_logger.info(
+                    "agent_response",
+                    telegram_id=telegram_id,
+                    user_name=user.first_name,
+                    miniservice_id=ms_id,
+                    text=agent_response.text[:500] if agent_response.text else None,
+                    field_id=agent_response.field_id,
+                    field_value=agent_response.field_value,
+                    all_collected=agent_response.all_collected,
+                    ready_to_process=agent_response.ready_to_process,
+                )
+
                 # Save field if accepted
                 if agent_response.field_id and agent_response.field_value:
                     await update_dialog_field(telegram_id, agent_response.field_id, agent_response.field_value)
@@ -186,6 +212,18 @@ async def handle_message(
         decision = await decide(context, text)
         print(f"[DEBUG] decision: action={decision.action}, response={decision.response_text[:80] if decision.response_text else 'none'}", flush=True)
 
+        # Log orchestrator decision
+        conv_logger.info(
+            "orchestrator_decision",
+            telegram_id=telegram_id,
+            user_name=user.first_name,
+            action=decision.action.value if hasattr(decision.action, 'value') else str(decision.action),
+            confidence=decision.confidence,
+            response=decision.response_text[:500] if decision.response_text else None,
+            params=decision.params,
+            needs_confirmation=decision.needs_confirmation,
+        )
+
         # Save conversation history
         await append_conversation(telegram_id, "user", text)
         if decision.response_text:
@@ -210,6 +248,13 @@ async def handle_message(
         print(f"[DEBUG] ERROR in handler: {type(exc).__name__}: {exc}", flush=True)
         import traceback
         traceback.print_exc()
+        conv_logger.error(
+            "handler_error",
+            telegram_id=telegram_id,
+            user_name=user.first_name,
+            error=str(exc),
+            error_type=type(exc).__name__,
+        )
         await message.answer(ERROR_GENERIC)
 
 

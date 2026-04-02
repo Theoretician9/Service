@@ -10,8 +10,10 @@ from app.modules.billing.models import UserPlan
 from app.modules.users.models import User
 from app.miniservices.engine import load_manifest
 from app.workers.celery_app import celery_app
+from app.logging_config import get_conversation_logger
 
 logger = structlog.get_logger()
+conv_logger = get_conversation_logger()
 
 MAX_MESSAGE_LENGTH = 4000
 
@@ -323,6 +325,16 @@ async def _send_result(run_id: str) -> None:
     await bot.session.close()
     logger.info("result_notification_sent", run_id=run_id, telegram_id=user.telegram_id)
 
+    conv_logger.info(
+        "notification_sent",
+        run_id=run_id,
+        telegram_id=user.telegram_id,
+        user_name=user.first_name,
+        artifact_type=artifact.artifact_type,
+        miniservice_id=run.miniservice_id,
+        notification_type="result",
+    )
+
 
 async def _send_failure(run_id: str) -> None:
     """Async implementation: notify user about failure."""
@@ -363,6 +375,15 @@ async def _send_failure(run_id: str) -> None:
 
     await bot.session.close()
     logger.info("failure_notification_sent", run_id=run_id, telegram_id=user.telegram_id)
+
+    conv_logger.info(
+        "notification_sent",
+        run_id=run_id,
+        telegram_id=user.telegram_id,
+        user_name=user.first_name,
+        miniservice_id=run.miniservice_id,
+        notification_type="failure",
+    )
 
 
 @celery_app.task

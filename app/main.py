@@ -5,16 +5,10 @@ from fastapi import FastAPI
 
 from app.config import settings
 from app.bot.router import router as webhook_router, on_startup, on_shutdown
+from app.logging_config import setup_logging
 
-structlog.configure(
-    processors=[
-        structlog.processors.TimeStamper(fmt="iso"),
-        structlog.stdlib.add_log_level,
-        structlog.processors.JSONRenderer(),
-    ],
-    wrapper_class=structlog.stdlib.BoundLogger,
-    logger_factory=structlog.stdlib.LoggerFactory(),
-)
+# Configure structured logging: stdout + /app/logs/conversations.jsonl
+setup_logging()
 
 
 @asynccontextmanager

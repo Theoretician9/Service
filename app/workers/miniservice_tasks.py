@@ -16,8 +16,10 @@ from app.modules.projects.models import Project
 from app.modules.users.models import User
 from app.modules.projects.service import ProjectService
 from app.workers.celery_app import celery_app
+from app.logging_config import get_conversation_logger
 
 logger = structlog.get_logger()
+conv_logger = get_conversation_logger()
 
 # Implementation class registry
 _IMPLEMENTATIONS = {
@@ -187,6 +189,16 @@ async def _execute_miniservice(run_id: str) -> None:
                 tokens_used=ms_result.llm_tokens_used,
             )
 
+            conv_logger.info(
+                "miniservice_task_complete",
+                run_id=run_id,
+                miniservice_id=miniservice_id,
+                telegram_id=tg_id,
+                credits_spent=credit_cost,
+                tokens_used=ms_result.llm_tokens_used,
+                web_searches_used=ms_result.web_searches_used,
+            )
+
             # Clear dialog and agent conversation from Redis after completion
             if user_obj:
                 from app.miniservices.session import clear_dialog, clear_agent_conversation
@@ -214,6 +226,14 @@ async def _execute_miniservice(run_id: str) -> None:
                 run_id=run_id,
                 miniservice_id=miniservice_id,
                 error=str(exc),
+            )
+
+            conv_logger.error(
+                "miniservice_task_fail",
+                run_id=run_id,
+                miniservice_id=miniservice_id,
+                error=str(exc),
+                error_type=type(exc).__name__,
             )
 
             # DON'T send failure notification here — Celery may retry successfully.
@@ -258,6 +278,12 @@ def run_miniservice_task(self, run_id: str):
     """Execute miniservice processing in Celery worker."""
     try:
         logger.info("miniservice_task_started", run_id=run_id)
+        conv_logger.info(
+            "miniservice_task_start",
+            run_id=run_id,
+            celery_task_id=self.request.id,
+            retry_number=self.request.retries,
+        )
         # Create a fresh event loop each time to avoid "Event loop is closed"
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)

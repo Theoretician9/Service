@@ -9,6 +9,7 @@ services:
     ports: ["8000:8000"]
     volumes:
       - ./reports:/app/reports
+      - ./logs:/app/logs
 
   worker:
     build: .
@@ -18,6 +19,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./reports:/app/reports
+      - ./logs:/app/logs
 
   beat:
     build: .
@@ -25,6 +27,8 @@ services:
     env_file: .env
     depends_on: [postgres, redis]
     restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
 
   postgres:
     image: postgres:16-alpine

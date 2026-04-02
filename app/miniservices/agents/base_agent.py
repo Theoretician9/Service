@@ -8,12 +8,15 @@ Each miniservice agent:
 """
 import asyncio
 import json
+import time
 import structlog
 from dataclasses import dataclass
 from app.integrations.llm_gateway import llm_gateway
 from app.miniservices.engine import load_manifest, get_next_question, all_required_collected
+from app.logging_config import get_conversation_logger
 
 logger = structlog.get_logger()
+conv_logger = get_conversation_logger()
 
 
 @dataclass
@@ -84,6 +87,7 @@ class BaseAgent:
         delays = [5, 15, 30]
         for attempt in range(max_retries):
             try:
+                t0 = time.monotonic()
                 response = await llm_gateway.complete(
                     provider="anthropic",
                     model=self.model,
@@ -92,6 +96,19 @@ class BaseAgent:
                     max_tokens=self.max_tokens,
                     temperature=self.temperature,
                 )
+                duration_ms = int((time.monotonic() - t0) * 1000)
+
+                # Log LLM call with token usage
+                conv_logger.info(
+                    "agent_llm_call",
+                    miniservice_id=self.miniservice_id,
+                    model=self.model,
+                    tokens_in=response.input_tokens,
+                    tokens_out=response.output_tokens,
+                    duration_ms=duration_ms,
+                    attempt=attempt + 1,
+                )
+
                 return self._parse_response(response.content, collected_fields)
             except Exception as e:
                 err_str = str(e)

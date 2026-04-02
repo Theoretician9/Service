@@ -2,6 +2,10 @@ from celery import Celery
 from celery.schedules import crontab
 
 from app.config import settings
+from app.logging_config import setup_logging
+
+# Configure structured logging for Celery workers (stdout + JSONL file)
+setup_logging()
 
 celery_app = Celery(
     "ai_marketplace",
