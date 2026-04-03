@@ -73,11 +73,6 @@ SYSTEM_PROMPT_DECOMP = """\
 3. commission_rate — процент комиссии (ТОЛЬКО если business_role = посредник/агент).
    Типичные: 10–30%. Спроси только если роль = посредник.
 
-ОПЦИОНАЛЬНЫЕ (собирай если пользователь сам упомянет):
-4. conversion_rate — конверсия из лида в продажу (по умолчанию 5%)
-5. repeat_rate — доля повторных покупок (по умолчанию 0%)
-6. fixed_costs — постоянные расходы в месяц
-
 ═══════════════════════════════════════════
 ЛОГИКА СБОРА
 ═══════════════════════════════════════════
@@ -85,7 +80,14 @@ SYSTEM_PROMPT_DECOMP = """\
 1. Начни с business_role — если из контекста ясна роль, предложи и попроси подтвердить.
 2. Затем avg_check_base — покажи подсказку из поиска если есть.
 3. Если роль = посредник → спроси commission_rate.
-4. Когда business_role + avg_check_base собраны (+ commission_rate если посредник) → сигнал [READY_FOR_DECOMP].
+4. Когда business_role + avg_check_base собраны (+ commission_rate если посредник) → НЕМЕДЛЕННО сигнал [READY_FOR_DECOMP].
+
+КРИТИЧНО: НЕ задавай вопросы про конверсию, лидов, каналы продаж, расходы. \
+Это НЕ твоя задача. Система сама рассчитает всё из двух полей. \
+Ты собираешь ТОЛЬКО business_role + avg_check_base (+ commission_rate для посредника). \
+Как только они собраны — СТОП, [READY_FOR_DECOMP].
+
+НЕ используй термины "конверсия", "лиды", "воронка". Говори простым языком.
 
 ВАЛЮТА: {currency}
 
@@ -97,7 +99,7 @@ SYSTEM_PROMPT_DECOMP = """\
 
 {{
   "text": "текст ответа пользователю",
-  "field_id": "business_role | avg_check_base | commission_rate | conversion_rate | repeat_rate | fixed_costs | null",
+  "field_id": "business_role | avg_check_base | commission_rate | null",
   "field_value": "принятое значение или null"
 }}
 
@@ -242,12 +244,47 @@ class DecompositionHypothesisAgent(BaseAgent):
         messages = [{"role": m["role"], "content": m["content"]} for m in recent_history]
         messages.append({"role": "user", "content": user_message})
 
+        # Programmatic check: if required fields already collected, skip LLM
+        has_role = "business_role" in collected_fields
+        has_check = "avg_check_base" in collected_fields
+        is_agent = collected_fields.get("business_role", "").lower().startswith("посредник") or "агент" in collected_fields.get("business_role", "").lower()
+        has_commission = "commission_rate" in collected_fields or not is_agent
+
+        if has_role and has_check and has_commission:
+            # All required fields collected — force ready
+            return AgentResponse(
+                text="Данные собраны. Запускаю расчёт декомпозиции и генерацию гипотез...",
+                all_collected=True,
+                ready_to_process=True,
+            )
+
         # Call LLM
         response = await self._call_llm(system, messages)
         if response is None:
             return AgentResponse(text="Произошла ошибка. Попробуй ещё раз или напиши /cancel.")
 
-        return self._parse_agent_response(response.content, phase="decomp")
+        parsed = self._parse_agent_response(response.content, phase="decomp")
+
+        # After LLM response, check again if required fields are now collected
+        # (field may have been accepted in this response)
+        if parsed.field_id and parsed.field_value:
+            collected_fields[parsed.field_id] = parsed.field_value
+            has_role = "business_role" in collected_fields
+            has_check = "avg_check_base" in collected_fields
+            is_agent = collected_fields.get("business_role", "").lower().startswith("посредник") or "агент" in collected_fields.get("business_role", "").lower()
+            has_commission = "commission_rate" in collected_fields or not is_agent
+
+            if has_role and has_check and has_commission:
+                # Override: signal ready regardless of what LLM said
+                return AgentResponse(
+                    text=parsed.text,
+                    field_id=parsed.field_id,
+                    field_value=parsed.field_value,
+                    all_collected=True,
+                    ready_to_process=True,
+                )
+
+        return parsed
 
     # ── Phase 2: Hypothesis validation Q&A ───────────────────
 
