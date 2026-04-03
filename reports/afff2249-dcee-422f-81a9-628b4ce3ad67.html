@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дерево целей</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-warn {
+    border-left: 4px solid #f59e0b;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-red {
+    border-left: 4px solid #ef4444;
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.smart-goal {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+}
+.points-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+@media (max-width: 480px) {
+    .points-grid { grid-template-columns: 1fr; }
+}
+.point-card {
+    background: #1f1f23;
+    border-radius: 12px;
+    padding: 16px;
+}
+.point-card .label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+.point-a .label { color: #f59e0b; }
+.point-b .label { color: #22c55e; }
+.deadline-badge {
+    display: inline-block;
+    background: #27272a;
+    color: #e4e4e7;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 12px;
+}
+.motivation-text {
+    font-size: 16px;
+    font-style: italic;
+    color: #fbbf24;
+    line-height: 1.5;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    border-bottom: 1px solid #27272a;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.week-block {
+    margin-bottom: 16px;
+}
+.week-block h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.week-block li::before { background: #22c55e; }
+.metric-list li::before { background: #3b82f6; }
+.risk-list li::before { background: #ef4444; }
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Дерево целей</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+<div class="card card-accent">
+    <h2>📌 SMART-цель</h2>
+    <div class="smart-goal">Заработать 150 000₽ в месяц на создании ботов и сайтов в течение 6 месяцев, получив первых 3 платных клиентов с чеками от 30 000₽ за проект</div>
+</div>
+
+<div class="points-grid">
+    <div class="point-card point-a">
+        <div class="label">📍 Точка А — где сейчас</div>
+        <div>Занимаюсь оптовой перепродажей саженцев деревьев с продажами в Казахстан и Россию, зарабатываю около 1 000 000₽ за сезон, но доход нестабильный и привязан к сезонности</div>
+    </div>
+    <div class="point-card point-b">
+        <div class="label">🏁 Точка Б — куда идём</div>
+        <div>Получаю стабильный ежемесячный доход 150 000₽ от разработки ботов и сайтов, работаю круглый год, обеспечиваю семью предсказуемым заработком</div>
+    </div>
+</div>
+
+
+
+
+<div class="card card-warn">
+    <h2>💡 Настоящая мотивация</h2>
+    <div class="motivation-text">Стабильный доход вместо сезонного, занятость круглый год, достаточно на содержание семьи, вернуть самоуважение</div>
+</div>
+
+
+
+<div class="card">
+    <h2>🌳 Три уровня «Почему»</h2>
+    <ul>
+    
+        <li>Сезонный бизнес создаёт финансовую нестабильность — несколько месяцев без дохода</li>
+    
+        <li>Нужна круглогодичная занятость, чтобы не простаивать и чувствовать себя продуктивным</li>
+    
+        <li>150 000₽/месяц достаточно для содержания семьи и восстановления самоуважения через стабильный заработок</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>🚧 Ограничения и что с ними делать</h2>
+    <ul class="risk-list">
+    
+        <li>Нет опыта продаж IT-услуг — изучить 3 кейса продажи ботов/сайтов в первую неделю, скопировать структуру предложения</li>
+    
+        <li>Нет портфолио — сделать 2 бесплатных проекта для знакомых предпринимателей из бизнеса саженцев за первый месяц</li>
+    
+        <li>Не знаю, где искать клиентов — использовать существующую базу контактов из бизнеса саженцев (поставщики, оптовики), предложить автоматизацию</li>
+    
+        <li>Параллельно идёт сезон саженцев — выделить 10 часов в неделю на IT-проекты в межсезонье (сентябрь-март)</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-green">
+    <h2>📋 План действий</h2>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 1</h3>
+        <ul>
+        
+            <li>Изучить 5 объявлений на Авито/FL.ru по разработке ботов — выписать цены (от 20 000₽ до 80 000₽), что входит в услугу</li>
+        
+            <li>Составить список из 10 знакомых предпринимателей (из бизнеса саженцев), кому может быть нужен бот для приёма заказов или сайт-каталог</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 2</h3>
+        <ul>
+        
+            <li>Создать простой Telegram-бот для приёма заказов саженцев (для себя) — это будет кейс №1 в портфолио</li>
+        
+            <li>Написать 3 знакомым предпринимателям: предложить бесплатно сделать бот/лендинг в обмен на отзыв и право использовать как кейс</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 3</h3>
+        <ul>
+        
+            <li>Сделать 1 бесплатный проект (бот или лендинг) для согласившегося предпринимателя — зафиксировать время (не более 15 часов)</li>
+        
+            <li>Создать страницу ВКонтакте или простой сайт на Tilda с описанием услуг: &#39;Боты и сайты для малого бизнеса, от 30 000₽, срок 2 недели&#39;</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Неделя 4</h3>
+        <ul>
+        
+            <li>Получить отзыв от бесплатного клиента, разместить кейс на своей странице</li>
+        
+            <li>Разместить 2 объявления на Avito и FL.ru: &#39;Telegram-бот для приёма заказов — 35 000₽&#39; и &#39;Лендинг для малого бизнеса — 30 000₽&#39;</li>
+        
+        </ul>
+        
+    </div>
+    
+</div>
+
+
+
+<div class="card">
+    <h2>📊 Метрики успеха</h2>
+    <ul class="metric-list">
+    
+        <li>2 бесплатных проекта завершены и добавлены в портфолио за первый месяц</li>
+    
+        <li>3 платных клиента с чеками от 30 000₽ за проект получены за 6 месяцев</li>
+    
+        <li>Ежемесячный доход 150 000₽ достигнут через 6 месяцев (5 проектов по 30 000₽ или 3 проекта по 50 000₽)</li>
+    
+        <li>10 часов в неделю стабильно выделяется на IT-проекты</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>⚠️ Риски</h2>
+    <ul class="risk-list">
+    
+        <li>Сезон саженцев отнимет всё время — заранее выделить 2 дня в неделю только на IT, отказаться от части оптовых сделок</li>
+    
+        <li>Первые клиенты не заплатят или будут недовольны — работать по предоплате 50%, фиксировать ТЗ письменно, делать промежуточные показы</li>
+    
+        <li>Не хватит навыков для сложных проектов — начать с простых ботов (приём заказов, FAQ), брать проекты только в рамках текущих компетенций</li>
+    
+        <li>Конкуренция на FL.ru/Avito — использовать личные связи из бизнеса саженцев как первых клиентов, предлагать нишевые решения для агробизнеса</li>
+    
+    </ul>
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+</body>
+</html>

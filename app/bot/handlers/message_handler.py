@@ -125,8 +125,20 @@ async def handle_message(
                                 .values(collected_fields=updated_collected)
                             )
                             await _s.commit()
-                        run_miniservice_task.delay(run_id)
-                        await message.answer(f"✅ Записал: {matched}\n\n⏳ Все данные собраны. Анализирую...")
+
+                        # Check for two-phase miniservice
+                        manifest = load_manifest(ms_id)
+                        is_two_phase = manifest.get("two_phase", False)
+                        sub_phase = updated_collected.get("sub_phase", "")
+
+                        if is_two_phase and sub_phase != "hypothesis_validation":
+                            from app.workers.miniservice_tasks import run_intermediate_task
+                            from app.bot.messages import DECOMP_PROCESSING_INTERMEDIATE
+                            run_intermediate_task.delay(run_id)
+                            await message.answer(f"✅ Записал: {matched}\n\n{DECOMP_PROCESSING_INTERMEDIATE}")
+                        else:
+                            run_miniservice_task.delay(run_id)
+                            await message.answer(f"✅ Записал: {matched}\n\n⏳ Все данные собраны. Анализирую...")
                         return
                     # Field saved — fall through to agent for next question
                     # (agent sees updated collected_fields and asks contextually)

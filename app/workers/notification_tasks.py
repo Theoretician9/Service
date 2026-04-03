@@ -96,36 +96,39 @@ def _format_decomp_hypothesis_text(content: dict, summary: str) -> str:
     parts = []
     parts.append("📊 <b>Декомпозиция и гипотезы — готово!</b>\n")
 
-    decomp = content.get("decomposition", {})
-    recommended = decomp.get("recommended_scenario", "")
-    key_insight = _safe_str(decomp.get("key_insight"))
-    scenarios = decomp.get("scenarios", [])
+    # Implementation stores decomp in "decomp_table"
+    decomp = content.get("decomp_table", content.get("decomposition", {}))
+    if isinstance(decomp, dict):
+        key_insight = _safe_str(decomp.get("key_insight"))
+        scenarios = decomp.get("scenarios", [])
+        recommended = decomp.get("recommended_scenario", "")
 
-    if key_insight:
-        parts.append(f"💡 {key_insight}\n")
+        if key_insight:
+            parts.append(f"💡 {key_insight}\n")
 
-    if scenarios:
-        parts.append(f"📈 <b>{len(scenarios)} сценария:</b>")
-        for s in scenarios:
-            label = _safe_str(s.get("label"))
-            income = s.get("your_income_per_deal", "?")
-            deals = s.get("deals_needed", "?")
-            marker = " ★" if s.get("id") == recommended else ""
-            parts.append(f"  • {label}{marker}: {income} за сделку, {deals} сделок")
-        parts.append("")
+        if scenarios:
+            parts.append(f"📈 <b>{len(scenarios)} сценария:</b>")
+            for s in scenarios:
+                label = _safe_str(s.get("label"))
+                income = s.get("your_income_per_deal", "?")
+                deals = s.get("deals_needed", "?")
+                marker = " ★" if s.get("id") == recommended else ""
+                parts.append(f"  • {label}{marker}: {income} за сделку, {deals} сделок")
+            parts.append("")
 
-    hyp_summary = content.get("summary", {})
-    active = hyp_summary.get("total_active", 0)
-    free_count = hyp_summary.get("free_hypotheses_count", 0)
-    quick_wins = hyp_summary.get("quick_wins", [])
+    # Implementation stores hypotheses in "hypotheses_filtered"
+    hyp_data = content.get("hypotheses_filtered", {})
+    if isinstance(hyp_data, dict):
+        top_hyps = hyp_data.get("top_hypotheses", [])
+        backlog = hyp_data.get("backlog_hypotheses", [])
+        active_count = len(top_hyps) + len(backlog)
+        free_count = sum(1 for h in top_hyps + backlog if h.get("estimated_cost", 0) == 0)
 
-    parts.append(f"💡 <b>Гипотезы:</b> {active} активных, {free_count} бесплатных")
-    if quick_wins:
-        parts.append(f"⚡ {len(quick_wins)} можно начать сегодня")
-
-    note = _safe_str(content.get("personal_note"))
-    if note:
-        parts.append(f"\n📝 {note}")
+        parts.append(f"💡 <b>Гипотезы:</b> {active_count} активных, {free_count} бесплатных")
+        if top_hyps:
+            parts.append(f"⚡ {len(top_hyps)} приоритетных для старта")
+    elif summary:
+        parts.append(summary)
 
     parts.append("\n📄 Полный отчёт с таблицами и картой гипотез — в файле ниже.")
 
