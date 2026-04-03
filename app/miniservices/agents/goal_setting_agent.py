@@ -1,5 +1,21 @@
 # app/miniservices/agents/goal_setting_agent.py
-from app.miniservices.agents.base_agent import BaseAgent
+import re
+from app.miniservices.agents.base_agent import BaseAgent, AgentResponse
+
+
+# Currency symbols/words to detect
+_CURRENCY_MARKERS = {"₽", "₸", "руб", "тенге", "byn", "долл", "$", "€", "rub", "kzt"}
+
+
+def _has_currency(text: str) -> bool:
+    """Check if text contains any currency marker."""
+    lower = text.lower()
+    return any(m in lower for m in _CURRENCY_MARKERS)
+
+
+def _has_money_amount(text: str) -> bool:
+    """Check if text contains a money amount (digits + к/к/тыс/млн etc)."""
+    return bool(re.search(r'\d+\s*[кkтмКМ]|\d{3,}|\d+\s*(?:тыс|млн|руб|тенге)', text))
 
 
 class GoalSettingAgent(BaseAgent):
@@ -7,6 +23,51 @@ class GoalSettingAgent(BaseAgent):
     model = "claude-haiku-4-5"
     max_tokens = 800
     temperature = 0.3
+
+    async def handle_message(
+        self,
+        user_message: str,
+        collected_fields: dict,
+        conversation_history: list[dict],
+        project_context: dict,
+    ) -> AgentResponse:
+        # Get base response from LLM
+        response = await super().handle_message(
+            user_message, collected_fields, conversation_history, project_context
+        )
+
+        # Programmatic currency check: if agent accepts point_b with money but no currency
+        if (
+            response.field_id == "point_b"
+            and response.field_value
+            and _has_money_amount(response.field_value)
+            and not _has_currency(response.field_value)
+            and not _has_currency(user_message)
+            and "currency" not in collected_fields
+        ):
+            # Override: don't accept point_b, ask for currency instead
+            return AgentResponse(
+                text="Записал цель. В какой валюте сумма — рубли (₽), тенге (₸) или белорусские рубли (BYN)?",
+                field_id=None,
+                field_value=None,
+            )
+
+        # If user answers currency question and point_b was pending
+        if (
+            "point_b" not in collected_fields
+            and _has_currency(user_message)
+            and not response.field_id
+        ):
+            # Store currency for later use
+            currency = "₽"
+            lower = user_message.lower()
+            if "тенге" in lower or "₸" in lower or "kzt" in lower:
+                currency = "₸"
+            elif "byn" in lower or "белорус" in lower:
+                currency = "BYN"
+            collected_fields["currency"] = currency
+
+        return response
 
     system_prompt = """\
 Ты — бизнес-психолог, ментор и старший брат одновременно. Твоя задача — через живой диалог \
@@ -181,13 +242,13 @@ constraints / success_metric — необязательные. Если вспл
 ПРИМЕРЫ:
 
 Старт когда point_a уже известен из prefilled:
-{"text": "Вижу, менеджер 60к в Казани — хорошая отправная точка. Тогда сразу: куда хочешь прийти?", "field_id": null, "field_value": null, "all_collected": false, "ready_to_process": false}
+{"text": "Вижу, менеджер 60к₽ в Казани — хорошая отправная точка. Тогда сразу: куда хочешь прийти?", "field_id": null, "field_value": null, "all_collected": false, "ready_to_process": false}
 
 Уточнение (поле не принято):
 {"text": "Кем работаешь и сколько зарабатываешь примерно?", "field_id": null, "field_value": null, "all_collected": false, "ready_to_process": false}
 
 Принятие поля point_a:
-{"text": "Записал. Теперь — куда хочешь прийти? Опиши конкретно.", "field_id": "point_a", "field_value": "менеджер, 60к/мес, Казань, двое детей, кредит 15к/мес", "all_collected": false, "ready_to_process": false}
+{"text": "Записал. Теперь — куда хочешь прийти? Опиши конкретно.", "field_id": "point_a", "field_value": "менеджер, 60к₽/мес, Казань, двое детей, кредит 15к₽/мес", "all_collected": false, "ready_to_process": false}
 
 Зондирование why_important попытка 1:
 {"text": "Понятно. А что конкретно изменится в твоей жизни, когда эти деньги появятся?", "field_id": null, "field_value": null, "all_collected": false, "ready_to_process": false}
@@ -199,7 +260,7 @@ constraints / success_metric — необязательные. Если вспл
 {"text": "Записал. Это важно — и это реальная причина.", "field_id": "why_important", "field_value": "хочу не зависеть от начальника и закрыть кредит — семья не должна жить в режиме экономии", "all_collected": false, "ready_to_process": false}
 
 Запрос подтверждения (ВСЕ ПОЛЯ СОБРАНЫ, шаг 1):
-{"text": "Итого:\\n📍 Сейчас: менеджер, 60к/мес, Казань\\n🏁 Цель: 200к/мес на своём деле\\n📅 Срок: 8 месяцев\\n💡 Зачем: независимость, закрыть кредит, семья без режима экономии\\n\\nЭто крепкая основа — есть конкретная боль и конкретная цифра.\\nПосле анализа сразу перейдём к подбору ниши.\\n\\nВсё верно? Запустить анализ?", "field_id": null, "field_value": null, "all_collected": true, "ready_to_process": false}
+{"text": "Итого:\\n📍 Сейчас: менеджер, 60к₽/мес, Казань\\n🏁 Цель: 200к₽/мес на своём деле\\n📅 Срок: 8 месяцев\\n💡 Зачем: независимость, закрыть кредит, семья без режима экономии\\n\\nЭто крепкая основа — есть конкретная боль и конкретная цифра.\\nПосле анализа сразу перейдём к подбору ниши.\\n\\nВсё верно? Запустить анализ?", "field_id": null, "field_value": null, "all_collected": true, "ready_to_process": false}
 
 Запуск (пользователь сказал «да», шаг 2):
 {"text": "Отлично, запускаю — займёт около минуты ⏳", "field_id": null, "field_value": null, "all_collected": true, "ready_to_process": true}
