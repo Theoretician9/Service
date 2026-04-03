@@ -29,6 +29,7 @@ _IMPLEMENTATIONS = {
     "sales_scripts": "app.miniservices.implementations.sales_scripts.SalesScriptsService",
     "ad_creation": "app.miniservices.implementations.ad_creation.AdCreationService",
     "lead_search": "app.miniservices.implementations.lead_search.LeadSearchService",
+    "decomposition_hypothesis": "app.miniservices.implementations.decomposition_hypothesis.DecompositionHypothesisService",
 }
 
 
@@ -245,6 +246,143 @@ async def _execute_miniservice(run_id: str) -> None:
     # Don't dispose engine here — asyncio.run() closes the loop and
     # disposing within it can cause "Event loop is closed" on next task.
     # Engine will be garbage collected.
+
+
+async def _execute_miniservice_intermediate(run_id: str) -> None:
+    """Execute Phase 1 of a two-phase miniservice.
+
+    Generates intermediate results (decomp table + raw hypotheses),
+    stores them in Redis and collected_fields, then updates sub_phase
+    so the agent can start validation dialogue.
+    Does NOT change run status to completed — run stays in 'collecting'.
+    """
+    from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+    from app.config import settings as _settings
+
+    _engine = create_async_engine(
+        _settings.database_url, pool_size=2, max_overflow=2, echo=False
+    )
+    _session_factory = async_sessionmaker(_engine, class_=AsyncSession, expire_on_commit=False)
+
+    run_uuid = uuid.UUID(run_id)
+
+    async with _session_factory() as session:
+        stmt = select(MiniserviceRun).where(MiniserviceRun.id == run_uuid)
+        result = await session.execute(stmt)
+        run = result.scalar_one_or_none()
+        if not run:
+            logger.error("intermediate_run_not_found", run_id=run_id)
+            return
+
+        miniservice_id = run.miniservice_id
+
+        try:
+            # Load project profile
+            project_profile = None
+            if run.project_id:
+                proj_stmt = select(Project).where(Project.id == run.project_id)
+                proj_result = await session.execute(proj_stmt)
+                project = proj_result.scalar_one_or_none()
+                if project:
+                    project_profile = {
+                        "name": project.name,
+                        "goal_statement": project.goal_statement,
+                        "point_a": project.point_a,
+                        "point_b": project.point_b,
+                        "goal_deadline": project.goal_deadline,
+                        "chosen_niche": project.chosen_niche,
+                        "business_model": project.business_model,
+                        "geography": project.geography,
+                        "budget_range": project.budget_range,
+                    }
+
+            # Get collected fields from Redis
+            user_stmt = select(User).where(User.id == run.user_id)
+            user_result = await session.execute(user_stmt)
+            user_obj = user_result.scalar_one_or_none()
+
+            collected = run.collected_fields or {}
+            if user_obj:
+                from app.miniservices.session import get_dialog
+                dialog = await get_dialog(user_obj.telegram_id)
+                if dialog and dialog.get("collected_fields"):
+                    collected = {**collected, **dialog["collected_fields"]}
+
+            ctx = MiniserviceContext(
+                run_id=run_uuid,
+                user_id=run.user_id,
+                project_id=run.project_id,
+                miniservice_id=miniservice_id,
+                collected_fields=collected,
+                project_profile=project_profile,
+            )
+
+            # Execute Phase 1
+            implementation = _load_implementation(miniservice_id)
+            intermediate_result = await implementation.generate_intermediate(ctx)
+
+            # Store raw data in Redis for Phase 2
+            from app.miniservices.session import set_decomp_raw
+            await set_decomp_raw(run_id, intermediate_result)
+
+            # Update collected_fields with decomp results and switch sub_phase
+            collected["sub_phase"] = "hypothesis_validation"
+            collected["decomp_table"] = intermediate_result["decomp_table"]
+            collected["hypotheses_raw"] = intermediate_result["hypotheses_raw"]
+
+            # Build hypotheses summary for validation agent
+            hyp_titles = [
+                f"{h.get('id', i+1)}. {h.get('title', '')}"
+                for i, h in enumerate(intermediate_result.get("hypotheses_raw", []))
+            ]
+            collected["hypotheses_summary"] = "\n".join(hyp_titles)
+
+            run.collected_fields = collected
+            run.llm_tokens_used = (run.llm_tokens_used or 0) + intermediate_result.get("tokens_used", 0)
+            await session.commit()
+
+            # Update Redis dialog with new sub_phase
+            if user_obj:
+                from app.miniservices.session import update_dialog_sub_phase, clear_agent_conversation
+                await update_dialog_sub_phase(user_obj.telegram_id, "hypothesis_validation")
+                await clear_agent_conversation(user_obj.telegram_id)
+
+            logger.info(
+                "intermediate_phase_completed",
+                run_id=run_id,
+                miniservice_id=miniservice_id,
+                hypotheses_count=len(intermediate_result.get("hypotheses_raw", [])),
+            )
+
+            # Send notification to user that Phase 1 is done
+            if user_obj:
+                from app.workers.notification_tasks import send_intermediate_notification
+                send_intermediate_notification.delay(run_id)
+
+        except Exception as exc:
+            logger.error(
+                "intermediate_execution_failed",
+                run_id=run_id,
+                error=str(exc),
+            )
+            raise
+
+
+@celery_app.task(
+    bind=True,
+    max_retries=2,
+    default_retry_delay=10,
+)
+def run_intermediate_task(self, run_id: str):
+    """Celery task: execute Phase 1 of two-phase miniservice."""
+    try:
+        asyncio.run(_execute_miniservice_intermediate(run_id))
+    except Exception as exc:
+        logger.error("intermediate_task_error", run_id=run_id, error=str(exc))
+        try:
+            self.retry(exc=exc)
+        except self.MaxRetriesExceededError:
+            logger.error("intermediate_task_max_retries", run_id=run_id)
 
 
 def _launch_next_in_chain(dep_chain: list, completed_run: MiniserviceRun) -> None:

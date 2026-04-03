@@ -91,6 +91,47 @@ def _format_niche_table_text(content: dict, summary: str) -> str:
     return "\n".join(parts)
 
 
+def _format_decomp_hypothesis_text(content: dict, summary: str) -> str:
+    """Format decomposition_hypothesis_report artifact."""
+    parts = []
+    parts.append("📊 <b>Декомпозиция и гипотезы — готово!</b>\n")
+
+    decomp = content.get("decomposition", {})
+    recommended = decomp.get("recommended_scenario", "")
+    key_insight = _safe_str(decomp.get("key_insight"))
+    scenarios = decomp.get("scenarios", [])
+
+    if key_insight:
+        parts.append(f"💡 {key_insight}\n")
+
+    if scenarios:
+        parts.append(f"📈 <b>{len(scenarios)} сценария:</b>")
+        for s in scenarios:
+            label = _safe_str(s.get("label"))
+            income = s.get("your_income_per_deal", "?")
+            deals = s.get("deals_needed", "?")
+            marker = " ★" if s.get("id") == recommended else ""
+            parts.append(f"  • {label}{marker}: {income} за сделку, {deals} сделок")
+        parts.append("")
+
+    hyp_summary = content.get("summary", {})
+    active = hyp_summary.get("total_active", 0)
+    free_count = hyp_summary.get("free_hypotheses_count", 0)
+    quick_wins = hyp_summary.get("quick_wins", [])
+
+    parts.append(f"💡 <b>Гипотезы:</b> {active} активных, {free_count} бесплатных")
+    if quick_wins:
+        parts.append(f"⚡ {len(quick_wins)} можно начать сегодня")
+
+    note = _safe_str(content.get("personal_note"))
+    if note:
+        parts.append(f"\n📝 {note}")
+
+    parts.append("\n📄 Полный отчёт с таблицами и картой гипотез — в файле ниже.")
+
+    return "\n".join(parts)
+
+
 NEXT_STEP_MAP = {
     "goal_setting": {
         "recommended": "niche_selection",
@@ -108,14 +149,28 @@ NEXT_STEP_MAP = {
         ),
     },
     "niche_selection": {
+        "recommended": "decomposition_hypothesis",
+        "recommended_name": "Декомпозиция и гипотезы",
+        "recommended_cost": 2,
+        "text": (
+            "📍 Следующий шаг — декомпозиция цели и гипотезы для старта.\n"
+            "Разложу цель на конкретные сделки и сформирую план первых действий.\n\n"
+            "Напиши «давай» чтобы перейти к декомпозиции.\n"
+            "Или выбери другой инструмент:\n"
+            "• Поиск поставщиков (2 кр.)\n"
+            "• Скрипты продаж (2 кр.)\n"
+            "• Продающие объявления (2 кр.)\n"
+            "• Поиск клиентов (3 кр., Paid)"
+        ),
+    },
+    "decomposition_hypothesis": {
         "recommended": "supplier_search",
         "recommended_name": "Поиск поставщиков",
         "recommended_cost": 2,
         "text": (
-            "📍 Следующий шаг — найти поставщиков для выбранной ниши.\n"
-            "Я поищу реальных поставщиков, сравню условия и подготовлю шаблоны писем.\n\n"
-            "Напиши «давай» чтобы начать поиск поставщиков.\n"
-            "Или выбери другой инструмент:\n"
+            "📍 Следующий шаг — найти поставщиков или написать скрипты продаж.\n\n"
+            "Напиши «давай» или выбери:\n"
+            "• Поиск поставщиков (2 кр.)\n"
             "• Скрипты продаж (2 кр.)\n"
             "• Продающие объявления (2 кр.)\n"
             "• Поиск клиентов (3 кр., Paid)"
@@ -172,6 +227,9 @@ def _format_artifact_text(artifact_type: str, content, summary: str) -> str:
 
     if artifact_type == "niche_table":
         return _format_niche_table_text(content, summary)
+
+    if artifact_type == "decomposition_hypothesis_report":
+        return _format_decomp_hypothesis_text(content, summary)
 
     # Generic fallback for other artifact types
     parts = [f"✅ <b>Результат готов!</b>\n", summary]
@@ -398,3 +456,50 @@ def send_failure_notification(run_id: str):
     """Notify user about failed miniservice run."""
     logger.info("sending_failure", run_id=run_id)
     asyncio.run(_send_failure(run_id))
+
+
+async def _send_intermediate(run_id: str) -> None:
+    """Send notification that Phase 1 is complete, validation phase starting."""
+    from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+    from app.config import settings as _settings
+    from app.bot.messages import DECOMP_VALIDATION_INTRO
+
+    _engine = create_async_engine(_settings.database_url, pool_size=2, max_overflow=2)
+    _session_factory = async_sessionmaker(_engine, class_=AsyncSession, expire_on_commit=False)
+
+    run_uuid = uuid.UUID(run_id)
+
+    async with _session_factory() as session:
+        stmt = select(MiniserviceRun).where(MiniserviceRun.id == run_uuid)
+        result = await session.execute(stmt)
+        run = result.scalar_one_or_none()
+        if not run:
+            return
+
+        user_stmt = select(User).where(User.id == run.user_id)
+        user_result = await session.execute(user_stmt)
+        user = user_result.scalar_one_or_none()
+        if not user:
+            return
+
+    from aiogram import Bot
+    from aiogram.client.default import DefaultBotProperties
+    from aiogram.enums import ParseMode
+
+    bot = Bot(token=_settings.telegram_bot_token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+
+    await bot.send_message(
+        chat_id=user.telegram_id,
+        text=DECOMP_VALIDATION_INTRO,
+        parse_mode="HTML",
+    )
+
+    await bot.session.close()
+    logger.info("intermediate_notification_sent", run_id=run_id, telegram_id=user.telegram_id)
+
+
+@celery_app.task
+def send_intermediate_notification(run_id: str):
+    """Notify user that Phase 1 is complete and validation starts."""
+    logger.info("sending_intermediate_notification", run_id=run_id)
+    asyncio.run(_send_intermediate(run_id))

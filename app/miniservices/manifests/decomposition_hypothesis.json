@@ -1,0 +1,97 @@
+{
+  "id": "decomposition_hypothesis",
+  "schema_version": "1.0",
+  "name": "Декомпозиция и гипотезы",
+  "emoji": "📊",
+  "description": "Разобью цель на конкретные сделки и сформирую план первых шагов",
+  "credit_cost": 2,
+  "available_on_free": true,
+  "mode": "standard",
+  "llm_config": {
+    "slot_filling_provider": "anthropic",
+    "slot_filling_model": "claude-haiku-4-5",
+    "generation_provider": "anthropic",
+    "generation_model": "claude-sonnet-4-5"
+  },
+  "tools": ["tavily", "pdf_gen", "html_report"],
+  "tools_require_paid": [],
+  "two_phase": true,
+  "dependencies": ["goal_tree", "niche_table"],
+  "input_schema": {
+    "fields": [
+      {
+        "id": "business_role",
+        "label": "Роль в нише",
+        "type": "choice",
+        "required": true,
+        "choices": [
+          "Сам оказываю услугу / произвожу продукт",
+          "Агент — нахожу клиентов для других, получаю комиссию",
+          "Посредник — перепродаю чужой продукт с наценкой",
+          "Обучение / консалтинг / наставничество",
+          "Другое"
+        ],
+        "question": "Как ты планируешь работать в этой нише?",
+        "extract_from_free_text": false
+      },
+      {
+        "id": "avg_check_base",
+        "label": "Средний чек (базовый)",
+        "type": "text",
+        "required": true,
+        "question": "Какой примерный средний чек в этой нише?",
+        "hint": "Примерная сумма одной сделки/услуги",
+        "extract_from_free_text": true
+      },
+      {
+        "id": "commission_rate",
+        "label": "Агентский процент (%)",
+        "type": "text",
+        "required": false,
+        "question": "Какой процент комиссии ты получаешь?",
+        "extract_from_free_text": true
+      },
+      {
+        "id": "own_margin_possible",
+        "label": "Может добавить свою наценку",
+        "type": "yes_no",
+        "required": false,
+        "question": "Можешь ли добавить свою наценку к продукту/услуге?",
+        "extract_from_free_text": false
+      },
+      {
+        "id": "current_monthly_income",
+        "label": "Текущий доход в месяц",
+        "type": "text",
+        "required": false,
+        "question": "Какой сейчас доход в месяц?",
+        "extract_from_free_text": true
+      },
+      {
+        "id": "max_monthly_deals",
+        "label": "Максимум сделок в месяц",
+        "type": "text",
+        "required": false,
+        "question": "Сколько максимум сделок в месяц ты можешь обрабатывать?",
+        "extract_from_free_text": true
+      }
+    ]
+  },
+  "question_plan": [
+    {"field_id": "business_role", "step": 1, "condition": null},
+    {"field_id": "avg_check_base", "step": 2, "condition": null},
+    {"field_id": "commission_rate", "step": 3, "condition": {"field": "business_role", "value": "Агент — нахожу клиентов для других, получаю комиссию"}},
+    {"field_id": "own_margin_possible", "step": 4, "condition": null},
+    {"field_id": "current_monthly_income", "step": 5, "condition": null},
+    {"field_id": "max_monthly_deals", "step": 6, "condition": null}
+  ],
+  "output_schema": {
+    "version": "1.0",
+    "artifact_type": "decomposition_hypothesis_report",
+    "fields": ["decomposition", "hypotheses", "validation_context"]
+  },
+  "project_fields_mapping": {
+    "hypothesis_table": "hypotheses",
+    "business_model": "business_role_description"
+  }
+}

@@ -281,3 +281,38 @@ async def append_agent_conversation(
 async def clear_agent_conversation(telegram_user_id: int) -> None:
     """Clear agent conversation when miniservice completes."""
     await redis.delete(f"agent_conversation:{telegram_user_id}")
+
+
+DECOMP_RAW_TTL = 7200  # 2 hours
+
+
+async def get_decomp_raw(run_id: str) -> dict | None:
+    """Get intermediate decomposition + raw hypotheses from Redis."""
+    key = f"decomp_raw:{run_id}"
+    data = await redis.get(key)
+    if data:
+        return json.loads(data)
+    return None
+
+
+async def set_decomp_raw(run_id: str, data: dict) -> None:
+    """Store intermediate decomposition + raw hypotheses in Redis."""
+    key = f"decomp_raw:{run_id}"
+    await redis.set(key, json.dumps(data, ensure_ascii=False), ex=DECOMP_RAW_TTL)
+
+
+async def clear_decomp_raw(run_id: str) -> None:
+    """Clear intermediate decomp data."""
+    key = f"decomp_raw:{run_id}"
+    await redis.delete(key)
+
+
+async def update_dialog_sub_phase(telegram_user_id: int, sub_phase: str) -> dict:
+    """Update the sub_phase in dialog's collected_fields without incrementing step."""
+    dialog = await get_dialog(telegram_user_id)
+    if dialog is None:
+        raise ValueError("No active dialog")
+    dialog["collected_fields"]["sub_phase"] = sub_phase
+    key = f"dialog:{telegram_user_id}"
+    await redis.set(key, json.dumps(dialog), ex=DIALOG_TTL)
+    return dialog

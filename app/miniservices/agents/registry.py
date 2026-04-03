@@ -19,3 +19,7 @@ from app.miniservices.agents.niche_selection_agent import NicheSelectionAgent
 
 register_agent("goal_setting", GoalSettingAgent)
 register_agent("niche_selection", NicheSelectionAgent)
+
+from app.miniservices.agents.decomposition_hypothesis_agent import DecompositionHypothesisAgent
+
+register_agent("decomposition_hypothesis", DecompositionHypothesisAgent)

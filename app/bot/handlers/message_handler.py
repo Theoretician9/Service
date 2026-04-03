@@ -179,6 +179,11 @@ async def handle_message(
                     if updated:
                         run_id = updated["run_id"]
                         updated_collected = updated.get("collected_fields", {})
+
+                        # Save field if agent returned one (e.g. validation_context)
+                        if agent_response.field_id and agent_response.field_value:
+                            updated_collected[agent_response.field_id] = agent_response.field_value
+
                         # Sync collected_fields to DB
                         from app.database import async_session as _async_session
                         async with _async_session() as _s:
@@ -189,8 +194,26 @@ async def handle_message(
                                 .values(collected_fields=updated_collected)
                             )
                             await _s.commit()
-                        run_miniservice_task.delay(run_id)
-                        await message.answer(PROCESSING)
+
+                        # Check if this is a two-phase miniservice
+                        sub_phase = updated_collected.get("sub_phase", "")
+                        manifest = load_manifest(ms_id)
+                        is_two_phase = manifest.get("two_phase", False)
+
+                        if is_two_phase and sub_phase != "hypothesis_validation":
+                            # Phase 1: launch intermediate task
+                            from app.workers.miniservice_tasks import run_intermediate_task
+                            from app.bot.messages import DECOMP_PROCESSING_INTERMEDIATE
+                            run_intermediate_task.delay(run_id)
+                            await message.answer(DECOMP_PROCESSING_INTERMEDIATE)
+                        else:
+                            # Phase 2 or standard: launch final task
+                            if is_two_phase:
+                                from app.bot.messages import DECOMP_PROCESSING_FINAL
+                                await message.answer(DECOMP_PROCESSING_FINAL)
+                            else:
+                                await message.answer(PROCESSING)
+                            run_miniservice_task.delay(run_id)
                 elif agent_response.all_collected and not agent_response.ready_to_process:
                     # All fields collected but waiting for confirmation
                     await message.answer(agent_response.text)
@@ -821,7 +844,42 @@ async def _action_continue_collecting(
 
 
 async def _action_cancel_run(message: Message, telegram_id: int) -> None:
-    """Clear dialog and confirm cancellation."""
+    """Clear dialog and confirm cancellation.
+    For two-phase miniservices: partial refund if Phase 1 already completed.
+    """
+    dialog = await get_dialog(telegram_id)
+
+    if dialog:
+        collected = dialog.get("collected_fields", {})
+        ms_id = dialog.get("miniservice_id", "")
+        sub_phase = collected.get("sub_phase", "")
+
+        # Check if two-phase and Phase 1 already done
+        if sub_phase == "hypothesis_validation":
+            manifest = load_manifest(ms_id)
+            full_cost = manifest.get("credit_cost", 2)
+            partial_refund = full_cost // 2  # refund half
+
+            if partial_refund > 0:
+                from app.database import async_session as _async_session
+                async with _async_session() as _s:
+                    from sqlalchemy import select as sa_select
+                    from app.modules.users.models import User as _User
+                    user_stmt = sa_select(_User).where(_User.telegram_id == telegram_id)
+                    user_result = await _s.execute(user_stmt)
+                    user_obj = user_result.scalar_one_or_none()
+                    if user_obj:
+                        billing = BillingService(_s)
+                        await billing.refund_credits(user_obj.id, partial_refund)
+                        await _s.commit()
+
+            logger.info(
+                "run_cancelled_partial_refund",
+                telegram_id=telegram_id,
+                miniservice_id=ms_id,
+                refunded=partial_refund,
+            )
+
     await clear_dialog(telegram_id)
     await message.answer(CANCEL_CONFIRMED)
     logger.info("run_cancelled", telegram_id=telegram_id)

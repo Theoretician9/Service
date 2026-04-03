@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Декомпозиция цели и гипотезы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #FAF8F4;
+    --surface: #FFFFFF;
+    --accent: #1A6B4A;
+    --accent-light: #E8F5EE;
+    --accent-mid: #2D8A60;
+    --warning: #B8610A;
+    --warning-light: #FEF3E8;
+    --border: #E5E0D8;
+    --border-strong: #C8C0B4;
+    --text: #1C1917;
+    --text-secondary: #6B6560;
+    --text-muted: #9C9590;
+    --amber: #D97706;
+    --amber-light: #FEF3C7;
+    --red: #DC2626;
+    --red-light: #FEE2E2;
+    --green: #16A34A;
+    --green-light: #DCFCE7;
+    --blue: #2563EB;
+    --blue-light: #DBEAFE;
+    --purple: #7C3AED;
+    --purple-light: #EDE9FE;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.05);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.06);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-xs: 6px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    padding: 0;
+    min-height: 100vh;
+}
+
+.page-wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px 16px 48px;
+}
+
+/* ─── TYPOGRAPHY ─── */
+h1, h2, h3, .heading {
+    font-family: 'Unbounded', sans-serif;
+}
+
+/* ─── HEADER ─── */
+.header {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 36px 32px 32px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
+.header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+}
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; left: 60px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+}
+.header-meta {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.7;
+    margin-bottom: 10px;
+    font-family: 'Noto Sans', sans-serif;
+}
+.header h1 {
+    font-size: clamp(18px, 4vw, 26px);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+}
+.header-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+}
+.header-chip {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Noto Sans', sans-serif;
+}
+.header-chip span {
+    opacity: 0.7;
+    margin-right: 4px;
+}
+
+/* ─── SECTION ─── */
+.section {
+    margin-bottom: 28px;
+}
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.section-icon {
+    width: 36px; height: 36px;
+    border-radius: var(--radius-xs);
+    background: var(--accent-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+.section-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(15px, 3vw, 18px);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+}
+.section-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 1px;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+/* ─── CARD ─── */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+}
+.card + .card {
+    margin-top: 12px;
+}
+.card-accent {
+    border-left: 4px solid var(--accent);
+}
+.card-warning {
+    border-left: 4px solid var(--warning);
+    background: var(--warning-light);
+}
+.card-recommended {
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-light), var(--shadow-md);
+}
+
+/* ─── GOAL CARD ─── */
+.goal-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+}
+.goal-statement {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+.insight-box {
+    background: var(--accent-light);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 500;
+    line-height: 1.6;
+    border-left: 3px solid var(--accent);
+    margin-bottom: 12px;
+}
+.warning-box {
+    background: var(--warning-light);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--warning);
+    font-weight: 500;
+    line-height: 1.5;
+    border-left: 3px solid var(--warning);
+}
+.warning-box strong {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    opacity: 0.8;
+}
+
+/* ─── SCENARIO GRID ─── */
+.scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+}
+@media (max-width: 540px) {
+    .scenario-grid { grid-template-columns: 1fr; }
+}
+.scenario-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 18px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s, transform 0.2s;
+    position: relative;
+}
+.scenario-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+.scenario-card.recommended {
+    border-color: var(--accent);
+    border-width: 2px;
+    box-shadow: 0 0 0 3px var(--accent-light), var(--shadow-md);
+}
+.scenario-rec-badge {
+    position: absolute;
+    top: -1px; right: 14px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Noto Sans', sans-serif;
+    padding: 3px 10px 3px 8px;
+    border-radius: 0 0 var(--radius-xs) var(--radius-xs);
+    letter-spacing: 0.3px;
+}
+.scenario-label {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 6px;
+    padding-right: 50px;
+}
+.scenario-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+    line-height: 1.5;
+}
+.scenario-numbers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+.num-box {
+    background: var(--bg);
+    border-radius: var(--radius-xs);
+    padding: 10px 8px;
+    text-align: center;
+}
+.num-box .num-val {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+}
+.num-box .num-lbl {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-top: 3px;
+}
+.margin-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+/* ─── FEASIBILITY BADGE ─── */
+.feasibility-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Noto Sans', sans-serif;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+.feasibility-badge.high {
+    background: var(--green-light);
+    color: var(--green);
+}
+.feasibility-badge.medium {
+    background: var(--amber-light);
+    color: var(--amber);
+}
+.feasibility-badge.low {
+    background: var(--red-light);
+    color: var(--red);
+}
+.feasibility-comment {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 8px;
+    line-height: 1.4;
+}
+
+/* ─── TIMELINE TABLE ─── */
+.timeline-wrap {
+    overflow-x: auto;
+    margin-top: 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+}
+.timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    font-family: 'Noto Sans', sans-serif;
+    white-space: nowrap;
+}
+.timeline-table thead th {
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 10px 14px;
+    text-align: left;
+}
+.timeline-table thead th:first-child {
+    border-radius: var(--radius-xs) 0 0 0;
+}
+.timeline-table thead th:last-child {
+    border-radius: 0 var(--radius-xs) 0 0;
+}
+.timeline-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+}
+.timeline-table tbody tr:last-child {
+    border-bottom: none;
+}
+.timeline-table tbody tr:hover {
+    background: var(--bg);
+}
+.timeline-table tbody td {
+    padding: 10px 14px;
+    color: var(--text);
+}
+.timeline-table tbody td:first-child {
+    font-weight: 600;
+    color: var(--accent);
+}
+.timeline-label-col {
+    font-size: 12px;
+    color: var(--text-secondary);
+    white-space: normal;
+    min-width: 100px;
+}
+
+/* ─── SUMMARY STATS ─── */
+.stats-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+}
+@media (max-width: 400px) {
+    .stats-strip { grid-template-columns: 1fr 1fr; }
+}
+.stat-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 12px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+.stat-box .stat-val {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.1;
+}
+.stat-box .stat-lbl {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+/* ─── QUICK WINS ─── */
+.quick-wins-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+.quick-wins-badge {
+    background: var(--amber);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Noto Sans', sans-serif;
+    padding: 3px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ─── HYPOTHESIS CARD ─── */
+.hypothesis-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 12px;
+    transition: box-shadow 0.2s;
+}
+.hypothesis-card:hover {
+    box-shadow: var(--shadow-md);
+}
+.hypothesis-card.quick-win {
+    border-color: var(--amber);
+    border-left: 4px solid var(--amber);
+    background: linear-gradient(to right, #FFFBF0, var(--surface) 40%);
+}
+.hyp-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+.hyp-id {
+    flex-shrink: 0;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-family: 'Unbounded', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+}
+.hyp-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.4;
+    flex: 1;
+    min-width: 0;
+}
+.hyp-priority-badge {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Noto Sans', sans-serif;
+    padding: 3px 9px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+.priority-high { background: var(--red-light); color: var(--red); }
+.priority-medium { background: var(--amber-light); color: var(--amber); }
+.priority-low { background: var(--green-light); color: var(--green); }
+
+.hyp-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+.hyp-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+.channel-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Noto Sans', sans-serif;
+    padding: 4px 10px;
+    border-radius: 14px;
+    border: 1px solid;
+}
+.ch-telegram { background: #EFF6FF; color: #1D4ED8; border-color: rgba(29,78,216,0.25); }
+.ch-avito { background: #FFF7ED; color: #C2410C; border-color: rgba(194,65,12,0.25); }
+.ch-instagram { background: #FDF4FF; color: #7E22CE; border-color: rgba(126,34,206,0.25); }
+.ch-vk { background: #EFF6FF; color: #1E40AF; border-color: rgba(30,64,175,0.25); }
+.ch-whatsapp { background: #F0FDF4; color: #15803D; border-color: rgba(21,128,61,0.25); }
+.ch-email { background: #F8FAFC; color: #475569; border-color: rgba(71,85,105,0.25); }
+.ch-default { background: var(--bg); color: var(--text-secondary); border-color: var(--border); }
+.ch-geo { background: var(--accent-light); color: var(--accent); border-color: rgba(26,107,74,0.25); }
+
+.hyp-rationale {
+    background: var(--bg);
+    border-radius: var(--radius-xs);
+    padding: 10px 12px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.action-prompt {
+    background: var(--accent-light);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1.5;
+    margin-bottom: 12px;
+    border-left: 3px solid var(--accent);
+}
+.action-prompt-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--accent-mid);
+    opacity: 0.8;
+    display: block;
+    margin-bottom: 4px;
+    font-family: 'Unbounded', sans-serif;
+}
+
+.hyp-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+.meta-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-family: 'Noto Sans', sans-serif;
+}
+.meta-chip.delegate {
+    background: var(--green-light);
+    color: var(--green);
+    border-color: rgba(22,163,74,0.25);
+    font-weight: 600;
+}
+.delegation-opts {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    padding-left: 4px;
+    line-height: 1.5;
+}
+
+/* ─── COLLAPSIBLE ─── */
+.collapsible-trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Noto Sans', sans-serif;
+    color: var(--text-secondary);
+    transition: background 0.2s, color 0.2s;
+    width: 100%;
+    text-align: left;
+    box-shadow: var(--shadow-sm);
+}
+.collapsible-trigger:hover {
+    background: var(--bg);
+    color: var(--text);
+}
+.collapsible-trigger .chevron {
+    margin-left: auto;
+    transition: transform 0.25s;
+    opacity: 0.5;
+}
+.collapsible-trigger.open .chevron {
+    transform: rotate(180deg);
+}
+.collapsible-body {
+    display: none;
+    margin-top: 12px;
+}
+.collapsible-body.open {
+    display: block;
+}
+.filtered-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    padding: 0 4px;
+}
+.filtered-hyp {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    opacity: 0.65;
+}
+.filtered-hyp-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+}
+.filtered-reason {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+/* ─── RECOMMENDED REASON ─── */
+.rec-reason-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px 18px;
+    margin-top: 16px;
+    box-shadow: var(--shadow-sm);
+}
+.rec-reason-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-family: 'Unbounded', sans-serif;
+}
+.rec-reason-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* ─── PERSONAL NOTE ─── */
+.personal-note {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow-sm);
+    border-left: 4px solid var(--accent);
+}
+.personal-note-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-family: 'Unbounded', sans-serif;
+}
+.personal-note-text {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+}
+
+/* ─── FOOTER ─── */
+.footer {
+    text-align: center;
+    padding: 24px 0 8px;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-family: 'Noto Sans', sans-serif;
+}
+.footer strong {
+    color: var(--text-secondary);
+}
+
+/* ─── DIVIDER ─── */
+.divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+}
+
+/* ─── UTILITIES ─── */
+.mt-8 { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-20 { margin-top: 20px; }
+.text-muted { color: var(--text-muted); font-size: 13px; }
+.label-xs {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-muted);
+    font-family: 'Unbounded', sans-serif;
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+{# ══════════════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════════════ #}
+<div class="header">
+    <div class="header-meta">AI-ассистент · Декомпозиция и гипотезы</div>
+    <h1>
+        {% if goal_statement %}
+            {{ goal_statement }}
+        {% else %}
+            Декомпозиция финансовой цели
+        {% endif %}
+    </h1>
+    <div class="header-chips">
+        {% if user_name %}
+        <div class="header-chip"><span>&#128100;</span>{{ user_name }}</div>
+        {% endif %}
+        {% if chosen_niche %}
+        <div class="header-chip"><span>&#127919;</span>{{ chosen_niche }}</div>
+        {% endif %}
+        {% if geography %}
+        <div class="header-chip"><span>&#128205;</span>{{ geography }}</div>
+        {% endif %}
+    </div>
+</div>
+
+{# ══════════════════════════════════════════════════
+   SECTION 1 — GOAL + KEY INSIGHT
+══════════════════════════════════════════════════ #}
+{% if decomposition %}
+<div class="section">
+    <div class="section-header">
+        <div class="section-icon">&#127919;</div>
+        <div>
+            <div class="section-title">Анализ цели</div>
+            {% if chosen_niche %}<div class="section-subtitle">{{ chosen_niche }}{% if geography %} · {{ geography }}{% endif %}</div>{% endif %}
+        </div>
+    </div>
+
+    <div class="goal-card">
+        {% if goal_statement %}
+        <div class="goal-statement">{{ goal_statement }}</div>
+        {% endif %}
+
+        {% if decomposition.key_insight %}
+        <div class="insight-box">
+            <strong style="display:block; font-size:10px; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:5px; opacity:0.7; font-family:'Unbounded',sans-serif;">Ключевой инсайт</strong>
+            {{ decomposition.key_insight }}
+        </div>
+        {% endif %}
+
+        {% if decomposition.capacity_warning %}
+        <div class="warning-box">
+            <strong>&#9888; Предупреждение о нагрузке</strong>
+            {{ decomposition.capacity_warning }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{# ══════════════════════════════════════════════════
+   SECTION 2 — DECOMPOSITION SCENARIOS
+══════════════════════════════════════════════════ #}
+{% if decomposition and decomposition.scenarios %}
+<div class="section">
+    <div class="section-header">
+        <div class="section-icon">&#128202;</div>
+        <div>
+            <div class="section-title">Сценарии декомпозиции</div>
+            <div class="section-subtitle">Варианты достижения цели по разным моделям</div>
+        </div>
+    </div>
+
+    <div class="scenario-grid">
+        {% for scenario in decomposition.scenarios %}
+        {% set is_rec = (scenario.id == decomposition.recommended_scenario) %}
+        <div class="scenario-card{% if is_rec %} recommended{% endif %}">
+            {% if is_rec %}
+            <div class="scenario-rec-badge">&#9733; Рекомендуем</div>
+            {% endif %}
+
+            <div class="scenario-label">{{ scenario.label | default('Сценарий ' ~ loop.index) }}</div>
+            {% if scenario.description %}
+            <div class="scenario-desc">{{ scenario.description }}</div>
+            {% endif %}
+
+            <div class="scenario-numbers">
+                {% if scenario.avg_check %}
+                <div class="num-box">
+                    <div class="num-val">{{ scenario.avg_check }}</div>
+                    <div class="num-lbl">Средний чек</div>
+                </div>
+                {% endif %}
+                {% if scenario.your_income_per_deal %}
+                <div class="num-box">
+                    <div class="num-val">{{ scenario.your_income_per_deal }}</div>
+                    <div class="num-lbl">Ваш доход/сделка</div>
+                </div>
+                {% endif %}
+                {% if scenario.deals_needed %}
+                <div class="num-box">
+                    <div class="num-val">{{ scenario.deals_needed }}</div>
+                    <div class="num-lbl">Сделок нужно</div>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if scenario.margin_note %}
+            <div class="margin-note">{{ scenario.margin_note }}</div>
+            {% endif %}
+
+            {# Feasibility #}
+            {% if scenario.feasibility %}
+            {% set feas = scenario.feasibility | lower %}
+            <div class="feasibility-badge {% if 'high' in feas or 'высок' in feas %}high{% elif 'medium' in feas or 'средн' in feas %}medium{% elif 'low' in feas or 'низк' in feas %}low{% else %}medium{% endif %}">
+                {% if 'high' in feas or 'высок' in feas %}&#10003; Высокая реализуемость
+                {% elif 'low' in feas or 'низк' in feas %}&#9888; Низкая реализуемость
+                {% else %}&#126; Средняя реализуемость{% endif %}
+            </div>
+            {% if scenario.feasibility_comment %}
+            <div class="feasibility-comment">{{ scenario.feasibility_comment }}</div>
+            {% endif %}
+            {% endif %}
+
+            {# Timeline variants table #}
+            {% if scenario.timeline_variants %}
+            <div class="mt-12">
+                <div class="label-xs" style="margin-bottom:6px;">Варианты сроков</div>
+                <div class="timeline-wrap">
+                    <table class="timeline-table">
+                        <thead>
+                            <tr>
+                                <th>Срок</th>
+                                <th>Сделок/пер.</th>
+                                <th>Сделок/нед.</th>
+                                <th>Дней между</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for tv in scenario.timeline_variants %}
+                            <tr>
+                                <td>
+                                    {% if tv.days %}{{ tv.days }} д.{% endif %}
+                                    {% if tv.label %}<br><span class="timeline-label-col">{{ tv.label }}</span>{% endif %}
+                                </td>
+                                <td>{{ tv.deals_per_period | default('—') }}</td>
+                                <td>{{ tv.deals_per_week | default('—') }}</td>
+                                <td>{{ tv.days_between_deals | default('—') }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if decomposition.recommended_reason %}
+    <div class="rec-reason-card">
+        <div class="rec-reason-label">&#9733; Почему рекомендован этот сценарий</div>
+        <div class="rec-reason-text">{{ decomposition.recommended_reason }}</div>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+{# ══════════════════════════════════════════════════
+   SECTION 3 — HYPOTHESES
+══════════════════════════════════════════════════ #}
+{% if hypotheses or summary %}
+<div class="section">
+    <div class="section-header">
+        <div class="section-icon">&#128161;</div>
+        <div>
+            <div class="section-title">Гипотезы для запуска</div>
+            {% if summary %}
+            <div class="section-subtitle">
+                Активных: {{ summary.total_active | default(0) }}
+                {% if summary.total_filtered %} · Отфильтровано: {{ summary.total_filtered }}{% endif %}
+                {% if summary.total_hours_active %} · ~{{ summary.total_hours_active }} ч.{% endif %}
+                {% if summary.total_cost_active %} · ~{{ summary.total_cost_active }} ₽{% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {# Summary stats strip #}
+    {% if summary %}
+    <div class="stats-strip">
+        {% if summary.total_active is defined %}
+        <div class="stat-box">
+            <div class="stat-val">{{ summary.total_active }}</div>
+            <div class="stat-lbl">Активных гипотез</div>
+        </div>
+        {% endif %}
+        {% if summary.free_hypotheses_count is defined %}
+        <div class="stat-box">
+            <div class="stat-val">{{ summary.free_hypotheses_count }}</div>
+            <div class="stat-lbl">Бесплатных</div>
+        </div>
+        {% endif %}
+        {% if summary.delegatable_count is defined %}
+        <div class="stat-box">
+            <div class="stat-val">{{ summary.delegatable_count }}</div>
+            <div class="stat-lbl">Можно делегировать</div>
+        </div>
+        {% endif %}
+        {% if summary.total_hours_active %}
+        <div class="stat-box">
+            <div class="stat-val">{{ summary.total_hours_active }}</div>
+            <div class="stat-lbl">Часов на тест</div>
+        </div>
+        {% endif %}
+        {% if summary.total_cost_active %}
+        <div class="stat-box">
+            <div class="stat-val">{{ summary.total_cost_active }}</div>
+            <div class="stat-lbl">Бюджет (₽)</div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {# Quick Wins highlighted block #}
+    {% if summary and summary.quick_wins and summary.quick_wins | length > 0 %}
+    <div class="card mt-12" style="margin-bottom: 20px; border-color: var(--amber); background: linear-gradient(135deg, #FFFBF0, var(--surface));">
+        <div class="quick-wins-header">
+            <span style="font-size:20px;">&#9889;</span>
+            <span class="section-title" style="font-size:15px; font-family:'Unbounded',sans-serif;">Быстрые победы</span>
+            <span class="quick-wins-badge">{{ summary.quick_wins | length }}</span>
+        </div>
+        {% for qw_id in summary.quick_wins %}
+            {% for h in hypotheses if h.id == qw_id %}
+            <div class="hypothesis-card quick-win">
+                <div class="hyp-header">
+                    <div class="hyp-id">{{ loop.index }}</div>
+                    <div class="hyp-title">{{ h.title }}</div>
+                    {% if h.priority %}
+                    <span class="hyp-priority-badge {% if h.priority == 'high' %}priority-high{% elif h.priority == 'medium' %}priority-medium{% else %}priority-low{% endif %}">
+                        {{ h.priority }}
+                    </span>
+                    {% endif %}
+                </div>
+
+                {% if h.description %}
+                <div class="hyp-desc">{{ h.description }}</div>
+                {% endif %}
+
+                <div class="hyp-badges">
+                    {% if h.channel %}
+                    {% set ch = h.channel | lower %}
+                    <span class="channel-badge {% if 'telegram' in ch %}ch-telegram{% elif 'avito' in ch %}ch-avito{% elif 'instagram' in ch or 'insta' in ch %}ch-instagram{% elif 'vk' in ch %}ch-vk{% elif 'whatsapp' in ch or 'вотсап' in ch %}ch-whatsapp{% elif 'email' in ch or 'почт' in ch %}ch-email{% else %}ch-default{% endif %}">
+                        &#128279; {{ h.channel }}
+                    </span>
+                    {% endif %}
+                    {% if h.geo_specific %}
+                    <span class="channel-badge ch-geo">&#128205; Геолокация</span>
+                    {% endif %}
+                    {% if h.estimated_cost == 0 or h.estimated_cost == '0' or h.estimated_cost == '0 ₽' %}
+                    <span class="channel-badge" style="background:var(--green-light);color:var(--green);border-color:rgba(22,163,74,0.25);">&#9733; Бесплатно</span>
+                    {% endif %}
+                </div>
+
+                {% if h.action_prompt %}
+                <div class="action-prompt">
+                    <span class="action-prompt-label">Первый шаг</span>
+                    {{ h.action_prompt }}
+                </div>
+                {% endif %}
+
+                <div class="hyp-meta">
+                    {% if h.estimated_hours %}
+                    <span class="meta-chip">&#9201; {{ h.estimated_hours }} ч.</span>
+                    {% endif %}
+                    {% if h.estimated_cost is defined and h.estimated_cost is not none %}
+                    <span class="meta-chip">&#128176; {{ h.estimated_cost }} ₽</span>
+                    {% endif %}
+                    {% if h.can_delegate %}
+                    <span class="meta-chip delegate">&#128101; Делегировать</span>
+                    {% endif %}
+                </div>
+                {% if h.can_delegate and h.delegation_options %}
+                <div class="delegation-opts">Кому: {{ h.delegation_options }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {# All active hypotheses #}
+    {% if hypotheses %}
+    {% set active_hyps = hypotheses | selectattr('status', 'ne', 'filtered') | list %}
+    {% if active_hyps %}
+    <div class="mt-16">
+        <div class="label-xs" style="margin-bottom:12px; color:var(--text-secondary);">Все активные гипотезы ({{ active_hyps | length }})</div>
+        {% for h in active_hyps | sort(attribute='priority', reverse=false) %}
+        <div class="hypothesis-card{% if summary and summary.quick_wins and h.id in summary.quick_wins %} quick-win{% endif %}">
+            <div class="hyp-header">
+                <div class="hyp-id">{{ h.id | default(loop.index) }}</div>
+                <div class="hyp-title">{{ h.title }}</div>
+                {% if h.priority %}
+                <span class="hyp-priority-badge {% if h.priority == 'high' %}priority-high{% elif h.priority == 'medium' %}priority-medium{% else %}priority-low{% endif %}">
+                    {{ h.priority }}
+                </span>
+                {% endif %}
+            </div>
+
+            {% if h.description %}
+            <div class="hyp-desc">{{ h.description }}</div>
+            {% endif %}
+
+            <div class="hyp-badges">
+                {% if h.channel %}
+                {% set ch = h.channel | lower %}
+                <span class="channel-badge {% if 'telegram' in ch %}ch-telegram{% elif 'avito' in ch %}ch-avito{% elif 'instagram' in ch or 'insta' in ch %}ch-instagram{% elif 'vk' in ch %}ch-vk{% elif 'whatsapp' in ch or 'вотсап' in ch %}ch-whatsapp{% elif 'email' in ch or 'почт' in ch %}ch-email{% else %}ch-default{% endif %}">
+                    &#128279; {{ h.channel }}
+                </span>
+                {% endif %}
+                {% if h.geo_specific %}
+                <span class="channel-badge ch-geo">&#128205; Геолокация</span>
+                {% endif %}
+                {% if h.estimated_cost == 0 or h.estimated_cost == '0' or h.estimated_cost == '0 ₽' %}
+                <span class="channel-badge" style="background:var(--green-light);color:var(--green);border-color:rgba(22,163,74,0.25);">&#9733; Бесплатно</span>
+                {% endif %}
+            </div>
+
+            {% if h.rationale %}
+            <div class="hyp-rationale">{{ h.rationale }}</div>
+            {% endif %}
+
+            {% if h.action_prompt %}
+            <div class="action-prompt">
+                <span class="action-prompt-label">Первый шаг</span>
+                {{ h.action_prompt }}
+            </div>
+            {% endif %}
+
+            <div class="hyp-meta">
+                {% if h.estimated_hours %}
+                <span class="meta-chip">&#9201; {{ h.estimated_hours }} ч.</span>
+                {% endif %}
+                {% if h.estimated_cost is defined and h.estimated_cost is not none %}
+                <span class="meta-chip">&#128176; {{ h.estimated_cost }} ₽</span>
+                {% endif %}
+                {% if h.can_delegate %}
+                <span class="meta-chip delegate">&#128101; Делегировать</span>
+                {% endif %}
+            </div>
+            {% if h.can_delegate and h.delegation_options %}
+            <div class="delegation-opts">Кому делегировать: {{ h.delegation_options }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {# Filtered hypotheses — collapsible #}
+    {% set filtered_hyps = hypotheses | selectattr('status', 'equalto', 'filtered') | list %}
+    {% if filtered_hyps %}
+    <div class="mt-20">
+        <button class="collapsible-trigger" onclick="toggleCollapsible(this)">
+            &#128683; Отфильтрованные гипотезы ({{ filtered_hyps | length }})
+            <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <div class="collapsible-body">
+            <div class="filtered-label">Эти гипотезы не подходят для вашей ситуации:</div>
+            {% for h in filtered_hyps %}
+            <div class="filtered-hyp">
+                <div class="filtered-hyp-title">{{ h.title }}</div>
+                {% if h.filter_reason %}
+                <div class="filtered-reason">
+                    <span>&#8212;</span>
+                    <span>{{ h.filter_reason }}</span>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+
+</div>
+{% endif %}
+
+{# ══════════════════════════════════════════════════
+   PERSONAL NOTE
+══════════════════════════════════════════════════ #}
+{% if personal_note %}
+<div class="personal-note">
+    <div class="personal-note-label">&#128214; Персональная заметка</div>
+    <div class="personal-note-text">{{ personal_note }}</div>
+</div>
+{% endif %}
+
+{# ══════════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════════ #}
+<div class="footer">
+    Сгенерировано <strong>AI-ассистентом</strong>
+    {% if user_name %} для <strong>{{ user_name }}</strong>{% endif %}
+</div>
+
+</div>{# /page-wrap #}
+
+<script>
+function toggleCollapsible(btn) {
+    var body = btn.nextElementSibling;
+    var isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    btn.classList.toggle('open', !isOpen);
+}
+</script>
+</body>
+</html>

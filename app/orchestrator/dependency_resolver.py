@@ -5,6 +5,7 @@ from uuid import UUID
 DEPENDENCY_GRAPH = {
     "goal_setting": [],
     "niche_selection": ["goal_tree"],
+    "decomposition_hypothesis": ["goal_tree", "niche_table"],
     "supplier_search": ["niche_table"],
     "sales_scripts": ["goal_tree", "niche_table"],
     "ad_creation": ["niche_table"],
@@ -14,6 +15,7 @@ DEPENDENCY_GRAPH = {
 ARTIFACT_TO_MINISERVICE = {
     "goal_tree": "goal_setting",
     "niche_table": "niche_selection",
+    "decomposition_hypothesis_report": "decomposition_hypothesis",
     "supplier_list": "supplier_search",
     "sales_script": "sales_scripts",
     "ad_set": "ad_creation",
