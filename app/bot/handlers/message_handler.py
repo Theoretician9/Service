@@ -169,7 +169,7 @@ async def handle_message(
                     ready_to_process=agent_response.ready_to_process,
                 )
 
-                # Save field if accepted
+                # Save field if accepted (single canonical save point)
                 if agent_response.field_id and agent_response.field_value:
                     await update_dialog_field(telegram_id, agent_response.field_id, agent_response.field_value)
 
@@ -179,10 +179,6 @@ async def handle_message(
                     if updated:
                         run_id = updated["run_id"]
                         updated_collected = updated.get("collected_fields", {})
-
-                        # Save field if agent returned one (e.g. validation_context)
-                        if agent_response.field_id and agent_response.field_value:
-                            updated_collected[agent_response.field_id] = agent_response.field_value
 
                         # Sync collected_fields to DB
                         from app.database import async_session as _async_session
@@ -233,7 +229,7 @@ async def handle_message(
 
         # ③ Orchestrator decides (LLM) ------------------------------------
         decision = await decide(context, text)
-        print(f"[DEBUG] decision: action={decision.action}, response={decision.response_text[:80] if decision.response_text else 'none'}", flush=True)
+        logger.debug("orchestrator_decided", action=str(decision.action), response_preview=decision.response_text[:80] if decision.response_text else None)
 
         # Log orchestrator decision
         conv_logger.info(
@@ -268,9 +264,7 @@ async def handle_message(
         await _dispatch_action(message, user, db_session, telegram_id, decision)
 
     except Exception as exc:
-        print(f"[DEBUG] ERROR in handler: {type(exc).__name__}: {exc}", flush=True)
-        import traceback
-        traceback.print_exc()
+        logger.error("handler_exception", error=str(exc), error_type=type(exc).__name__, exc_info=True)
         conv_logger.error(
             "handler_error",
             telegram_id=telegram_id,
@@ -287,53 +281,9 @@ async def handle_message(
 
 
 def _match_choice_field(user_text: str, field: dict) -> str | None:
-    """Try to match user's text to a choice field option.
-
-    Returns matched option string, or None if no match.
-    Handles: exact match, case-insensitive, number selection, partial match.
-    """
-    choices = field.get("choices", [])
-    field_type = field.get("type", "")
-    text = user_text.strip().lower()
-
-    if not choices:
-        if field_type == "yes_no":
-            yes_words = {"да", "yes", "ага", "угу", "конечно", "разумеется", "+"}
-            no_words = {"нет", "no", "не", "нее", "неа", "-"}
-            if text in yes_words:
-                return "да"
-            if text in no_words:
-                return "нет"
-            return None
-        return None
-
-    # Exact match (case-insensitive)
-    for c in choices:
-        if text == c.lower():
-            return c
-
-    # Number selection: "1", "2", etc.
-    if text.isdigit():
-        idx = int(text) - 1
-        if 0 <= idx < len(choices):
-            return choices[idx]
-
-    # Partial/fuzzy match: user's text contains the choice or vice versa
-    for c in choices:
-        c_lower = c.lower()
-        if c_lower in text or text in c_lower:
-            return c
-
-    # For multi_choice: try to match multiple
-    if field_type == "multi_choice":
-        matched = []
-        for c in choices:
-            if c.lower() in text:
-                matched.append(c)
-        if matched:
-            return ", ".join(matched)
-
-    return None
+    """Match user's text to a choice field option using strict validation."""
+    from app.services.choice_validator import match_choice_field
+    return match_choice_field(user_text, field)
 
 
 async def _run_smart_extraction(telegram_id: int, text: str) -> None:

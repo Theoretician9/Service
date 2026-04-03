@@ -5,7 +5,7 @@ from typing import Any
 from app.redis_client import redis
 
 DIALOG_TTL = 86400  # 24 hours
-EXTRACTED_FIELDS_TTL = 7200  # 2 hours
+EXTRACTED_FIELDS_TTL = 86400  # 24 hours (aligned with DIALOG_TTL)
 PENDING_CONFIRMATION_TTL = 600  # 10 minutes
 DEP_CHAIN_TTL = 86400  # 24 hours
 ACTIVE_PROJECT_TTL = 604800  # 7 days
@@ -251,15 +251,48 @@ AGENT_CONV_TTL = 24 * 3600  # 24 hours
 
 async def get_agent_conversation(
     telegram_user_id: int,
-    limit: int = 20,
+    limit: int = 30,
 ) -> list[dict]:
-    """Get agent-specific conversation history."""
+    """Get agent-specific conversation history.
+
+    If conversation was summarized, prepends summary as a system-like context message.
+    """
     key = f"agent_conversation:{telegram_user_id}"
     raw = await redis.get(key)
     if not raw:
         return []
+
     messages = json.loads(raw)
-    return messages[-limit:]
+    recent = messages[-limit:]
+
+    # If there's a summary from older messages, prepend it
+    summary = await get_agent_conversation_summary(telegram_user_id)
+    if summary and len(messages) > limit:
+        context_msg = {
+            "role": "user",
+            "content": f"[Краткое резюме предыдущего разговора: {summary}]",
+        }
+        recent = [context_msg] + recent
+
+    return recent
+
+
+AGENT_CONV_MAX_MESSAGES = 100
+AGENT_CONV_SUMMARIZE_THRESHOLD = 100  # Summarize when exceeding this
+AGENT_CONV_KEEP_AFTER_SUMMARY = 40    # Keep last N messages after summarization
+AGENT_SUMMARY_TTL = 7 * 24 * 3600     # 7 days
+
+
+async def get_agent_conversation_summary(telegram_user_id: int) -> str | None:
+    """Get stored conversation summary for this user."""
+    key = f"agent_conv_summary:{telegram_user_id}"
+    return await redis.get(key)
+
+
+async def set_agent_conversation_summary(telegram_user_id: int, summary: str) -> None:
+    """Store conversation summary."""
+    key = f"agent_conv_summary:{telegram_user_id}"
+    await redis.set(key, summary, ex=AGENT_SUMMARY_TTL)
 
 
 async def append_agent_conversation(
@@ -267,20 +300,71 @@ async def append_agent_conversation(
     role: str,
     content: str,
 ) -> None:
-    """Append to agent conversation."""
+    """Append to agent conversation. Summarizes when exceeding threshold."""
     key = f"agent_conversation:{telegram_user_id}"
     raw = await redis.get(key)
     messages = json.loads(raw) if raw else []
     messages.append({"role": role, "content": content})
-    # Keep max 30 messages
-    if len(messages) > 30:
-        messages = messages[-30:]
+
+    # Summarize if exceeding threshold
+    if len(messages) > AGENT_CONV_SUMMARIZE_THRESHOLD:
+        await _summarize_and_trim(telegram_user_id, messages)
+        messages = messages[-AGENT_CONV_KEEP_AFTER_SUMMARY:]
+
     await redis.set(key, json.dumps(messages, ensure_ascii=False), ex=AGENT_CONV_TTL)
 
 
+async def _summarize_and_trim(telegram_user_id: int, messages: list[dict]) -> None:
+    """Summarize older messages and store the summary separately."""
+    # Messages to summarize: everything except the last KEEP_AFTER_SUMMARY
+    to_summarize = messages[:-AGENT_CONV_KEEP_AFTER_SUMMARY]
+
+    if not to_summarize:
+        return
+
+    # Build text for summarization
+    summary_input = "\n".join(
+        f"{'Пользователь' if m['role'] == 'user' else 'Ассистент'}: {m['content'][:200]}"
+        for m in to_summarize
+    )
+
+    try:
+        from app.integrations.llm_gateway import llm_gateway
+
+        response = await llm_gateway.complete(
+            provider="anthropic",
+            model="claude-haiku-4-5",
+            system=(
+                "Сожми диалог в краткое резюме (5-10 предложений). "
+                "Сохрани ВСЕ конкретные факты: имена, числа, суммы, даты, решения. "
+                "Формат: ключевые факты списком."
+            ),
+            messages=[{"role": "user", "content": summary_input[:4000]}],
+            max_tokens=500,
+            temperature=0.2,
+        )
+
+        # Store summary, appending to existing if any
+        existing = await get_agent_conversation_summary(telegram_user_id)
+        new_summary = response.content.strip()
+        if existing:
+            combined = f"{existing}\n\n---\n\n{new_summary}"
+            # Keep summary under 2000 chars
+            if len(combined) > 2000:
+                combined = combined[-2000:]
+            new_summary = combined
+
+        await set_agent_conversation_summary(telegram_user_id, new_summary)
+
+    except Exception:
+        # If summarization fails, just trim without summary
+        pass
+
+
 async def clear_agent_conversation(telegram_user_id: int) -> None:
-    """Clear agent conversation when miniservice completes."""
+    """Clear agent conversation and summary when miniservice completes."""
     await redis.delete(f"agent_conversation:{telegram_user_id}")
+    await redis.delete(f"agent_conv_summary:{telegram_user_id}")
 
 
 DECOMP_RAW_TTL = 7200  # 2 hours

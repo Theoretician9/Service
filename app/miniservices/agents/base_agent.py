@@ -218,4 +218,7 @@ class BaseAgent:
             pass
 
         # Plain text response — agent is probing/clarifying
+        # NEVER accept fields from plain text — only JSON can set field_id
+        logger.warning("agent_plain_text_response", miniservice_id=self.miniservice_id,
+                       content_preview=content[:100])
         return AgentResponse(text=content)

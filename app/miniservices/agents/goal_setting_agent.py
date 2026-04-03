@@ -1,21 +1,10 @@
 # app/miniservices/agents/goal_setting_agent.py
-import re
 from app.miniservices.agents.base_agent import BaseAgent, AgentResponse
-
-
-# Currency symbols/words to detect
-_CURRENCY_MARKERS = {"₽", "₸", "руб", "тенге", "byn", "долл", "$", "€", "rub", "kzt"}
-
-
-def _has_currency(text: str) -> bool:
-    """Check if text contains any currency marker."""
-    lower = text.lower()
-    return any(m in lower for m in _CURRENCY_MARKERS)
-
-
-def _has_money_amount(text: str) -> bool:
-    """Check if text contains a money amount (digits + к/к/тыс/млн etc)."""
-    return bool(re.search(r'\d+\s*[кkтмКМ]|\d{3,}|\d+\s*(?:тыс|млн|руб|тенге)', text))
+from app.services.currency import (
+    has_currency, has_money_amount, needs_currency_clarification,
+    detect_currency, format_currency_question,
+)
+from app.services.field_validator import validate_collected_fields
 
 
 class GoalSettingAgent(BaseAgent):
@@ -31,87 +20,45 @@ class GoalSettingAgent(BaseAgent):
         conversation_history: list[dict],
         project_context: dict,
     ) -> AgentResponse:
-        # Check if point_b exists but has no money amount — mark as incomplete
-        point_b_val = collected_fields.get("point_b", "")
-        if point_b_val and not _has_money_amount(str(point_b_val)):
-            # point_b was auto-filled without target income — remove it so agent asks
-            del collected_fields["point_b"]
+        # Pre-validate collected fields (removes point_b without income amount, etc.)
+        validate_collected_fields(self.miniservice_id, collected_fields)
 
-        # Check if currency is needed BEFORE calling LLM
-        # point_a/point_b may already be in collected_fields (via smart_extractor)
-        needs_currency = self._needs_currency_check(collected_fields, user_message)
-
-        if needs_currency and not _has_currency(user_message):
-            # Don't call LLM — just ask for currency directly
-            return AgentResponse(
-                text="В какой валюте считаем — рубли (₽), тенге (₸) или белорусские рубли (BYN)?",
-                field_id=None,
-                field_value=None,
-            )
-
-        # If user is answering currency question
-        if needs_currency and _has_currency(user_message):
-            currency = self._detect_currency(user_message)
-            # Save currency and let LLM continue
-            collected_fields["currency"] = currency
+        # Check if currency clarification is needed BEFORE calling LLM
+        if needs_currency_clarification(collected_fields):
+            if has_currency(user_message):
+                # User is answering currency question — save it
+                collected_fields["currency"] = detect_currency(user_message) or "₽"
+            else:
+                # Ask for currency
+                return AgentResponse(text=format_currency_question())
 
         # Get base response from LLM
         response = await super().handle_message(
             user_message, collected_fields, conversation_history, project_context
         )
 
-        # Double-check: if agent accepts point_b with money but no currency
+        # Post-check: if agent accepts point_b with money but no currency
         if (
             response.field_id == "point_b"
             and response.field_value
-            and _has_money_amount(response.field_value)
-            and not _has_currency(response.field_value)
+            and has_money_amount(response.field_value)
+            and not has_currency(response.field_value)
             and "currency" not in collected_fields
         ):
-            return AgentResponse(
-                text="Записал цель. В какой валюте сумма — рубли (₽), тенге (₸) или белорусские рубли (BYN)?",
-                field_id=None,
-                field_value=None,
-            )
+            return AgentResponse(text=format_currency_question())
 
-        # Triple-check: if all_collected but any field has money without currency
+        # Post-check: if all_collected but currency still missing
         if (
             response.all_collected
             and "currency" not in collected_fields
-            and self._any_field_has_uncurrencied_money(collected_fields)
+            and needs_currency_clarification(collected_fields)
         ):
             return AgentResponse(
-                text="Почти готово! Уточни валюту — рубли (₽), тенге (₸) или BYN?",
-                field_id=None,
-                field_value=None,
+                text="Почти готово! " + format_currency_question(),
                 all_collected=False,
             )
 
         return response
-
-    def _needs_currency_check(self, collected_fields: dict, user_message: str) -> bool:
-        """Check if we need to ask about currency."""
-        if "currency" in collected_fields:
-            return False
-        # Check ALL fields that might contain money without currency
-        return self._any_field_has_uncurrencied_money(collected_fields)
-
-    def _any_field_has_uncurrencied_money(self, collected_fields: dict) -> bool:
-        """Check if any collected field contains money amount without currency."""
-        for field_id in ("point_a", "point_b"):
-            value = collected_fields.get(field_id, "")
-            if value and _has_money_amount(str(value)) and not _has_currency(str(value)):
-                return True
-        return False
-
-    def _detect_currency(self, text: str) -> str:
-        """Detect currency from user's answer."""
-        lower = text.lower()
-        if "тенге" in lower or "₸" in lower or "kzt" in lower:
-            return "₸"
-        if "byn" in lower or "белорус" in lower:
-            return "BYN"
-        return "₽"
 
     system_prompt = """\
 Ты — бизнес-психолог, ментор и старший брат одновременно. Твоя задача — через живой диалог \

@@ -6,6 +6,7 @@ import structlog
 
 from app.integrations.llm_gateway import llm_gateway
 from app.miniservices.engine import get_all_manifests
+from app.services.extraction_validator import validate_extractions
 
 logger = structlog.get_logger()
 
@@ -140,6 +141,9 @@ async def extract_fields(message_text: str, context: dict) -> dict:
                     valid_fields[field_id] = value.strip()
             if valid_fields:
                 validated[ms_id] = valid_fields
+
+        # Before returning extracted fields, validate they come from the message
+        validated = validate_extractions(validated, message_text)
 
         logger.info(
             "smart_extractor_result",

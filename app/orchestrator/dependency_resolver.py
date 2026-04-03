@@ -23,6 +23,34 @@ ARTIFACT_TO_MINISERVICE = {
 }
 
 
+# Deterministic chain: which miniservice to suggest next based on completed artifacts
+NEXT_STEP_CHAIN = [
+    ([], "goal_setting"),
+    (["goal_tree"], "niche_selection"),
+    (["goal_tree", "niche_table"], "decomposition_hypothesis"),
+    (["goal_tree", "niche_table", "decomposition_hypothesis_report"], "supplier_search"),
+]
+
+
+def get_next_miniservice(existing_artifact_types: list[str]) -> str | None:
+    """Deterministically compute the next recommended miniservice.
+
+    Returns miniservice_id or None if all main chain steps are done.
+    """
+    existing = set(existing_artifact_types)
+    for required_artifacts, next_ms in NEXT_STEP_CHAIN:
+        if all(a in existing for a in required_artifacts):
+            # Check if this miniservice's artifact already exists
+            ms_artifact = None
+            for art, ms in ARTIFACT_TO_MINISERVICE.items():
+                if ms == next_ms:
+                    ms_artifact = art
+                    break
+            if ms_artifact and ms_artifact not in existing:
+                return next_ms
+    return None
+
+
 def resolve_missing(miniservice_id: str, existing_artifact_types: list[str]) -> list[str]:
     """Return ordered list of miniservice_ids that need to run first.
 
