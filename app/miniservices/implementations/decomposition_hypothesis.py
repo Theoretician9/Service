@@ -224,7 +224,7 @@ class DecompositionHypothesisService(MiniserviceBase):
         decomp_response = await llm_gateway.complete(
             provider="anthropic",
             model="claude-sonnet-4-5",
-            system=DECOMPOSITION_SYSTEM_PROMPT.format(currency=currency),
+            system=DECOMPOSITION_SYSTEM_PROMPT.replace("{currency}", currency),
             messages=[{"role": "user", "content": decomp_prompt}],
             max_tokens=4000,
             temperature=0.2,
@@ -253,14 +253,14 @@ class DecompositionHypothesisService(MiniserviceBase):
         goal_statement = profile.get("goal_statement", fields.get("goal_statement", ""))
         bottleneck = decomp_table.get("bottleneck", "не определено")
 
-        hyp_system = HYPOTHESES_RAW_SYSTEM_PROMPT.format(
-            chosen_niche=chosen_niche,
-            business_model=business_model,
-            geography=geography,
-            goal_statement=goal_statement,
-            base_scenario=base_scenario,
-            bottleneck=bottleneck,
-            currency=currency,
+        hyp_system = (HYPOTHESES_RAW_SYSTEM_PROMPT
+            .replace("{chosen_niche}", str(chosen_niche))
+            .replace("{business_model}", str(business_model))
+            .replace("{geography}", str(geography))
+            .replace("{goal_statement}", str(goal_statement))
+            .replace("{base_scenario}", str(base_scenario))
+            .replace("{bottleneck}", str(bottleneck))
+            .replace("{currency}", str(currency))
         )
 
         hyp_response = await llm_gateway.complete(
@@ -310,9 +310,9 @@ class DecompositionHypothesisService(MiniserviceBase):
 
         hypotheses_json = json.dumps(hypotheses_raw, ensure_ascii=False, indent=2)
 
-        filter_system = HYPOTHESES_FILTER_SYSTEM_PROMPT.format(
-            hypotheses_json=hypotheses_json,
-            validation_context=validation_context,
+        filter_system = (HYPOTHESES_FILTER_SYSTEM_PROMPT
+            .replace("{hypotheses_json}", str(hypotheses_json))
+            .replace("{validation_context}", str(validation_context))
         )
 
         filter_response = await llm_gateway.complete(
