@@ -31,43 +31,80 @@ class GoalSettingAgent(BaseAgent):
         conversation_history: list[dict],
         project_context: dict,
     ) -> AgentResponse:
+        # Check if currency is needed BEFORE calling LLM
+        # point_b may already be in collected_fields (via smart_extractor)
+        needs_currency = self._needs_currency_check(collected_fields, user_message)
+
+        if needs_currency and not _has_currency(user_message):
+            # Don't call LLM — just ask for currency directly
+            return AgentResponse(
+                text="В какой валюте считаем — рубли (₽), тенге (₸) или белорусские рубли (BYN)?",
+                field_id=None,
+                field_value=None,
+            )
+
+        # If user is answering currency question
+        if needs_currency and _has_currency(user_message):
+            currency = self._detect_currency(user_message)
+            # Save currency and let LLM continue
+            collected_fields["currency"] = currency
+
         # Get base response from LLM
         response = await super().handle_message(
             user_message, collected_fields, conversation_history, project_context
         )
 
-        # Programmatic currency check: if agent accepts point_b with money but no currency
+        # Double-check: if agent accepts point_b with money but no currency
         if (
             response.field_id == "point_b"
             and response.field_value
             and _has_money_amount(response.field_value)
             and not _has_currency(response.field_value)
-            and not _has_currency(user_message)
             and "currency" not in collected_fields
         ):
-            # Override: don't accept point_b, ask for currency instead
             return AgentResponse(
                 text="Записал цель. В какой валюте сумма — рубли (₽), тенге (₸) или белорусские рубли (BYN)?",
                 field_id=None,
                 field_value=None,
             )
 
-        # If user answers currency question and point_b was pending
+        # Triple-check: if all_collected but point_b has money without currency
         if (
-            "point_b" not in collected_fields
-            and _has_currency(user_message)
-            and not response.field_id
+            response.all_collected
+            and "currency" not in collected_fields
+            and self._point_b_has_uncurrencied_money(collected_fields)
         ):
-            # Store currency for later use
-            currency = "₽"
-            lower = user_message.lower()
-            if "тенге" in lower or "₸" in lower or "kzt" in lower:
-                currency = "₸"
-            elif "byn" in lower or "белорус" in lower:
-                currency = "BYN"
-            collected_fields["currency"] = currency
+            return AgentResponse(
+                text="Почти готово! Уточни валюту — рубли (₽), тенге (₸) или BYN?",
+                field_id=None,
+                field_value=None,
+                all_collected=False,
+            )
 
         return response
+
+    def _needs_currency_check(self, collected_fields: dict, user_message: str) -> bool:
+        """Check if we need to ask about currency."""
+        if "currency" in collected_fields:
+            return False
+        # point_b exists (from smart_extractor or agent) with money amount but no currency
+        return self._point_b_has_uncurrencied_money(collected_fields)
+
+    def _point_b_has_uncurrencied_money(self, collected_fields: dict) -> bool:
+        """Check if point_b contains money amount without currency."""
+        point_b = collected_fields.get("point_b", "")
+        if not point_b:
+            return False
+        return _has_money_amount(str(point_b)) and not _has_currency(str(point_b))
+
+    def _detect_currency(self, text: str) -> str:
+        """Detect currency from user's answer."""
+        lower = text.lower()
+        if "тенге" in lower or "₸" in lower or "kzt" in lower:
+            return "₸"
+        if "byn" in lower or "белорус" in lower:
+            return "BYN"
+        return "₽"
 
     system_prompt = """\
 Ты — бизнес-психолог, ментор и старший брат одновременно. Твоя задача — через живой диалог \
