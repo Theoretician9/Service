@@ -68,11 +68,11 @@ class GoalSettingAgent(BaseAgent):
                 field_value=None,
             )
 
-        # Triple-check: if all_collected but point_b has money without currency
+        # Triple-check: if all_collected but any field has money without currency
         if (
             response.all_collected
             and "currency" not in collected_fields
-            and self._point_b_has_uncurrencied_money(collected_fields)
+            and self._any_field_has_uncurrencied_money(collected_fields)
         ):
             return AgentResponse(
                 text="Почти готово! Уточни валюту — рубли (₽), тенге (₸) или BYN?",
@@ -87,15 +87,16 @@ class GoalSettingAgent(BaseAgent):
         """Check if we need to ask about currency."""
         if "currency" in collected_fields:
             return False
-        # point_b exists (from smart_extractor or agent) with money amount but no currency
-        return self._point_b_has_uncurrencied_money(collected_fields)
+        # Check ALL fields that might contain money without currency
+        return self._any_field_has_uncurrencied_money(collected_fields)
 
-    def _point_b_has_uncurrencied_money(self, collected_fields: dict) -> bool:
-        """Check if point_b contains money amount without currency."""
-        point_b = collected_fields.get("point_b", "")
-        if not point_b:
-            return False
-        return _has_money_amount(str(point_b)) and not _has_currency(str(point_b))
+    def _any_field_has_uncurrencied_money(self, collected_fields: dict) -> bool:
+        """Check if any collected field contains money amount without currency."""
+        for field_id in ("point_a", "point_b"):
+            value = collected_fields.get(field_id, "")
+            if value and _has_money_amount(str(value)) and not _has_currency(str(value)):
+                return True
+        return False
 
     def _detect_currency(self, text: str) -> str:
         """Detect currency from user's answer."""
