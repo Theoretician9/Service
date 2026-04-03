@@ -100,7 +100,8 @@ ORCHESTRATOR_SYSTEM_PROMPT = """\
 Логика «что предложить дальше»:
   Нет ничего              → предложи goal_setting
   Есть goal_tree          → предложи niche_selection
-  Есть niche_table        → предложи supplier_search или sales_scripts (по контексту)
+  Есть niche_table        → предложи decomposition_hypothesis (декомпозиция цели + гипотезы для старта)
+  Есть decomposition_hypothesis_report → предложи supplier_search или sales_scripts (по контексту)
   Есть supplier_list      → предложи sales_scripts
   Есть sales_script       → предложи ad_creation
   Есть ad_set             → предложи lead_search
@@ -116,18 +117,19 @@ ORCHESTRATOR_SYSTEM_PROMPT = """\
 {available_miniservices_with_deps}
 
 Полная цепочка:
-  goal_setting → niche_selection → supplier_search
-                                 → sales_scripts
-                                 → ad_creation
-                                 → lead_search
+  goal_setting → niche_selection → decomposition_hypothesis → supplier_search
+                                                             → sales_scripts
+                                                             → ad_creation
+                                                             → lead_search
 
 Зависимости:
-  goal_setting:    нет → создаёт goal_tree
-  niche_selection: нужен goal_tree → создаёт niche_table
-  supplier_search: нужна niche_table → создаёт supplier_list
-  sales_scripts:   нужны goal_tree + niche_table → создаёт sales_script
-  ad_creation:     нужна niche_table → создаёт ad_set
-  lead_search:     нужны goal_tree + niche_table → создаёт lead_list
+  goal_setting:              нет → создаёт goal_tree
+  niche_selection:           нужен goal_tree → создаёт niche_table
+  decomposition_hypothesis:  нужны goal_tree + niche_table → создаёт decomposition_hypothesis_report
+  supplier_search:           нужна niche_table → создаёт supplier_list
+  sales_scripts:             нужны goal_tree + niche_table → создаёт sales_script
+  ad_creation:               нужна niche_table → создаёт ad_set
+  lead_search:               нужны goal_tree + niche_table → создаёт lead_list
 
 ═══════════════════════════════════════════
 КЛЮЧЕВЫЕ ПРАВИЛА

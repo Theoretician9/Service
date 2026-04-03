@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дерево целей</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f0f13;
+    color: #e4e4e7;
+    line-height: 1.6;
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+.header {
+    text-align: center;
+    padding: 32px 0 24px;
+}
+.header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+}
+.header .subtitle {
+    color: #71717a;
+    font-size: 14px;
+}
+.card {
+    background: #18181b;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #27272a;
+}
+.card-accent {
+    border-left: 4px solid #6366f1;
+}
+.card-warn {
+    border-left: 4px solid #f59e0b;
+}
+.card-green {
+    border-left: 4px solid #22c55e;
+}
+.card-red {
+    border-left: 4px solid #ef4444;
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a1a1aa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+.smart-goal {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+}
+.points-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+@media (max-width: 480px) {
+    .points-grid { grid-template-columns: 1fr; }
+}
+.point-card {
+    background: #1f1f23;
+    border-radius: 12px;
+    padding: 16px;
+}
+.point-card .label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+.point-a .label { color: #f59e0b; }
+.point-b .label { color: #22c55e; }
+.deadline-badge {
+    display: inline-block;
+    background: #27272a;
+    color: #e4e4e7;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 12px;
+}
+.motivation-text {
+    font-size: 16px;
+    font-style: italic;
+    color: #fbbf24;
+    line-height: 1.5;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+ul li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    border-bottom: 1px solid #27272a;
+}
+ul li:last-child { border-bottom: none; }
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6366f1;
+}
+.week-block {
+    margin-bottom: 16px;
+}
+.week-block h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #1f1f23;
+    border-radius: 8px;
+}
+.week-block li::before { background: #22c55e; }
+.metric-list li::before { background: #3b82f6; }
+.risk-list li::before { background: #ef4444; }
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    color: #52525b;
+    font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 Дерево целей</h1>
+    <div class="subtitle">AI-ассистент для предпринимателей</div>
+</div>
+
+<div class="card card-accent">
+    <h2>📌 SMART-цель</h2>
+    <div class="smart-goal">Запустить веб-студию по разработке ботов для Telegram/VK и созданию сайтов с первым платным заказом на сумму от 50 000₽ к декабрю 2026 года, параллельно сохраняя доход 1 млн₽ с продажи саженцев в сезон 2025-2026</div>
+</div>
+
+<div class="points-grid">
+    <div class="point-card point-a">
+        <div class="label">📍 Точка А — где сейчас</div>
+        <div>Владелец оптового бизнеса по перепродаже саженцев деревьев с доходом 1 млн₽ за сезон (6 месяцев работы), продажи в Казахстан и Россию, остальные 6 месяцев в году — без дохода и занятости</div>
+    </div>
+    <div class="point-card point-b">
+        <div class="label">🏁 Точка Б — куда идём</div>
+        <div>Владелец веб-студии, специализирующейся на разработке Telegram/VK-ботов и создании сайтов, с постоянным круглогодичным доходом, обеспечивающим стабильные потребности семьи и профессиональную самореализацию</div>
+    </div>
+</div>
+
+
+<div style="text-align: center; padding: 8px 0;">
+    <span class="deadline-badge">📅 Срок: декабрь 2026 (после завершения сезона саженцев)</span>
+</div>
+
+
+
+<div class="card card-warn">
+    <h2>💡 Настоящая мотивация</h2>
+    <div class="motivation-text">Стабильный доход круглый год вместо сезонной работы, закрыть потребности семьи, вернуть самоуважение и деятельность вместо полугода без работы</div>
+</div>
+
+
+
+<div class="card">
+    <h2>🌳 Три уровня «Почему»</h2>
+    <ul>
+    
+        <li>Сезонный бизнес оставляет 6 месяцев без работы и дохода — нужна круглогодичная занятость</li>
+    
+        <li>Текущего дохода недостаточно для покрытия потребностей семьи — требуется дополнительный источник</li>
+    
+        <li>Отсутствие деятельности полгода снижает самоуважение — нужна профессиональная реализация</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>🚧 Ограничения и что с ними делать</h2>
+    <ul class="risk-list">
+    
+        <li>Сезонная работа 6 месяцев — использовать межсезонье (декабрь 2024 — май 2025, декабрь 2025 — май 2026) для обучения веб-разработке и поиска первых клиентов</li>
+    
+        <li>Недостаточно средств на семью — сохранить доход с саженцев (1 млн₽/сезон) как основной источник до запуска веб-студии, начать с небольших заказов (лендинги, простые боты) для накопления портфолио</li>
+    
+        <li>Нет опыта в веб-разработке — пройти онлайн-курсы (бесплатные/недорогие) по HTML/CSS/JavaScript, Python для ботов, сделать 2-3 пет-проекта для портфолио к маю 2025</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-green">
+    <h2>📋 План действий</h2>
+    
+    <div class="week-block">
+        
+        <h3>Январь 2025</h3>
+        <ul>
+        
+            <li>Выбрать 1-2 бесплатных курса по веб-разработке (например, freeCodeCamp, Stepik) и Python для Telegram-ботов, начать обучение 10-15 часов в неделю</li>
+        
+            <li>Создать первый пет-проект: простой лендинг для собственного бизнеса саженцев или бот-визитку в Telegram</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Февраль-Март 2025</h3>
+        <ul>
+        
+            <li>Завершить 2-3 пет-проекта (лендинг, многостраничный сайт, Telegram-бот с базовым функционалом), выложить на GitHub</li>
+        
+            <li>Зарегистрировать профили на фриланс-биржах (Kwork, FL.ru, Freelance.ru), создать портфолио с пет-проектами, установить минимальные цены (лендинг от 5000₽, бот от 3000₽)</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Апрель-Май 2025</h3>
+        <ul>
+        
+            <li>Откликнуться на 20-30 заказов на биржах, получить первые 1-2 платных заказа (даже по низкой цене для отзывов)</li>
+        
+            <li>Подготовиться к сезону саженцев: закупка, логистика, чтобы обеспечить доход 1 млн₽ в сезон июнь-ноябрь 2025</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Июнь-Ноябрь 2025 (сезон саженцев)</h3>
+        <ul>
+        
+            <li>Работать с саженцами как основной доход, выделять 5-10 часов в неделю на веб-заказы (вечера/выходные)</li>
+        
+            <li>Выполнить 3-5 небольших заказов за сезон, накопить отзывы и кейсы</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Декабрь 2025 — Май 2026</h3>
+        <ul>
+        
+            <li>Повысить цены на услуги (лендинг от 15 000₽, сайт от 30 000₽, бот от 10 000₽), активно искать заказы</li>
+        
+            <li>Получить 5-7 заказов, заработать первые 100-150 тыс₽ с веб-разработки</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Июнь-Ноябрь 2026 (сезон саженцев)</h3>
+        <ul>
+        
+            <li>Продолжать работу с саженцами (доход 1 млн₽), параллельно выполнять веб-заказы</li>
+        
+            <li>Набрать базу постоянных клиентов (3-5 компаний на поддержку сайтов/ботов)</li>
+        
+        </ul>
+        
+    </div>
+    
+    <div class="week-block">
+        
+        <h3>Декабрь 2026</h3>
+        <ul>
+        
+            <li>Получить первый крупный заказ на сумму от 50 000₽ (корпоративный сайт или сложный бот)</li>
+        
+            <li>Оценить доход с веб-студии за год: если 200-300 тыс₽ — продолжать масштабирование, если меньше — скорректировать стратегию</li>
+        
+        </ul>
+        
+    </div>
+    
+</div>
+
+
+
+<div class="card">
+    <h2>📊 Метрики успеха</h2>
+    <ul class="metric-list">
+    
+        <li>К маю 2025: 2-3 пет-проекта в портфолио, профили на 3 фриланс-биржах</li>
+    
+        <li>К ноябрю 2025: 3-5 выполненных платных заказов, 5+ положительных отзывов</li>
+    
+        <li>К маю 2026: доход с веб-разработки 100-150 тыс₽ за межсезонье</li>
+    
+        <li>К декабрю 2026: 1 заказ на сумму от 50 000₽, база из 3-5 постоянных клиентов, общий доход с веб-студии за год 200-300 тыс₽</li>
+    
+    </ul>
+</div>
+
+
+
+<div class="card card-red">
+    <h2>⚠️ Риски</h2>
+    <ul class="risk-list">
+    
+        <li>Нехватка времени на обучение в межсезонье — выделить фиксированные 10-15 часов в неделю, отказаться от второстепенных дел</li>
+    
+        <li>Низкая конкуренция на фрилансе, долгий поиск первых клиентов — начать с минимальных цен (лендинг 5000₽), предложить услуги знакомым предпринимателям бесплатно за отзыв</li>
+    
+        <li>Сезон саженцев может сорваться (неурожай, логистика) — диверсифицировать: искать поставщиков в 2-3 регионах, заложить резерв 100-150 тыс₽ из дохода 2024</li>
+    
+        <li>Выгорание от совмещения двух бизнесов — в сезон саженцев ограничить веб-заказы до 1-2 в месяц, не брать срочные проекты</li>
+    
+    </ul>
+</div>
+
+
+
+
+<div class="footer">
+    Сгенерировано AI-ассистентом
+</div>
+
+</body>
+</html>
