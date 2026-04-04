@@ -20,6 +20,15 @@
   "input_schema": {
     "fields": [
       {
+        "id": "chosen_niche",
+        "label": "Выбранная ниша",
+        "type": "choice",
+        "required": true,
+        "choices_from": "niche_candidates",
+        "question": "Какую нишу выбираешь для декомпозиции?",
+        "extract_from_free_text": false
+      },
+      {
         "id": "business_role",
         "label": "Роль в нише",
         "type": "choice",
@@ -78,12 +87,13 @@
     ]
   },
   "question_plan": [
-    {"field_id": "business_role", "step": 1, "condition": null},
-    {"field_id": "avg_check_base", "step": 2, "condition": null},
-    {"field_id": "commission_rate", "step": 3, "condition": {"field": "business_role", "value": "Агент — нахожу клиентов для других, получаю комиссию"}},
-    {"field_id": "own_margin_possible", "step": 4, "condition": null},
-    {"field_id": "current_monthly_income", "step": 5, "condition": null},
-    {"field_id": "max_monthly_deals", "step": 6, "condition": null}
+    {"field_id": "chosen_niche", "step": 1, "condition": null},
+    {"field_id": "business_role", "step": 2, "condition": null},
+    {"field_id": "avg_check_base", "step": 3, "condition": null},
+    {"field_id": "commission_rate", "step": 4, "condition": {"field": "business_role", "value": "Агент — нахожу клиентов для других, получаю комиссию"}},
+    {"field_id": "own_margin_possible", "step": 5, "condition": null},
+    {"field_id": "current_monthly_income", "step": 6, "condition": null},
+    {"field_id": "max_monthly_deals", "step": 7, "condition": null}
   ],
   "output_schema": {
     "version": "1.0",

@@ -185,6 +185,21 @@ async def handle_message(
                 if agent_response.field_id and agent_response.field_value:
                     await update_dialog_field(telegram_id, agent_response.field_id, agent_response.field_value)
 
+                    # If chosen_niche was updated, sync to project profile
+                    if agent_response.field_id == "chosen_niche":
+                        _dialog = await get_dialog(telegram_id)
+                        if _dialog and _dialog.get("project_id"):
+                            from app.database import async_session as _async_session
+                            from app.modules.projects.service import ProjectService
+                            async with _async_session() as _s:
+                                proj_svc = ProjectService(_s)
+                                await proj_svc.update_profile_field(
+                                    uuid.UUID(_dialog["project_id"]),
+                                    "chosen_niche",
+                                    agent_response.field_value,
+                                )
+                                await _s.commit()
+
                 # Check if ready to process
                 if agent_response.ready_to_process:
                     updated = await get_dialog(telegram_id)

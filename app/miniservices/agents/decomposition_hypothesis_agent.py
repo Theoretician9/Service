@@ -21,6 +21,54 @@ logger = structlog.get_logger()
 # PHASE 1 — Decomposition data collection
 # ─────────────────────────────────────────────────────────────
 
+SYSTEM_PROMPT_NICHE_CHOICE = """\
+Ты — бизнес-консультант. Твоя задача — помочь пользователю выбрать нишу для декомпозиции.
+
+═══════════════════════════════════════════
+ПЕРСОНА И ТОН
+═══════════════════════════════════════════
+
+• Деловой, конкретный, без инфобиза и мотивашек.
+• НИКОГДА не здоровайся. Пользователь уже в диалоге.
+
+═══════════════════════════════════════════
+КОНТЕКСТ
+═══════════════════════════════════════════
+
+Цель: {goal_statement}
+Рекомендованная ниша: {recommended_niche}
+
+═══════════════════════════════════════════
+ДОСТУПНЫЕ НИШИ (из анализа):
+═══════════════════════════════════════════
+
+{niche_list}
+
+═══════════════════════════════════════════
+ЗАДАЧА
+═══════════════════════════════════════════
+
+Покажи пользователю пронумерованный список ниш (топ-5 и доп. 5). \
+Отметь рекомендованную (★). Спроси: «Какую нишу выбираешь? Назови номер или название.»
+
+Если пользователь уже назвал нишу в сообщении — подтверди выбор и запиши.
+
+═══════════════════════════════════════════
+ФОРМАТ ОТВЕТА — СТРОГО JSON
+═══════════════════════════════════════════
+
+{{
+  "text": "текст ответа пользователю",
+  "field_id": "chosen_niche",
+  "field_value": "точное название выбранной ниши или null если ещё не выбрана"
+}}
+
+ПРАВИЛА:
+• field_value = null → пользователь ещё не выбрал, показываешь список
+• field_value заполнен → пользователь выбрал, записываем ТОЧНОЕ название из списка
+• Если пользователь называет номер — переведи в точное название
+"""
+
 SYSTEM_PROMPT_DECOMP = """\
 Ты — финансовый аналитик. Твоя задача — собрать данные для построения \
 финансовой декомпозиции (сколько и чего нужно продать, чтобы достичь цели).
@@ -204,10 +252,59 @@ class DecompositionHypothesisAgent(BaseAgent):
             return await self._handle_validation(
                 user_message, collected_fields, conversation_history, project_context,
             )
+        elif "chosen_niche" not in collected_fields:
+            return await self._handle_niche_choice(
+                user_message, collected_fields, conversation_history, project_context,
+            )
         else:
             return await self._handle_decomp_collect(
                 user_message, collected_fields, conversation_history, project_context,
             )
+
+    # ── Phase 0: Niche choice ──────────────────────────────
+
+    async def _handle_niche_choice(
+        self,
+        user_message: str,
+        collected_fields: dict,
+        conversation_history: list[dict],
+        project_context: dict,
+    ) -> AgentResponse:
+        """Ask user to choose which niche to decompose."""
+        niche_candidates = project_context.get("niche_candidates", [])
+        recommended = project_context.get("chosen_niche", "")
+        goal_statement = project_context.get("goal_statement", "")
+
+        # Build numbered niche list
+        niche_lines = []
+        for i, niche in enumerate(niche_candidates, 1):
+            name = niche.get("name", niche) if isinstance(niche, dict) else str(niche)
+            marker = " ★" if name == recommended else ""
+            niche_lines.append(f"{i}. {name}{marker}")
+
+        niche_list = "\n".join(niche_lines) if niche_lines else f"1. {recommended}"
+
+        system = SYSTEM_PROMPT_NICHE_CHOICE.format(
+            goal_statement=goal_statement,
+            recommended_niche=recommended,
+            niche_list=niche_list,
+        )
+
+        recent_history = conversation_history[-10:] if conversation_history else []
+        messages = [{"role": m["role"], "content": m["content"]} for m in recent_history]
+        messages.append({"role": "user", "content": user_message})
+
+        response = await self._call_llm(system, messages)
+        if response is None:
+            return AgentResponse(text="Произошла ошибка. Попробуй ещё раз.")
+
+        parsed = self._parse_agent_response(response.content, phase="niche_choice")
+
+        # If niche was chosen, also update project context for downstream use
+        if parsed.field_id == "chosen_niche" and parsed.field_value:
+            collected_fields["chosen_niche"] = parsed.field_value
+
+        return parsed
 
     # ── Phase 1: Decomposition data collection ──────────────
 
