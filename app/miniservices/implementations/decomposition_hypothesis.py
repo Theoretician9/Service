@@ -328,23 +328,126 @@ class DecompositionHypothesisService(MiniserviceBase):
 
         filtered = self._parse_json_response(filter_response.content, "hypotheses_filtered")
 
-        # ── Build final content ──
+        # ── Build final content for HTML template ──
 
-        content = {
-            "decomp_table": decomp_table,
-            "hypotheses_raw_count": len(hypotheses_raw),
-            "hypotheses_filtered": filtered,
-            "currency": currency,
-            "geography": geography,
+        # Convert scenarios dict → list for Jinja2 iteration
+        scenarios_dict = decomp_table.get("scenarios", {})
+        scenarios_list = []
+        recommended_scenario = None
+        for key, sc in scenarios_dict.items():
+            sc["id"] = key
+            if not sc.get("label"):
+                sc["label"] = key.capitalize()
+            scenarios_list.append(sc)
+            if key == "base":
+                recommended_scenario = key
+
+        # Build decomposition object matching template vars
+        decomposition = {
+            "key_insight": decomp_table.get("key_insight", ""),
+            "capacity_warning": decomp_table.get("bottleneck", ""),
+            "scenarios": scenarios_list,
+            "recommended_scenario": recommended_scenario,
+            "recommended_reason": decomp_table.get("recommendation", ""),
         }
 
-        # Build summary
-        top_count = len(filtered.get("top_hypotheses", []))
-        backlog_count = len(filtered.get("backlog_hypotheses", []))
-        filtered_out_count = len(filtered.get("filtered_out", []))
+        # Merge raw hypothesis data into top_hypotheses for richer display
+        raw_by_id = {h.get("id"): h for h in hypotheses_raw}
+        top_hypotheses = filtered.get("top_hypotheses", [])
+        for h in top_hypotheses:
+            raw = raw_by_id.get(h.get("id"), {})
+            h.setdefault("channel", raw.get("category", ""))
+            h.setdefault("estimated_hours", self._effort_to_hours(raw.get("effort", "medium")))
+            h.setdefault("estimated_cost", self._budget_to_number(raw.get("budget_required", "0")))
+            h.setdefault("rationale", h.get("why_fits", ""))
+            h.setdefault("delegation_options", "")
+
+        # All active = top + backlog
+        backlog = filtered.get("backlog_hypotheses", [])
+        for h in backlog:
+            raw = raw_by_id.get(h.get("id"), {})
+            h.setdefault("description", h.get("reason_postponed", ""))
+            h.setdefault("priority", "backlog")
+            h.setdefault("channel", raw.get("category", ""))
+            h.setdefault("estimated_hours", self._effort_to_hours(raw.get("effort", "medium")))
+            h.setdefault("estimated_cost", self._budget_to_number(raw.get("budget_required", "0")))
+            h.setdefault("rationale", h.get("reason_postponed", ""))
+
+        active_hyps = top_hypotheses + backlog
+
+        # Filtered out hypotheses
+        filtered_out_list = filtered.get("filtered_out", [])
+        filtered_hyps = [
+            {"title": h.get("title", ""), "filter_reason": h.get("reason", "")}
+            for h in filtered_out_list
+        ]
+
+        # Quick wins: P1 hypotheses with low effort
+        quick_wins = [
+            h.get("id") for h in top_hypotheses
+            if h.get("priority") in ("P1", "high")
+            and raw_by_id.get(h.get("id"), {}).get("effort") == "low"
+        ]
+        # If no strict quick wins, take first 3 P1s
+        if not quick_wins:
+            quick_wins = [
+                h.get("id") for h in top_hypotheses
+                if h.get("priority") in ("P1", "high")
+            ][:3]
+
+        # Calculate totals for summary
+        total_hours = sum(h.get("estimated_hours", 0) for h in active_hyps)
+        total_cost = sum(h.get("estimated_cost", 0) for h in active_hyps)
+        free_count = sum(1 for h in active_hyps if h.get("estimated_cost", 0) == 0)
+
+        # Build summary object for template
+        summary_obj = {
+            "total_active": len(active_hyps),
+            "total_filtered": len(filtered_out_list),
+            "total_hours_active": total_hours,
+            "total_cost_active": total_cost,
+            "free_hypotheses_count": free_count,
+            "delegatable_count": 0,
+            "quick_wins": quick_wins,
+        }
+
+        # Profile data for template header
+        goal_statement = profile.get("goal_statement", "")
+        user_name = profile.get("user_name", profile.get("first_name", ""))
+        chosen_niche = profile.get("chosen_niche", fields.get("chosen_niche", ""))
+
+        # Personal note from execution plan
+        execution_plan = filtered.get("execution_plan", {})
+        personal_note = ""
+        if execution_plan:
+            parts = []
+            for week, actions in execution_plan.items():
+                week_label = week.replace("_", " ").capitalize()
+                if isinstance(actions, list):
+                    parts.append(f"{week_label}: " + "; ".join(actions))
+            personal_note = "\n".join(parts)
+
+        content = {
+            "goal_statement": goal_statement,
+            "user_name": user_name,
+            "chosen_niche": chosen_niche,
+            "geography": geography,
+            "currency": currency,
+            "decomposition": decomposition,
+            "hypotheses": top_hypotheses,
+            "summary": summary_obj,
+            "active_hyps": active_hyps,
+            "filtered_hyps": filtered_hyps,
+            "personal_note": personal_note,
+        }
+
+        # Build text summary for Telegram message
+        top_count = len(top_hypotheses)
+        backlog_count = len(backlog)
+        filtered_out_count = len(filtered_out_list)
         summary_text = filtered.get("summary", "")
 
-        base_scenario = decomp_table.get("scenarios", {}).get("base", {})
+        base_scenario = scenarios_dict.get("base", {})
         decomp_summary = ""
         if base_scenario:
             decomp_summary = (
@@ -354,7 +457,7 @@ class DecompositionHypothesisService(MiniserviceBase):
 
         summary = (
             f"{decomp_summary}"
-            f"Из 20 гипотез отобрано {top_count} приоритетных, "
+            f"Из {len(hypotheses_raw)} гипотез отобрано {top_count} приоритетных, "
             f"{backlog_count} в бэклоге, {filtered_out_count} отфильтровано. "
             f"{summary_text}"
         )
@@ -468,6 +571,27 @@ class DecompositionHypothesisService(MiniserviceBase):
                 "summary": "Ошибка фильтрации — попробуйте ещё раз",
             }
         return {}
+
+    @staticmethod
+    def _effort_to_hours(effort: str) -> int:
+        """Convert effort level to estimated hours."""
+        return {"low": 2, "medium": 5, "high": 12}.get(effort, 5)
+
+    @staticmethod
+    def _budget_to_number(budget: str) -> int:
+        """Convert budget string to numeric value."""
+        if not budget:
+            return 0
+        b = str(budget).strip().lower()
+        if b in ("0", "0 ₽", "бесплатно"):
+            return 0
+        if "до 5000" in b or "5000" in b:
+            return 5000
+        if "20000+" in b or "20000" in b:
+            return 20000
+        # Try to extract number
+        match = re.search(r"(\d+)", b)
+        return int(match.group(1)) if match else 0
 
     def _currency_for_geography(self, geography: str) -> str:
         """Return currency symbol based on geography."""
